@@ -13,33 +13,23 @@ YELP_API_KEY = os.getenv("YELP_API_KEY")
 def get_resturant_info(resturant):
     """returns dictionary of information given a resturant"""
     try:
-        name = resturant["name"]
-        rating = resturant["rating"]
-        url = resturant["url"]
-        transactions = resturant["transactions"]
-        price = resturant["price"]
-        phone = resturant["phone"]
-        image_url = resturant["image_url"]
-        address = resturant["location"]["address1"]
-        city = resturant["location"]["city"]
-        state = resturant["location"]["state"]
-        zip_code = resturant["location"]["zip_code"]
-
+        resturant_info = {
+            "name": resturant["name"],
+            "rating": resturant["rating"],
+            "price": resturant["price"],
+            "url": resturant["url"],
+            "phone": resturant["phone"],
+            "image_url": resturant["image_url"],
+            "address": resturant["location"]["address1"],
+            "city": resturant["location"]["city"],
+            "state": resturant["location"]["state"],
+            "zip_code": resturant["location"]["zip_code"],
+            "distance:": resturant["distance"],
+            "transactions": resturant["transactions"],
+        }
     except KeyError:
-        return None
-    return {
-        "name": name,
-        "rating": rating,
-        "url": url,
-        "transactions": transactions,
-        "price": price,
-        "phone": phone,
-        "image_url": image_url,
-        "address": address,
-        "city": city,
-        "state": state,
-        "zip_code": zip_code,
-    }
+        resturant_info = None
+    return resturant_info
 
 
 def resturant_search(term, location):
