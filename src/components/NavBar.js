@@ -50,7 +50,7 @@ function NavBar() {
             setErrors(newErrors)
         } else {
             if (input.option === 'recipe') {
-                navigate(`search/${input.option}/${input.keyword}`);
+                navigate(`search/${input.option}/null/${input.keyword}`);
             } else {
                 navigate(`search/${input.option}/${input.zip}/${input.keyword}`);
             }

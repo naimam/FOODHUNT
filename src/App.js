@@ -3,6 +3,7 @@ import './App.css';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Favorite from './pages/Favorite';
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path='/favorite' element={<Favorite />} />
+          <Route path='/search/:option/:zip/:keyword' element={<Search />} />
         </Routes>
       </Router>
     </>
