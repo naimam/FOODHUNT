@@ -40,11 +40,11 @@ function NavBar() {
     const findFormErrors = () => {
         const { option, zip, restaurant_keyword, recipe_keyword } = input
         const newErrors = {}
-
-        if (!recipe_keyword || recipe_keyword === '') newErrors.recipe_keyword = 'cannot be blank!'
-        if (!restaurant_keyword || restaurant_keyword === '') newErrors.restaurant_keyword = 'cannot be blank!'
         if (option === 'restaurant') {
+            if (!restaurant_keyword || restaurant_keyword === '') newErrors.restaurant_keyword = 'cannot be blank!'
             if (!zip || zip === '' || !zipRegex.test(zip)) newErrors.zip = 'invalid zip code!'
+        } else {
+            if (!recipe_keyword || recipe_keyword === '') newErrors.recipe_keyword = 'cannot be blank!'
         }
         return newErrors
     }
@@ -54,12 +54,14 @@ function NavBar() {
         const newErrors = findFormErrors()
         if (Object.keys(newErrors).length > 0) {
             setErrors(newErrors)
+            console.log(errors)
         } else {
             if (input.option === 'recipe') {
                 navigate(`search/${input.option}/null/${input.recipe_keyword}`);
             } else {
                 navigate(`search/${input.option}/${input.zip}/${input.restaurant_keyword}`);
             }
+            hideSearch()
         }
     };
 
