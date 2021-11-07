@@ -1,1 +1,13 @@
 @import "bootstrap/dist/css/bootstrap.css";
+.btn-text {
+    color: #000;
+    font-weight: 500;
+}
+
+.hide {
+    display: none;
+}
+
+.show {
+    display: flex;
+}

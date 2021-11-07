@@ -1,14 +1,64 @@
 import { useState } from 'react';
 import './NavBar.css';
-import { Nav, Navbar, NavDropdown, Button, Form, Modal } from 'react-bootstrap';
+import { Nav, Navbar, NavDropdown, Button, Form, Modal, ToggleButton, ButtonGroup, InputGroup, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../logo.svg';
+import restaurantIcon from '../assets/restaurantIcon.svg'
+import recipeIcon from '../assets/recipeIcon.svg'
+import pinIcon from '../assets/pinIcon.svg'
 
 
 function NavBar() {
+    let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
+    const [errors, setErrors] = useState({})
+    const [input, setInput] = useState({
+        option: 'recipe',
+        zip: '',
+        keyword: '',
+    });
+    const zipRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/
+
+    const setField = (field, value) => {
+        setInput({
+            ...input,
+            [field]: value
+        })
+        if (!!errors[field]) setErrors({
+            ...errors,
+            [field]: null
+        })
+    }
+
+    const findFormErrors = () => {
+        const { option, zip, keyword } = input
+        const newErrors = {}
+
+        if (!keyword || keyword === '') newErrors.keyword = 'cannot be blank!'
+        if (option === 'restaurant') {
+            if (!zip || zip === '' || !zipRegex.test(zip)) newErrors.zip = 'invalid zip code!'
+        }
+        return newErrors
+    }
+
+    const handleSubmit = (event) => {
+        event.preventDefault()
+        const newErrors = findFormErrors()
+        if (Object.keys(newErrors).length > 0) {
+            setErrors(newErrors)
+        } else {
+            if (input.option === 'recipe') {
+                navigate(`search/${input.option}/${input.keyword}`);
+            } else {
+                navigate(`search/${input.option}/${input.zip}/${input.keyword}`);
+            }
+        }
+    };
+
+
+
     const openSearch = () => {
         setShowModal(true)
     }
@@ -20,7 +70,7 @@ function NavBar() {
             <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
                 <Navbar.Brand as={Link} to="/home">
                     <img
-                        alt=""
+                        alt="Logo"
                         src={logo}
                         width="50"
                         height="50"
@@ -54,25 +104,114 @@ function NavBar() {
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        Custom Modal Styling
+                        <ButtonGroup size="lg">
+                            <ToggleButton
+                                key={0}
+                                id={`radio-recipe`}
+                                type="radio"
+                                variant='outline-warning'
+                                name="radio"
+                                value="recipe"
+                                checked={input.option === "recipe"}
+                                onChange={(e) => setField('option', e.target.value)}
+                                className="btn-text"
+                            >
+                                Recipe
+                            </ToggleButton>
+                            <ToggleButton
+                                key={1}
+                                id={`radio-restaurant`}
+                                type="radio"
+                                variant='outline-warning'
+                                name="radio"
+                                value="restaurant"
+                                checked={input.option === "restaurant"}
+                                onChange={(e) => setField('option', e.target.value)}
+                                className="btn-text"
+                            >
+                                Restaurant
+                            </ToggleButton>
+                        </ButtonGroup>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    <p>
-                        Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae unde
-                        commodi aspernatur enim, consectetur. Cumque deleniti temporibus
-                        ipsam atque a dolores quisquam quisquam adipisci possimus
-                        laboriosam. Quibusdam facilis doloribus debitis! Sit quasi quod
-                        accusamus eos quod. Ab quos consequuntur eaque quo rem! Mollitia
-                        reiciendis porro quo magni incidunt dolore amet atque facilis ipsum
-                        deleniti rem! Ipsum molestiae natus adipisci modi eligendi? Debitis amet quae unde
-                        commodi aspernatur enim, consectetur. Cumque deleniti temporibus
-                        ipsam atque a dolores quisquam quisquam adipisci possimus
-                        laboriosam. Quibusdam facilis doloribus debitis! Sit quasi quod
-                        accusamus eos quod. Ab quos consequuntur eaque quo rem! Mollitia
-                        reiciendis porro quo magni incidunt dolore amet atque facilis ipsum
-                        deleniti rem!
-                    </p>
+                    <Form onSubmit={handleSubmit}>
+                        <div className={input.option === 'restaurant' ? "show" : "hide"}>
+                            <InputGroup className="w-50 mb-4 px-3">
+                                <InputGroup.Text>
+                                    <img
+                                        alt="Icon"
+                                        src={pinIcon}
+                                        width="30"
+                                        height="30"
+                                        className="d-inline-block align-center me-2"
+                                    />
+                                    Zip code
+                                </InputGroup.Text>
+                                <Form.Control
+                                    type="number"
+                                    pattern="000"
+                                    placeholder="Enter your zip code here.."
+                                    onChange={(e) => setField('zip', e.target.value)}
+                                    isInvalid={!!errors.zip}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.zip}
+                                </Form.Control.Feedback>
+                            </InputGroup>
+                            <InputGroup className="mb-4  px-3">
+                                <InputGroup.Text>
+                                    <img
+                                        alt="Icon"
+                                        src={restaurantIcon}
+                                        width="30"
+                                        height="30"
+                                        className="d-inline-block align-center me-2"
+                                    />
+                                    Restaurant
+                                </InputGroup.Text>
+
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Search for restaurant, cuisine, or a dish"
+                                    onChange={(e) => setField('keyword', e.target.value)}
+                                    isInvalid={!!errors.keyword}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.keyword}
+                                </Form.Control.Feedback>
+                            </InputGroup>
+                        </div>
+                        <div className={input.option === 'recipe' ? "show" : "hide"}>
+                            <InputGroup className="mb-4  px-3">
+                                <InputGroup.Text>
+                                    <img
+                                        alt="Icon"
+                                        src={recipeIcon}
+                                        width="30"
+                                        height="30"
+                                        className="d-inline-block align-center me-2"
+                                    />
+                                    Recipe
+                                </InputGroup.Text>
+
+                                <Form.Control
+                                    type="text"
+                                    placeholder="Find a recipe"
+                                    onChange={(e) => setField('keyword', e.target.value)}
+                                    isInvalid={!!errors.keyword}
+                                />
+                                <Form.Control.Feedback type="invalid">
+                                    {errors.keyword}
+                                </Form.Control.Feedback>
+                            </InputGroup>
+                        </div>
+                        <Container className="w-100">
+                            <Button className="float-end" variant="primary" type="submit">
+                                Submit
+                            </Button>
+                        </Container>
+                    </Form>
                 </Modal.Body>
             </Modal>
         </>
