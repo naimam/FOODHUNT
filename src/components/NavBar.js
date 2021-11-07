@@ -17,15 +17,20 @@ function NavBar() {
     const [input, setInput] = useState({
         option: 'recipe',
         zip: '',
-        keyword: '',
+        restaurant_keyword: '',
+        recipe_keyword: ''
     });
     const zipRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/
 
     const setField = (field, value) => {
+        if (field === 'option') {
+            resetInput()
+        }
         setInput({
             ...input,
             [field]: value
         })
+
         if (!!errors[field]) setErrors({
             ...errors,
             [field]: null
@@ -33,10 +38,11 @@ function NavBar() {
     }
 
     const findFormErrors = () => {
-        const { option, zip, keyword } = input
+        const { option, zip, restaurant_keyword, recipe_keyword } = input
         const newErrors = {}
 
-        if (!keyword || keyword === '') newErrors.keyword = 'cannot be blank!'
+        if (!recipe_keyword || recipe_keyword === '') newErrors.recipe_keyword = 'cannot be blank!'
+        if (!restaurant_keyword || restaurant_keyword === '') newErrors.restaurant_keyword = 'cannot be blank!'
         if (option === 'restaurant') {
             if (!zip || zip === '' || !zipRegex.test(zip)) newErrors.zip = 'invalid zip code!'
         }
@@ -50,9 +56,9 @@ function NavBar() {
             setErrors(newErrors)
         } else {
             if (input.option === 'recipe') {
-                navigate(`search/${input.option}/null/${input.keyword}`);
+                navigate(`search/${input.option}/null/${input.recipe_keyword}`);
             } else {
-                navigate(`search/${input.option}/${input.zip}/${input.keyword}`);
+                navigate(`search/${input.option}/${input.zip}/${input.restaurant_keyword}`);
             }
         }
     };
@@ -63,8 +69,20 @@ function NavBar() {
         setShowModal(true)
     }
     const hideSearch = () => {
+        resetInput()
         setShowModal(false)
     }
+
+    const resetInput = () => {
+        setInput({
+            option: 'recipe',
+            zip: '',
+            restaurant_keyword: '',
+            recipe_keyword: ''
+        })
+        setErrors({})
+    }
+
     return (
         <>
             <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
@@ -174,11 +192,11 @@ function NavBar() {
                                 <Form.Control
                                     type="text"
                                     placeholder="Search for restaurant, cuisine, or a dish"
-                                    onChange={(e) => setField('keyword', e.target.value)}
-                                    isInvalid={!!errors.keyword}
+                                    onChange={(e) => setField('restaurant_keyword', e.target.value)}
+                                    isInvalid={!!errors.restaurant_keyword}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.keyword}
+                                    {errors.restaurant_keyword}
                                 </Form.Control.Feedback>
                             </InputGroup>
                         </div>
@@ -198,11 +216,11 @@ function NavBar() {
                                 <Form.Control
                                     type="text"
                                     placeholder="Find a recipe"
-                                    onChange={(e) => setField('keyword', e.target.value)}
-                                    isInvalid={!!errors.keyword}
+                                    onChange={(e) => setField('recipe_keyword', e.target.value)}
+                                    isInvalid={!!errors.recipe_keyword}
                                 />
                                 <Form.Control.Feedback type="invalid">
-                                    {errors.keyword}
+                                    {errors.recipe_keyword}
                                 </Form.Control.Feedback>
                             </InputGroup>
                         </div>
