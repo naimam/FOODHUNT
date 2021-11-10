@@ -7,7 +7,7 @@ import requests
 load_dotenv(find_dotenv())
 
 EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
-EDAMAM_APP_KEY = os.getenv("EDAMAM_APP_KEY")
+EDAMAM_APP_KEY = os.getenv("EDAMAM_API_KEY")
 
 
 def get_recipe_info(recipe):
