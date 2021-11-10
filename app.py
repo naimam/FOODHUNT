@@ -92,7 +92,7 @@ def signup():
 def test():
     keyword = flask.request.json.get("keyword")
     data = edamam.recipe_search(keyword)
-    if len(data) == 0:
+    if not data:
         return {"error": True}
     else:
         return {"error": False, "data": data}

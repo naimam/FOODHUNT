@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import NoResult from '../components/NoResult';
+import Restaurant from '../components/Restaurant';
 
 function Search() {
     const { option } = useParams();
@@ -7,6 +9,7 @@ function Search() {
     const { zip } = useParams();
 
     const [data, setData] = useState([])
+    const [hasError, setHasError] = useState(false)
 
     useEffect(() => {
         if (option === 'recipe') {
@@ -17,7 +20,12 @@ function Search() {
                 body: JSON.stringify({ "keyword": keyword })
             }).then(response => response.json()).then(data => {
                 console.log(data)
-                setData(data.data)
+                if (data.error == true) {
+                    setHasError(true)
+                } else {
+                    setData(data.data)
+                }
+
             });
         } else {
             fetch(`${process.env.PUBLIC_URL}/api/search-for-restaurant`, {
@@ -26,21 +34,25 @@ function Search() {
                 body: JSON.stringify({ "keyword": keyword, "zip": zip })
             }).then(response => response.json()).then(data => {
                 console.log(data)
-                setData(data.data)
+                if (data.error == true) {
+                    setHasError(true)
+                } else {
+                    setData(data.data)
+                }
             });
         }
         //depedency
     }, [keyword, option]);
 
-    return (<>
-        <h1>Search Result Page !!</h1>
-        <h2>Option: {option}</h2>
-        <h2>Keyword: {keyword}</h2>
-        <h2>Zip code: {zip}</h2>
-        <p>
-            {data}
-        </p>
-    </>)
+    if (hasError == true) {
+        return (
+            <NoResult />
+        )
+    } else if (option == 'restaurant') {
+        return (<><Restaurant data={data} /></>)
+    } else if (option == 'recipe') {
+        return <> Recipe Component</>
+    }
 }
 
 export default Search

@@ -50,7 +50,7 @@ def resturant_search(term, zip):
     try:
         results = data["businesses"]
     except KeyError:  # invalid location
-        results = []
+        return False
 
     if results:
         resturants = [get_resturant_info(resturant) for resturant in results]
@@ -58,7 +58,7 @@ def resturant_search(term, zip):
             resturant for resturant in resturants if resturant is not None
         ]  # filter out None values
     else:
-        resturants = []
+        return False
 
     resturants_info = json.dumps(resturants[:10])
     return resturants_info
