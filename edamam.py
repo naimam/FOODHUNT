@@ -13,12 +13,16 @@ EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 def get_recipe_info(recipe):
     """returns a dictionary of recipe information."""
     try:
+        if recipe["totalTime"] == 0.0:
+            cookingtime = "N/A"
+        else:
+            cookingtime = round(recipe["totalTime"])
         recipe_info = {
             "label": recipe["label"],
             "image": recipe["image"],
             "url": recipe["url"],
-            "calories": recipe["calories"],
-            "cookingtime": recipe["totalTime"],
+            "calories": round(recipe["calories"]),
+            "cookingtime": cookingtime,
             "ingredients": recipe["ingredientLines"],
             "dietLabels": recipe["dietLabels"],
             "healthLabels": recipe["healthLabels"],
@@ -56,3 +60,6 @@ def recipe_search(keyword):
 
     recipes_info = json.dumps(recipes)
     return recipes_info
+
+
+print(recipe_search("chicken"))
