@@ -4,7 +4,7 @@ import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Favorite from './pages/Favorite';
 import Search from './pages/Search';
-import NotFoundPage from './pages/NotFound';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -15,7 +15,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path='/favorite' element={<Favorite />} />
           <Route path='/search/:option/:zip/:keyword' element={<Search />} />
-          <Route path="/*" element={<NotFoundPage />} />`
+          <Route path="/*" element={<PageNotFound />} />`
         </Routes>
       </Router>
     </>

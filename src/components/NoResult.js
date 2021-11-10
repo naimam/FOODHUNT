@@ -15,7 +15,7 @@ function NoResult() {
                 No Result Found
             </h2>
             <p id="message">
-                Sorry! We couldn't find what you're looking for. Please try another why.
+                Sorry! We couldn't find what you're looking for. Please try another way.
             </p>
         </div>
     )

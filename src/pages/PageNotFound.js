@@ -3,7 +3,7 @@ import sadFace from '../assets/sadPage.png'
 import { Link } from 'react-router-dom';
 
 
-class NotFoundPage extends React.Component {
+class PageNotFound extends React.Component {
     render() {
         return (<>
             <div id="parent">
@@ -16,7 +16,7 @@ class NotFoundPage extends React.Component {
                     404
                 </h1>
                 <h2 id="title">
-                    Ooooops! Youre weren't supposed to see this
+                    Ooooops! You weren't supposed to see this
                 </h2>
                 <p id="message">
                     Return to the <Link id="link" to="/home">homepage</Link> and remember: you haven't see anything
@@ -26,4 +26,4 @@ class NotFoundPage extends React.Component {
     }
 }
 
-export default NotFoundPage
+export default PageNotFound

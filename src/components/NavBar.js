@@ -110,7 +110,7 @@ function NavBar() {
                     </Nav>
 
                     <Form inline className="pe-md-3" >
-                        <Button onClick={openSearch} variant="primary"> <FontAwesomeIcon icon={faSearch} /> Search</Button>
+                        <Button id="search-btn" onClick={openSearch} variant="primary"> <FontAwesomeIcon icon={faSearch} /> Search</Button>
                     </Form>
 
                 </Navbar.Collapse>
