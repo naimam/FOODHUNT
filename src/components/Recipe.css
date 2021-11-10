@@ -1,0 +1,23 @@
+@import "bootstrap/dist/css/bootstrap.css";
+
+
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.recipe-row{
+    margin: 5px;
+}
+
+.recipe-image{
+    width: 100%;
+    height: auto;
+}
+
+::-webkit-scrollbar {
+	width: 0px;
+}
