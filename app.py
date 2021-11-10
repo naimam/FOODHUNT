@@ -92,7 +92,7 @@ def signup():
 def test():
     keyword = flask.request.json.get("keyword")
     data = edamam.recipe_search(keyword)
-    if len(data) == 0:
+    if not data:
         return {"error": True}
     else:
         return {"error": False, "data": data}
@@ -103,10 +103,10 @@ def search_for_restaurant():
     keyword = flask.request.json.get("keyword")
     zip = flask.request.json.get("zip")
     data = yelp.resturant_search(keyword, zip)
-    if len(data) == 0:
+    if not data:
         return {"error": True}
     else:
-        return {"error": False, "data": data}
+        return json.dumps({"error": False, "data": data})
 
 
 if __name__ == "__main__":
