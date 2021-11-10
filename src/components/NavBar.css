@@ -11,3 +11,18 @@
 .show {
     display: flex;
 }
+
+#search-btn {
+    color: #fff;
+    background-color: #ff4e4e;
+    border-color: #ff4e4e;
+}
+
+#search-btn:hover {
+    background-color: #ff0000;
+    border-color: #ff0000;
+}
+
+#search-btn:focus {
+    box-shadow: 0 0 0 0.25rem #f5000073;
+}

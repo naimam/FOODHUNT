@@ -1,6 +1,4 @@
 import React from 'react';
-import RecipeInfo from './RecipeInfo';
-import { useState } from 'react';
 import { Button, Card, Row, Col, Accordion } from 'react-bootstrap';
 import './Recipe.css';
 
@@ -66,9 +64,9 @@ var data = [d1, d2, d3, d4, d5]; //mock data
 
 
 function Recipe(props) {
-    var results = data;
-    const display = results.map((item) => (
-        <Col className="recipe-col" >
+    var results = JSON.parse(props.data);
+    const display = results.map((item) => {
+        return <Col className="recipe-col" >
             <Card className="recipe-item">
                 <div className="display">
                     <Card.Img variant="top" className="recipe-image" src={item.image} alt={item.label} />
@@ -127,13 +125,15 @@ function Recipe(props) {
             </Card >
         </Col >
 
-    ));
+    })
 
 
 
     return (
-        // <div className={showResults ? "show" : "hide"}>{display}</div>
-        <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 recipe-row">{display}</Row>
+        <>
+            <h1 className="page-title">{props.keyword} </h1>
+            <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 recipe-row">{display}</Row>
+        </>
     );
 }
 

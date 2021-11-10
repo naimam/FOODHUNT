@@ -7,7 +7,7 @@ import requests
 load_dotenv(find_dotenv())
 
 EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
-EDAMAM_APP_KEY = os.getenv("EDAMAM_APP_KEY")
+EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 
 
 def get_recipe_info(recipe):
@@ -37,14 +37,14 @@ def recipe_search(keyword):
         "from": "0",
         "to": "10",
         "app_id": EDAMAM_API_ID,
-        "app_key": EDAMAM_APP_KEY,
+        "app_key": EDAMAM_API_KEY,
     }
     response = requests.get(url, params=params)
     data = response.json()
     try:
         results = data["hits"]
     except KeyError:
-        results = []
+        return False
 
     if results:
         recipes = [get_recipe_info(recipe["recipe"]) for recipe in results]
@@ -52,7 +52,7 @@ def recipe_search(keyword):
             recipe for recipe in recipes if recipe is not None
         ]  # filter out None values
     else:
-        recipes = []
+        return False
 
     recipes_info = json.dumps(recipes)
     return recipes_info

@@ -1,0 +1,19 @@
+.page-title {
+    text-align: center;
+}
+
+.restaurant-image {
+    position: absolute;
+}
+
+.img-container {
+    padding-bottom: 100%;
+    overflow: hidden;
+    position: relative
+}
+
+.restaurant-name {
+    text-align: center;
+    color: #dc3545;
+    font-size: xx-large;
+}
