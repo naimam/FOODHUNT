@@ -4,7 +4,7 @@ import { Nav, Navbar, NavDropdown, Button, Form, Modal, ToggleButton, ButtonGrou
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { Link, useNavigate } from 'react-router-dom';
-import logo from '../logo.svg';
+import logo from '../logo.png';
 import restaurantIcon from '../assets/restaurantIcon.svg'
 import recipeIcon from '../assets/recipeIcon.svg'
 import pinIcon from '../assets/pinIcon.svg'
@@ -92,9 +92,9 @@ function NavBar() {
                     <img
                         alt="Logo"
                         src={logo}
-                        width="50"
-                        height="50"
-                        className="d-inline-block align-center"
+                        width="40"
+                        height="40"
+                        className="d-inline-block align-center mx-2"
                     />{' '}
                     Food Hunt</Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
