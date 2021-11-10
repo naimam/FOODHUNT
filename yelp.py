@@ -32,18 +32,21 @@ def get_resturant_info(resturant):
     return resturant_info
 
 
-def resturant_search(term, location):
+def resturant_search(term, zip):
     """returns list of dictionaries of resturants given location and term."""
+
+    location = str(zip) + get_state_from_zip(zip)
+
     url = "https://api.yelp.com/v3/businesses/search"
     headers = {"Authorization": "Bearer %s" % YELP_API_KEY}
     params = {
         "term": term,
         "location": location,
-        "limit": 10,
-        "category": "restaurants",
+        "category": "restaurants, all",
     }
     response = requests.get(url, headers=headers, params=params)
     data = response.json()
+    # print(data)
     try:
         results = data["businesses"]
     except KeyError:  # invalid location
@@ -57,5 +60,12 @@ def resturant_search(term, location):
     else:
         resturants = []
 
-    resturants_info = json.dumps(resturants)
+    resturants_info = json.dumps(resturants[:10])
     return resturants_info
+
+
+# for more accurate results from yelp
+def get_state_from_zip(zip):
+    response = requests.get("http://api.zippopotam.us/us/" + str(zip))
+    json = response.json()
+    return json["places"][0]["state abbreviation"]

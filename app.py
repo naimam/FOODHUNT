@@ -5,6 +5,8 @@ import os
 import json
 from flask_sqlalchemy import SQLAlchemy
 from dotenv import load_dotenv, find_dotenv
+import yelp
+import edamam
 
 load_dotenv(find_dotenv())
 
@@ -22,7 +24,6 @@ from flask_login import (
 app = flask.Flask(__name__, static_folder="./build/static")
 bp = flask.Blueprint("bp", __name__, template_folder="./build")
 db = SQLAlchemy(app)
-bp = flask.Blueprint("bp", __name__, template_folder="./build")
 
 db_url = os.getenv("DATABASE_URL")
 # if the database url startwith postgres: this will change it to postsql
@@ -82,6 +83,30 @@ def login():
 @app.route("/signup")
 def signup():
     return flask.render_template("signup.html")
+
+
+# API
+
+
+@app.route("/api/search-for-recipe", methods=["POST"])
+def test():
+    keyword = flask.request.json.get("keyword")
+    data = edamam.recipe_search(keyword)
+    if len(data) == 0:
+        return {"error": True}
+    else:
+        return {"error": False, "data": data}
+
+
+@app.route("/api/search-for-restaurant", methods=["POST"])
+def search_for_restaurant():
+    keyword = flask.request.json.get("keyword")
+    zip = flask.request.json.get("zip")
+    data = yelp.resturant_search(keyword, zip)
+    if len(data) == 0:
+        return {"error": True}
+    else:
+        return {"error": False, "data": data}
 
 
 if __name__ == "__main__":
