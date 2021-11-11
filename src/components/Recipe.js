@@ -2,67 +2,6 @@ import React from 'react';
 import { Button, Card, Row, Col, Accordion } from 'react-bootstrap';
 import './Recipe.css';
 
-
-// mock data
-var d1 = {
-    "label": "Creamy Spinach and Artichoke Dip",
-    "ingredients": ["spiniach", "artichoke"],
-    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
-    "url": "https://www.google.com/",
-    "calories": "100",
-    "cookingtime": "60",
-    "dietLabels": ["Low-Carb", "Lactose"],
-    "healthLabels": ["Vegan", "Vegetarian"],
-    "cautions": ["Sulfites"],
-}
-var d2 = {
-    "label": "Pizza",
-    "ingredients": ["cheese", "tomato", "sauce"],
-    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
-    "url": "https://www.google.com/",
-    "calories": "200",
-    "cookingtime": "60",
-    "dietLabels": ["High-Carb", "Yo Mama"],
-    "healthLabels": ["Vegadwdn", "Vegetarian"],
-    "cautions": ["Sulfitdwdes"],
-}
-var d3 = {
-    "label": "Spaghetti",
-    "ingredients": ["noodles", "tomato", "sauce"],
-    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
-    "url": "https://www.google.com/",
-    "calories": "300",
-    "cookingtime": "60",
-    "dietLabels": ["Low-Carb", "fwefe"],
-    "healthLabels": ["Spahg", "Vegetarian"],
-    "cautions": ["Sulfites"],
-}
-var d4 = {
-    "label": "Spaghetti",
-    "ingredients": ["noodles", "tomato", "sauce"],
-    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
-    "url": "https://www.google.com/",
-    "calories": "300",
-    "cookingtime": "60",
-    "dietLabels": ["Low-Carb", "fwefe"],
-    "healthLabels": ["Spahg", "Vegetarian"],
-    "cautions": ["Sulfites"],
-}
-var d5 = {
-    "label": "Spaghetti",
-    "ingredients": ["noodles", "tomato", "sauce"],
-    "image": "https://upload.wikimedia.org/wikipedia/commons/a/a3/Eq_it-na_pizza-margherita_sep2005_sml.jpg",
-    "url": "https://www.google.com/",
-    "calories": "300",
-    "cookingtime": "60",
-    "dietLabels": ["Low-Carb", "fwefe"],
-    "healthLabels": ["Spahg", "Vegetarian"],
-    "cautions": ["Sulfites"],
-}
-var data = [d1, d2, d3, d4, d5]; //mock data
-
-
-
 function Recipe(props) {
     var results = JSON.parse(props.data);
     const display = results.map((item) => {
