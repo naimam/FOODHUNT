@@ -16,6 +16,10 @@ function App() {
           <Route path='/favorite' element={<Favorite />} />
           <Route path='/search/:option/:zip/:keyword' element={<Search />} />
           <Route path="/*" element={<PageNotFound />} />`
+          <Route path="/logout" render={() => {
+            fetch("/logout")
+            window.location.href = "/login"
+          }} />
         </Routes>
       </Router>
     </>

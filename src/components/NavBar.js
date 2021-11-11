@@ -105,7 +105,8 @@ function NavBar() {
                         <NavDropdown title="Profile" id="basic-nav-dropdown">
                             <NavDropdown.Item>Signed in as: john_martin</NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href="#action/3.4">Log out</NavDropdown.Item>
+                            <NavDropdown.Item href={`${process.env.PUBLIC_URL}/logout`}>Log out</NavDropdown.Item>
+
                         </NavDropdown>
                     </Nav>
 
