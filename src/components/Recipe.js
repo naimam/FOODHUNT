@@ -1,5 +1,6 @@
 import React from 'react';
-import { Button, Card, Row, Col, Accordion } from 'react-bootstrap';
+import { Button, Card, Row, Col, Accordion, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import './Recipe.css';
 
 function Recipe(props) {
@@ -12,53 +13,38 @@ function Recipe(props) {
 
                     <Card.Body>
                         <Card.Title className="recipe-label">{item.label}</Card.Title>
-                        <div className="recipe-calories">{item.calories} calories</div>
-                        <div className="recipe-cookingtime">{item.cookingtime} minutes to make</div>
-                        <div className="recipe-url"><a href="{item.url}"> Recipe Instructions</a></div>
-                        {/* to add: save button */}
-
+                        <ListGroup variant="flush">
+                            <ListGroup.Item className="recipe-calories"><b>Calories:</b> {item.calories}. </ListGroup.Item>
+                            <ListGroup.Item className="recipe-cookingtime"><b>Cooking Time:</b> {item.cookingtime} mins.</ListGroup.Item>
+                            <ListGroup.Item className="recipe-health-labels"><b>Health Labels:</b>  {item.healthLabels.slice(0, 5).map((healthLabel) => (
+                                <span className="recipe-health-label">{healthLabel}</span>
+                            ))}
+                            </ListGroup.Item>
+                            <ListGroup.Item className="recipe-diet-labels"><b>Diet Labels:</b>  {item.dietLabels.slice(0, 5).map((dietLabel) => (
+                                <span className="recipe-diet-label">{dietLabel}</span>
+                            ))}
+                            </ListGroup.Item>
+                            <ListGroup.Item className="recipe-cautions"><b>Cautons:</b>   {item.cautions.slice(0, 5).map((cautions) => (
+                                <span className="recipe-cautions">{cautions}</span>
+                            ))}
+                            </ListGroup.Item>
+                        </ListGroup>
                         <Accordion>
                             <Accordion.Item eventKey="1">
-                                <Accordion.Header>More Information</Accordion.Header>
+                                <Accordion.Header> <div className="more-info">Ingredients</div></Accordion.Header>
                                 <Accordion.Body>
-                                    <div className="recipe-info">
-                                        <div className="recipe-ingredients">
-                                            <div className="recipe-ingredient-title">Ingredients</div>
-                                            <ul className="recipe-ingredient-list">
-                                                {item.ingredients.map((ingredient) => (
-                                                    <li className="recipe-ingredient">{ingredient}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div className="recipe-health-labels">
-                                            <div className="recipe-health-label-title">Health Labels</div>
-                                            <ul className="recipe-health-label-list">
-                                                {item.healthLabels.map((healthLabel) => (
-                                                    <li className="recipe-health-label">{healthLabel}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div className="recipe-diet-labels">
-                                            <div className="recipe-diet-label-title">Diet Labels</div>
-                                            <ul className="recipe-diet-label-list">
-                                                {item.dietLabels.map((dietLabel) => (
-                                                    <li className="recipe-diet-label">{dietLabel}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
-                                        <div className="recipe-cautions">
-                                            <div className="recipe-cautions-title">Cautions</div>
-                                            <ul className="recipe-cautions-list">
-                                                {item.cautions.map((cautions) => (
-                                                    <li className="recipe-cautions">{cautions}</li>
-                                                ))}
-                                            </ul>
-                                        </div>
+                                    <div className="recipe-ingredients">
+                                        <ol className="recipe-ingredient-list">
+                                            {item.ingredients.map((ingredient) => (
+                                                <li className="recipe-ingredient">{ingredient}</li>
+                                            ))}
+                                        </ol>
                                     </div>
-
                                 </Accordion.Body>
                             </Accordion.Item>
                         </Accordion>
+                        <a href={item.url}> <Button className="info-btn" variant="danger">Recipe Info</Button></a>
+                        <FontAwesomeIcon icon="coffee" border />
                     </Card.Body>
                 </div>
             </Card >
@@ -71,7 +57,7 @@ function Recipe(props) {
     return (
         <>
             <h1 className="page-title">{props.keyword} </h1>
-            <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 recipe-row">{display}</Row>
+            <Row xs={1} sm={2} md={3} xxl={4} className="g-4 recipe-row">{display}</Row>
         </>
     );
 }
