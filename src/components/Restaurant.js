@@ -11,10 +11,8 @@ function Restaurant(props) {
         return <Col>
             <Card>
                 <div>
+                    <Card.Img variant="top" className="restaurant-image" src={item.image_url} alt={item.name} />
                     <Card.Body>
-                        <div className="img-container">
-                            <Card.Img variant="top" className="restaurant-image" src={item.image_url} alt={item.name} />
-                        </div>
                         <Card.Title className="restaurant-name">
                             {item.name}
                         </Card.Title>

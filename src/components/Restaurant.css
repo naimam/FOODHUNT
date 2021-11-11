@@ -3,14 +3,16 @@
 }
 
 .restaurant-image {
-    position: absolute;
+    width:  100%;
+    height: 200px;
+    object-fit: cover;
 }
 
-.img-container {
+/* .img-container {
     padding-bottom: 100%;
     overflow: hidden;
     position: relative
-}
+} */
 
 .restaurant-name {
     text-align: center;
