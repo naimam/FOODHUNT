@@ -3,6 +3,7 @@ from flask import request, redirect, url_for, flash, session
 import os
 import json
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
@@ -106,13 +107,29 @@ app.register_blueprint(bp)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    failed = False
     form = SignupForm()
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method="sha256")
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
-        db.session.commit()
-        return "<h1>New user has been created!</h1>"
+        try:
+            db.session.commit()
+        except IntegrityError as err:
+            db.session.rollback()
+            app.logger.debug(err)
+            failed = True
+            if (
+                'duplicate key value violates unique constraint "user_username_key"'
+                in str(err)
+            ):
+                flash("Username already exist", "danger")
+        if not failed:
+            form.email.data = ""
+            form.username.data = ""
+            form.password.data = ""
+            flash("Welcome to Food Hunt!!", "success")
+
     return flask.render_template("signup.html", form=form)
 
 
