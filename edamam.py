@@ -23,8 +23,9 @@ def get_recipe_info(recipe):
             ["N/A"] if recipe["healthLabels"] == [] else recipe["healthLabels"]
         )
         cautions = ["N/A"] if recipe["cautions"] == [] else recipe["cautions"]
-
+        recipe_id = recipe["uri"].split("recipe_", 1)[1]
         recipe_info = {
+            "recipe_id": recipe_id,
             "label": recipe["label"],
             "image": recipe["image"],
             "url": recipe["url"],
@@ -67,3 +68,24 @@ def recipe_search(keyword):
 
     recipes_info = json.dumps(recipes)
     return recipes_info
+
+
+def recipe_from_id(recipe_id):
+    """returns a dictionary of recipe information given a recipe id."""
+    url = "https://api.edamam.com/api/recipes/v2/" + recipe_id
+
+    params = {
+        "type": "public",
+        "app_id": EDAMAM_API_ID,
+        "app_key": EDAMAM_API_KEY,
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+    try:
+        recipe = data["recipe"]
+    except KeyError:
+        return False
+
+    recipe_info = get_recipe_info(recipe)
+    recipe_info = json.dumps(recipe_info)
+    return recipe_info

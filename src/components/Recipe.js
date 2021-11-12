@@ -44,7 +44,7 @@ function Recipe(props) {
                             </Accordion.Item>
                         </Accordion>
                         <a href={item.url}> <Button className="info-btn" variant="danger">Recipe Info</Button></a>
-                        <FontAwesomeIcon icon="coffee" border />
+
                     </Card.Body>
                 </div>
             </Card >
