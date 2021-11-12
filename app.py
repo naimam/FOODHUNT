@@ -1,5 +1,5 @@
 import flask
-from flask import request, redirect, url_for, flash, session
+from flask import request, send_from_directory, redirect, url_for, flash, session
 import os
 import json
 from flask_sqlalchemy import SQLAlchemy
@@ -180,6 +180,11 @@ def search_for_restaurant():
         return {"error": True}
     else:
         return json.dumps({"error": False, "data": data})
+
+
+@app.route("/favicon.ico")
+def favicon():
+    return send_from_directory("./build", "favicon.ico")
 
 
 if __name__ == "__main__":
