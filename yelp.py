@@ -15,6 +15,7 @@ def get_resturant_info(resturant):
     try:
         resturant_info = {
             "name": resturant["name"],
+            "id": resturant["id"],
             "rating": resturant["rating"],
             "price": resturant["price"],
             "url": resturant["url"],
@@ -24,7 +25,6 @@ def get_resturant_info(resturant):
             "city": resturant["location"]["city"],
             "state": resturant["location"]["state"],
             "zip_code": resturant["location"]["zip_code"],
-            "distance:": resturant["distance"],
             "transactions": resturant["transactions"],
         }
     except KeyError:
@@ -46,7 +46,6 @@ def resturant_search(term, zip):
     }
     response = requests.get(url, headers=headers, params=params)
     data = response.json()
-    # print(data)
     try:
         results = data["businesses"]
     except KeyError:  # invalid location
@@ -69,3 +68,14 @@ def get_state_from_zip(zip):
     response = requests.get("http://api.zippopotam.us/us/" + str(zip))
     json = response.json()
     return json["places"][0]["state abbreviation"]
+
+
+def resturant_from_id(resturant_id):
+    """returns dictionary of resturant information given a resturant id"""
+    url = "https://api.yelp.com/v3/businesses/" + resturant_id
+    headers = {"Authorization": "Bearer %s" % YELP_API_KEY}
+    response = requests.get(url, headers=headers)
+    data = response.json()
+    resturant = get_resturant_info(data)
+    resturant_info = json.dumps(resturant)
+    return resturant_info
