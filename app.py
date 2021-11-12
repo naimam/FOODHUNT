@@ -9,6 +9,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from dotenv import load_dotenv, find_dotenv
+from datetime import timedelta
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login.utils import login_required
@@ -48,6 +49,13 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
+# make login session to last only 1 hr
+@app.before_request
+def make_session_permanent():
+    session.permanent = False
+    app.permanent_session_lifetime = timedelta(minutes=60)
+
+
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
@@ -62,7 +70,6 @@ class LoginForm(FlaskForm):
     password = PasswordField(
         "password", validators=[InputRequired(), Length(min=8, max=80)]
     )
-    remember = BooleanField("remember me")
 
 
 class SignupForm(FlaskForm):
