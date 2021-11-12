@@ -87,7 +87,7 @@ def root():
 @login_required
 def home():
     # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"your": "data here"}
+    DATA = {"username": current_user.username}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",

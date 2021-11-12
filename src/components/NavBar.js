@@ -10,7 +10,7 @@ import recipeIcon from '../assets/recipeIcon.svg'
 import pinIcon from '../assets/pinIcon.svg'
 
 
-function NavBar() {
+function NavBar(props) {
     let navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
     const [errors, setErrors] = useState({})
@@ -103,7 +103,7 @@ function NavBar() {
                         <Nav.Link as={Link} to="/home">Home</Nav.Link>
                         <Nav.Link as={Link} to="/favorite">Favorite</Nav.Link>
                         <NavDropdown title="Profile" id="basic-nav-dropdown">
-                            <NavDropdown.Item>Signed in as: john_martin</NavDropdown.Item>
+                            <NavDropdown.Item>Signed in as: {props.username}</NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href={`${process.env.PUBLIC_URL}/logout`}>Log out</NavDropdown.Item>
 
