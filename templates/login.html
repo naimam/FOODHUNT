@@ -2,7 +2,7 @@
 {% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}
-Login
+Food Hunt
 {% endblock %}
 
 {% block styles %}
@@ -14,6 +14,7 @@ Login
         font-weight: 700;
     }
 </style>
+<link rel="shortcut icon" type="image/jpg" href="/favicon.ico" />
 {% endblock %}
 
 {% block content %}
@@ -24,7 +25,6 @@ Login
         {{ form.hidden_tag() }}
         {{ wtf.form_field(form.username) }}
         {{ wtf.form_field(form.password) }}
-        {{ wtf.form_field(form.remember) }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
     </form>
     {% with messages = get_flashed_messages(category_filter=["error"]) %}
