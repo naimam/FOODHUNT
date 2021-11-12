@@ -8,3 +8,4 @@ Flask-Bcrypt
 Flask-Bootstrap
 Flask-WTF
 WTForms
+email_validator
