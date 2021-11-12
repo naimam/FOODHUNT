@@ -3,6 +3,7 @@ from flask import request, redirect, url_for, flash, session
 import os
 import json
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.exc import IntegrityError
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
@@ -47,7 +48,7 @@ def load_user(user_name):
     return User.query.get(user_name)
 
 
-class User(UserMixin, db.Model):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
@@ -67,8 +68,7 @@ class LoginForm(FlaskForm):
 class SignupForm(FlaskForm):
     email = StringField(
         "email",
-        validators=[InputRequired(), Email(
-            message="Invalid email"), Length(max=50)],
+        validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
     )
     username = StringField(
         "username", validators=[InputRequired(), Length(min=4, max=15)]
@@ -78,17 +78,17 @@ class SignupForm(FlaskForm):
     )
 
 
-@login_required
 @app.route("/")
+@login_required
 def root():
     return flask.redirect(flask.url_for("bp.home"))
 
 
-@login_required
 @bp.route("/home")
+@login_required
 def home():
     # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"your": "data here"}
+    DATA = {"username": current_user.username}
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
@@ -96,8 +96,8 @@ def home():
     )
 
 
-@login_required
 @app.route("/<path:path>", methods=["GET"])
+@login_required
 def any_root_path(path):
     return flask.render_template("index.html")
 
@@ -107,14 +107,29 @@ app.register_blueprint(bp)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    failed = False
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(
-            form.password.data, method="sha256")
+        hashed_password = generate_password_hash(form.password.data, method="sha256")
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
-        db.session.commit()
-        return "<h1>New user has been created!</h1>"
+        try:
+            db.session.commit()
+        except IntegrityError as err:
+            db.session.rollback()
+            app.logger.debug(err)
+            failed = True
+            if (
+                'duplicate key value violates unique constraint "user_username_key"'
+                in str(err)
+            ):
+                flash("Username already exist", "danger")
+        if not failed:
+            form.email.data = ""
+            form.username.data = ""
+            form.password.data = ""
+            flash("Welcome to Food Hunt!!", "success")
+
     return flask.render_template("signup.html", form=form)
 
 
@@ -126,16 +141,16 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                app.logger.info("%s logged in successfully",
-                                current_user.username)
+                app.logger.info("%s logged in successfully", current_user.username)
                 return flask.redirect(flask.url_for("bp.home"))
         flash("Invalid username or password.", "error")
     return flask.render_template("login.html", form=form)
 
 
-@login_required
 @app.route("/logout", methods=["GET", "POST"])
+@login_required
 def logout():
+    app.logger.debug("logging out user: " + current_user.username)
     session.clear()
     logout_user()
     return redirect(url_for("login"))

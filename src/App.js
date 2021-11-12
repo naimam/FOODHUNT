@@ -7,10 +7,12 @@ import Search from './pages/Search';
 import PageNotFound from './pages/PageNotFound';
 
 function App() {
+  const args = JSON.parse(document.getElementById("data").text);
+  const username = args.username
   return (
     <>
       <Router>
-        <NavBar />
+        <NavBar username={username} />
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path='/favorite' element={<Favorite />} />

@@ -7,7 +7,12 @@ Sign Up
 
 {% block styles %}
 {{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='signin.css')}}">
+<style>
+    .alert {
+        margin-top: 20px;
+        font-size: large;
+    }
+</style>
 {% endblock %}
 
 {% block content %}
@@ -21,6 +26,21 @@ Sign Up
         {{ wtf.form_field(form.password) }}
         <button class="btn btn-lg btn-primary btn-block" type="submit">Sign Up</button>
     </form>
-
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    <!-- Categories: success (green), info (blue), warning (yellow), danger (red) -->
+    {% if messages %}
+    {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-dismissible" role="alert">
+        {{ message }}
+        {% if category == "success" %}
+        <a href="/login" class="alert-link">Login to your new account</a>
+        {% else %}
+        {% endif %}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                aria-hidden="true">&times;</span></button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    {% endwith %}
 </div> <!-- /container -->
 {% endblock %}
