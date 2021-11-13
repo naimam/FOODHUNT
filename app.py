@@ -75,7 +75,8 @@ class LoginForm(FlaskForm):
 class SignupForm(FlaskForm):
     email = StringField(
         "email",
-        validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
+        validators=[InputRequired(), Email(
+            message="Invalid email"), Length(max=50)],
     )
     username = StringField(
         "username", validators=[InputRequired(), Length(min=4, max=15)]
@@ -117,7 +118,8 @@ def signup():
     failed = False
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method="sha256")
+        hashed_password = generate_password_hash(
+            form.password.data, method="sha256")
         new_user = User(username=form.username.data, password=hashed_password)
         db.session.add(new_user)
         try:
@@ -148,7 +150,8 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                app.logger.info("%s logged in successfully", current_user.username)
+                app.logger.info("%s logged in successfully",
+                                current_user.username)
                 return flask.redirect(flask.url_for("bp.home"))
         flash("Invalid username or password.", "error")
     return flask.render_template("login.html", form=form)
@@ -194,5 +197,14 @@ def favicon():
     return send_from_directory("./build", "favicon.ico")
 
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8080)), debug=True)
+# if __name__ == "__main__":
+#     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8081)), debug=True)
+
+
+@app.before_first_request
+def create_table():
+    """create table"""
+    db.create_all()
+
+
+app.run(debug=True)
