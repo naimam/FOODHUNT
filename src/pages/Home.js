@@ -21,8 +21,10 @@ function Home(props) {
         }).then(response => response.json()).then(data => {
             console.log("data", data);
             setRestaurantData(data.data)
+            console.log(recipeData[0])
         });
     }, []);
+
 
     return (
         <>
@@ -35,7 +37,7 @@ function Home(props) {
                         <Row >
                             <Col>
                                 <Card>
-                                    <Card.Img variant="top" src="holder.js/100px160" />
+                                    <Card.Img variant="top" className="restaurant-image" src={restaurantData[0].image_url} alt={restaurantData[0].name} />
                                     <Card.Body>
                                         <Card.Title>Card title 1</Card.Title>
                                         <Card.Text>
