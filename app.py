@@ -218,7 +218,18 @@ def logout():
     return redirect(url_for("login"))
 
 
+@app.route("/get-username", methods=["GET"])
+@login_required
+def get_user_info():
+    return json.dumps(
+        {
+            "username": current_user.username,
+        }
+    )
+
+
 @app.route("/save-recipe", methods=["POST"])
+@login_required
 def save():
     recipe_ids = flask.request.json.get("recipe_ids")
 
@@ -250,8 +261,8 @@ def save():
 # API
 
 
-@login_required
 @app.route("/api/search-for-restaurant", methods=["POST"])
+@login_required
 def search_for_restaurant():
     keyword = flask.request.json.get("keyword")
     zip = flask.request.json.get("zip")
@@ -263,6 +274,7 @@ def search_for_restaurant():
 
 
 @app.route("/api/search-for-recipe", methods=["POST"])
+@login_required
 def search_for_recipe():
     keyword = flask.request.json.get("keyword")
     data = edamam.recipe_search(keyword)
@@ -270,6 +282,25 @@ def search_for_recipe():
         return {"error": True}
     else:
         return json.dumps({"error": False, "data": data})
+
+
+@login_required
+@app.route("/api/recommended_recipes", methods=["POST"])
+def recommended_recipes():
+
+    data = edamam.recommended_recipes()
+    return {"data": data}
+
+
+@login_required
+@app.route("/api/recommended_restaurants", methods=["POST"])
+def recommended_restaurants():
+    # zip = flask.request.json.get("zip")
+    data = yelp.recommended_restaurants()
+    if not data:
+        return {"error": True}
+    else:
+        return {"error": False, "data": data}
 
 
 @app.route("/favicon.ico")

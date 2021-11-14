@@ -7,8 +7,12 @@ import Search from './pages/Search';
 import PageNotFound from './pages/PageNotFound';
 
 function App() {
-  const args = JSON.parse(document.getElementById("data").text);
-  const username = args.username
+  const [username, setUsername] = useState('');
+  useEffect(() => {
+    fetch('/get-username').then(res => res.json()).then(data => {
+      setUsername(data.username);
+    });
+  }, []);
   return (
     <>
       <Router>
