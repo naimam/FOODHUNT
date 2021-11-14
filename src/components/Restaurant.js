@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { Button, Card, Row, Col, Accordion, ListGroup } from 'react-bootstrap';
+import Grading from './Grading';
 import './Restaurant.css';
 
 function Restaurant(props) {
@@ -59,8 +60,8 @@ function Restaurant(props) {
                         <Button onClick={() => saveRestaurant(item.id)} variant="success">{button.text}</Button>
                     </Card.Body>
                     <ListGroup variant="flush">
-                        <ListGroup.Item>Rating: {item.rating}</ListGroup.Item>
-                        <ListGroup.Item>Price: {item.price}</ListGroup.Item>
+                        <ListGroup.Item>Rating: <Grading mode="rating" num={item.rating} /> </ListGroup.Item>
+                        <ListGroup.Item>Price: <Grading mode="pricing" num={item.price.length} /></ListGroup.Item>
                     </ListGroup>
                 </div>
             </Card>
