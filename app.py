@@ -235,6 +235,7 @@ def save():
 
     print("recipe ids", recipe_ids)
 
+
     user = User.query.filter_by(username=current_user.username).first()
     current_user_recipes = user.recipes
     current_user_recipe_ids = []
@@ -257,9 +258,63 @@ def save():
 
     return {"error": False, "id_list": current_user_recipe_ids}
 
+@app.route("/save-restaurant", methods=["POST"])
+@login_required
+def save_resta():
+    restaurant_ids = flask.request.json.get("restaurant_ids")
+
+    print("restaurant ids", restaurant_ids)
+    user = User.query.filter_by(username=current_user.username).first()
+    current_user_restaurants = user.restaurants
+    current_user_restaurant_ids = []
+    for restaurant in current_user_restaurants:
+        current_user_restaurant_ids.append(restaurant.restaurant_id)
+
+    db.session.add(Restaurant(restaurant_id=restaurant_ids, user_id=current_user.user_id))
+    try:
+        if restaurant_ids not in current_user_restaurant_ids:
+            current_user_restaurant_ids.append(restaurant_ids)
+            db.session.commit()
+    except IntegrityError as err:
+        db.session.rollback()
+        app.logger.debug(err)
+        if (
+            'duplicate key value violates unique constraint "restaurant_restaurant_id_key"'
+            in str(err)
+        ):
+            return {"error": True}
+
+    return {"error": False, "id_list": current_user_restaurant_ids}
+
+@app.route("/remove-recipe", method=["POST"])
+@login_required
+def removeRecipe():
+    recipe_id = flask.request.json.get("recipe_ids")
+    app.logger.info("REMOVING: %s", recipe_id)
+    try:
+        recipe = Recipe.query.filter_by(recipe_id=recipe_id, user_id=current_user.id).first()
+        db.session.delete(recipe)
+        db.session.commit()
+    except Exception as error:
+        app.logger.error(error)
+        return json.dumps({"error": True})
+    return json.dumps({"error": False})
+    
+@app.route("/remove-restaurant", method=["POST"])
+@login_required
+def removeRestaurant():
+    restaurant_id = flask.request.json.get("restaurant_ids")
+    app.logger.info("REMOVING: %s", restaurant_id)
+    try:
+        restaurant = Restaurant.query.filter_by(restaurant_id=restaurant_id, user_id=current_user.id).first()
+        db.session.delete(restaurant)
+        db.session.commit()
+    except Exception as error:
+        app.logger.error(error)
+        return json.dumps({"error": True})
+    return json.dumps({"error": False})
 
 # API
-
 
 @app.route("/api/search-for-restaurant", methods=["POST"])
 @login_required
