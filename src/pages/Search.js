@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import Recipe from '../components/Recipe';
 import NoResult from '../components/NoResult';
 import Restaurant from '../components/Restaurant';
-
+import { Button, Card, Row, Col, Accordion, ListGroup, ListGroupItem } from 'react-bootstrap';
 function Search() {
     const { option } = useParams();
     const { keyword } = useParams();
@@ -49,15 +49,25 @@ function Search() {
     if (hasError === true) {
         return (<NoResult />)
     } else if (option === 'restaurant') {
-        // const display = data.map((item) => (
-        //     <h1>{item.name}</h1>
-        // ))
-        return (<><Restaurant keyword={keyword} zip={zip} data={JSON.stringify(data)} /></>)
+        return <>
+            <h1 className="page-title">{keyword} near {zip}</h1>
+            <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{data.map((restaurant, i) => {
+                const arg = JSON.stringify(restaurant)
+                return <Restaurant restaurant={arg} index={i} />
+            })}</Row>
+        </>
 
         // return (<p>{data[0].name}</p>)
     } else if (option === 'recipe') {
-        //TODO add recipe component
-        return <> <Recipe keyword={keyword} data={JSON.stringify(data)} /></>
+
+        return <>
+            <h1 className="page-title">{keyword} </h1>
+            <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{data.map((recipe, i) => {
+                const arg = JSON.stringify(recipe)
+                return <Recipe recipe={arg} index={i} />
+            })}</Row>
+
+        </>
     }
 }
 
