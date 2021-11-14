@@ -10,7 +10,6 @@ from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from dotenv import load_dotenv, find_dotenv
 from datetime import timedelta
-from edamam import recipe_from_id
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login.utils import login_required
@@ -127,30 +126,6 @@ def home():
     data = json.dumps(DATA)
     return flask.render_template(
         "index.html",
-        data=data,
-    )
-
-
-# TODO: in development
-@app.route("/api/favorite")
-@login_required
-def get_favorite():
-    recipes = Recipe.query.filter_by(username=current_user.username).all()
-    recipe_id = [a.artist_id for a in recipes]
-    has_recipes_saved = len(recipe_id) > 0
-    if has_recipes_saved:
-        artist_id = random.choice(recipe_id)
-        (recipe_id) = recipe_from_id(recipe_id)
-    else:
-        (recipe_id) = (None,)
-    data = json.dumps(
-        {
-            "username": current_user.username,
-            "recipe_id": recipe_id,
-        }
-    )
-    return flask.render_template(
-        "favorite.html",
         data=data,
     )
 
@@ -333,16 +308,16 @@ def search_for_recipe():
         return json.dumps({"error": False, "data": json.dumps(data)})
 
 
-@login_required
 @app.route("/api/recommended_recipes", methods=["POST"])
+@login_required
 def recommended_recipes():
 
     data = edamam.recommended_recipes()
     return {"data": data}
 
 
-@login_required
 @app.route("/api/recommended_restaurants", methods=["POST"])
+@login_required
 def recommended_restaurants():
     # zip = flask.request.json.get("zip")
     data = yelp.recommended_restaurants()
@@ -350,6 +325,30 @@ def recommended_restaurants():
         return {"error": True}
     else:
         return {"error": False, "data": data}
+
+
+# TODO: in development
+@app.route("/api/favorite")
+@login_required
+def get_favorite():
+    recipes = Recipe.query.filter_by(username=current_user.username).all()
+    recipe_id = [a.artist_id for a in recipes]
+    has_recipes_saved = len(recipe_id) > 0
+    if has_recipes_saved:
+        artist_id = random.choice(recipe_id)
+        (recipe_id) = edamam.recipe_from_id(recipe_id)
+    else:
+        (recipe_id) = (None,)
+    data = json.dumps(
+        {
+            "username": current_user.username,
+            "recipe_id": recipe_id,
+        }
+    )
+    return flask.render_template(
+        "favorite.html",
+        data=data,
+    )
 
 
 # ASSETS

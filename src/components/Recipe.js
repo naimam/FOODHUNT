@@ -7,8 +7,7 @@ import './Recipe.css';
 
 
 function Recipe(props) {
-    const [hasError, setHasError] = useState(false)
-    const [save, setSave] = useState(false)
+    var item = JSON.parse(props.recipe);
     const saveBtn = {
         text: "Save",
         buttonClass: "save-button",
@@ -40,13 +39,16 @@ function Recipe(props) {
             console.log(data)
             if (!data.error) { /* if no error */
                 setButton(savedBtn);
+            } else {
+                //TODO show error message
             }
         });
     }
 
+    useEffect(() => {
+        item.already_saved == true ? setButton(savedBtn) : setButton(saveBtn);
+    }, [])
 
-
-    var item = JSON.parse(props.recipe);
     return (
         <>
             <Col className="recipe-col" >
