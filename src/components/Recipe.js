@@ -1,63 +1,102 @@
 import React from 'react';
 import { Button, Card, Row, Col, Accordion, ListGroup, ListGroupItem } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState, useEffect } from 'react';
+import { faSave } from '@fortawesome/free-solid-svg-icons'
 import './Recipe.css';
 
+
 function Recipe(props) {
-    var results = JSON.parse(props.data);
-    const display = results.map((item) => {
-        return <Col className="recipe-col" >
-            <Card className="recipe-item">
-                <div className="display">
-                    <Card.Img variant="top" className="recipe-image" src={item.image} alt={item.label} />
+    const [hasError, setHasError] = useState(false)
+    const [save, setSave] = useState(false)
+    const saveBtn = {
+        text: "Save",
+        buttonClass: "save-button",
+        disabled: false,
+        action: "save",
+        variant: "success",
+        icon: <FontAwesomeIcon icon={faSave} />
+    };
 
-                    <Card.Body>
-                        <Card.Title className="recipe-label">{item.label}</Card.Title>
-                        <ListGroup variant="flush">
-                            <ListGroup.Item className="recipe-calories"><b>Calories:</b> {item.calories}. </ListGroup.Item>
-                            <ListGroup.Item className="recipe-cookingtime"><b>Cooking Time:</b> {item.cookingtime} mins.</ListGroup.Item>
-                            <ListGroup.Item className="recipe-health-labels"><b>Health Labels:</b>  {item.healthLabels.slice(0, 5).map((healthLabel) => (
-                                <span className="recipe-health-label">{healthLabel}</span>
-                            ))}
-                            </ListGroup.Item>
-                            <ListGroup.Item className="recipe-diet-labels"><b>Diet Labels:</b>  {item.dietLabels.slice(0, 5).map((dietLabel) => (
-                                <span className="recipe-diet-label">{dietLabel}</span>
-                            ))}
-                            </ListGroup.Item>
-                            <ListGroup.Item className="recipe-cautions"><b>Cautons:</b>   {item.cautions.slice(0, 5).map((cautions) => (
-                                <span className="recipe-cautions">{cautions}</span>
-                            ))}
-                            </ListGroup.Item>
-                        </ListGroup>
-                        <Accordion>
-                            <Accordion.Item eventKey="1">
-                                <Accordion.Header> <div className="more-info">Ingredients</div></Accordion.Header>
-                                <Accordion.Body>
-                                    <div className="recipe-ingredients">
-                                        <ol className="recipe-ingredient-list">
-                                            {item.ingredients.map((ingredient) => (
-                                                <li className="recipe-ingredient">{ingredient}</li>
-                                            ))}
-                                        </ol>
-                                    </div>
-                                </Accordion.Body>
-                            </Accordion.Item>
-                        </Accordion>
-                        <a href={item.url}> <Button className="info-btn" variant="danger">Recipe Info</Button></a>
+    const savedBtn = {
+        text: "Saved",
+        buttonClass: "saved-button",
+        disabled: true,
+        action: "save",
+        variant: "secondary",
+        icon: <FontAwesomeIcon icon={faSave} />
+    };
 
-                    </Card.Body>
-                </div>
-            </Card >
-        </Col >
+    const [button, setButton] = useState(saveBtn);
 
-    })
+    let idList = []
+    function saveRecipe(id) {
+        console.log(id)
+        fetch(`${process.env.PUBLIC_URL}/save-recipe`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ "recipe_ids": id })
+        }).then(response => response.json()).then(data => {
+            console.log(data)
+            if (!data.error) { /* if no error */
+                setButton(savedBtn);
+                console.log(idList)
+            }
+        });
+    }
 
 
 
+    var item = JSON.parse(props.recipe);
     return (
         <>
-            <h1 className="page-title">{props.keyword} </h1>
-            <Row xs={1} sm={2} md={3} xxl={4} className="g-4 recipe-row">{display}</Row>
+            <Col className="recipe-col" >
+                <Card className="recipe-item">
+                    <div className="display">
+                        <Card.Img variant="top" className="recipe-image" src={item.image} alt={item.label} />
+
+                        <Card.Body>
+                            <Card.Title className="recipe-label">{item.label}</Card.Title>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item className="recipe-calories"><b>Calories:</b> {item.calories}. </ListGroup.Item>
+                                <ListGroup.Item className="recipe-cookingtime"><b>Cooking Time:</b> {item.cookingtime} mins.</ListGroup.Item>
+                                <ListGroup.Item className="recipe-health-labels"><b>Health Labels:</b>  {item.healthLabels.slice(0, 5).map((healthLabel) => (
+                                    <span className="recipe-health-label">{healthLabel}</span>
+                                ))}
+                                </ListGroup.Item>
+                                <ListGroup.Item className="recipe-diet-labels"><b>Diet Labels:</b>  {item.dietLabels.slice(0, 5).map((dietLabel) => (
+                                    <span className="recipe-diet-label">{dietLabel}</span>
+                                ))}
+                                </ListGroup.Item>
+                                <ListGroup.Item className="recipe-cautions"><b>Cautons:</b>   {item.cautions.slice(0, 5).map((cautions) => (
+                                    <span className="recipe-cautions">{cautions}</span>
+                                ))}
+                                </ListGroup.Item>
+                            </ListGroup>
+                            <Accordion>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header> <div className="more-info">Ingredients</div></Accordion.Header>
+                                    <Accordion.Body>
+                                        <div className="recipe-ingredients">
+                                            <ol className="recipe-ingredient-list">
+                                                {item.ingredients.map((ingredient) => (
+                                                    <li className="recipe-ingredient">{ingredient}</li>
+                                                ))}
+                                            </ol>
+                                        </div>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                            <a href={item.url}> <Button className="info-btn" variant="danger">Recipe Info</Button></a>
+                            {/* If item.recipe_id in idList */}
+                            {/* {idList.includes(item.recipe_id) ? <Button className="save-btn" variant="success" disabled>Saved</Button> : <Button className="save-btn" variant="success" onClick={() => saveRecipe(item.recipe_id)}>Save</Button>} */}
+                            <Button className={button.buttonClass} variant={button.variant} disabled={button.disabled} onClick={() => saveRecipe(item.recipe_id)}>{button.text} {button.icon}</Button >
+
+
+                        </Card.Body>
+                    </div>
+                </Card >
+            </Col >
         </>
     );
 }

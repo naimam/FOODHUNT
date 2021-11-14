@@ -235,6 +235,7 @@ def save():
 
     print("recipe ids", recipe_ids)
 
+
     user = User.query.filter_by(username=current_user.username).first()
     current_user_recipes = user.recipes
     current_user_recipe_ids = []
@@ -263,7 +264,6 @@ def save_resta():
     restaurant_ids = flask.request.json.get("restaurant_ids")
 
     print("restaurant ids", restaurant_ids)
-
     user = User.query.filter_by(username=current_user.username).first()
     current_user_restaurants = user.restaurants
     current_user_restaurant_ids = []
@@ -315,7 +315,6 @@ def removeRestaurant():
     return json.dumps({"error": False})
 
 # API
-
 
 @app.route("/api/search-for-restaurant", methods=["POST"])
 @login_required
