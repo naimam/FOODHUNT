@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css';
+import { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Favorite from './pages/Favorite';
@@ -7,8 +8,12 @@ import Search from './pages/Search';
 import PageNotFound from './pages/PageNotFound';
 
 function App() {
-  const args = JSON.parse(document.getElementById("data").text);
-  const username = args.username
+  const [username, setUsername] = useState('');
+  useEffect(() => {
+    fetch('/get-username').then(res => res.json()).then(data => {
+      setUsername(data.username);
+    });
+  }, []);
   return (
     <>
       <Router>

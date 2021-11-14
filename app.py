@@ -10,7 +10,6 @@ from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from dotenv import load_dotenv, find_dotenv
 from datetime import timedelta
-from edamam import recipe_from_id
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login.utils import login_required
@@ -131,29 +130,6 @@ def home():
     )
 
 
-@bp.route("/favorite")
-@login_required
-def index():
-    recipes = Recipe.query.filter_by(username=current_user.username).all()
-    recipe_id = [a.artist_id for a in recipes]
-    has_recipes_saved = len(recipe_id) > 0
-    if has_recipes_saved:
-        artist_id = random.choice(recipe_id)
-        (recipe_id) = recipe_from_id(recipe_id)
-    else:
-        (recipe_id) = (None,)
-    data = json.dumps(
-        {
-            "username": current_user.username,
-            "recipe_id": recipe_id,
-        }
-    )
-    return flask.render_template(
-        "favorite.html",
-        data=data,
-    )
-
-
 @app.route("/<path:path>", methods=["GET"])
 @login_required
 def any_root_path(path):
@@ -218,60 +194,164 @@ def logout():
     return redirect(url_for("login"))
 
 
-@app.route("/save-recipe", methods=["POST"])
-def save():
-    recipe_ids = flask.request.json.get("recipe_ids")
-
-    print("recipe ids", recipe_ids)
-
-    user = User.query.filter_by(username=current_user.username).first()
-    current_user_recipes = user.recipes
-    current_user_recipe_ids = []
-    for recipe in current_user_recipes:
-        current_user_recipe_ids.append(recipe.recipe_id)
-
-    db.session.add(Recipe(recipe_id=recipe_ids, user_id=current_user.user_id))
-    try:
-        if recipe_ids not in current_user_recipe_ids:
-            current_user_recipe_ids.append(recipe_ids)
-            db.session.commit()
-    except IntegrityError as err:
-        db.session.rollback()
-        app.logger.debug(err)
-        if (
-            'duplicate key value violates unique constraint "recipe_recipe_id_key"'
-            in str(err)
-        ):
-            return {"error": True}
-
-    return {"error": False, "id_list": current_user_recipe_ids}
+@app.route("/get-username", methods=["GET"])
+@login_required
+def get_user_info():
+    return json.dumps(
+        {
+            "username": current_user.username,
+        }
+    )
 
 
 # API
 
 
+@app.route("/api/save-recipe", methods=["POST"])
 @login_required
+def save():
+    recipe_id = flask.request.json.get("recipe_id")
+    app.logger.info("SAVING: %s", recipe_id)
+    db.session.add(Recipe(recipe_id=recipe_id, user_id=current_user.user_id))
+    try:
+        db.session.commit()
+    except Exception as err:
+        db.session.rollback()
+        app.logger.debug(err)
+        return {"error": True}
+    return {"error": False}
+
+
+@app.route("/api/save-restaurant", methods=["POST"])
+@login_required
+def save_resta():
+    restaurant_id = flask.request.json.get("restaurant_id")
+    app.logger.info("SAVING: %s", restaurant_id)
+
+    db.session.add(
+        Restaurant(restaurant_id=restaurant_id, user_id=current_user.user_id)
+    )
+    try:
+        db.session.commit()
+    except Exception as err:
+        db.session.rollback()
+        app.logger.debug(err)
+        return {"error": True}
+    return {"error": False}
+
+
+@app.route("/api/remove-recipe", methods=["POST"])
+@login_required
+def removeRecipe():
+    recipe_id = flask.request.json.get("recipe_id")
+    app.logger.info("REMOVING: %s", recipe_id)
+    try:
+        recipe = Recipe.query.filter_by(
+            recipe_id=recipe_id, user_id=current_user.id
+        ).first()
+        db.session.delete(recipe)
+        db.session.commit()
+    except Exception as error:
+        app.logger.error(error)
+        return json.dumps({"error": True})
+    return json.dumps({"error": False})
+
+
+@app.route("/api/remove-restaurant", methods=["POST"])
+@login_required
+def removeRestaurant():
+    restaurant_id = flask.request.json.get("restaurant_id")
+    app.logger.info("REMOVING: %s", restaurant_id)
+    try:
+        restaurant = Restaurant.query.filter_by(
+            restaurant_id=restaurant_id, user_id=current_user.id
+        ).first()
+        db.session.delete(restaurant)
+        db.session.commit()
+    except Exception as error:
+        app.logger.error(error)
+        return json.dumps({"error": True})
+    return json.dumps({"error": False})
+
+
 @app.route("/api/search-for-restaurant", methods=["POST"])
+@login_required
 def search_for_restaurant():
     keyword = flask.request.json.get("keyword")
     zip = flask.request.json.get("zip")
     data = yelp.resturant_search(keyword, zip)
+
     if not data:
         return {"error": True}
     else:
-        return json.dumps({"error": False, "data": data})
+        user_restaurants = current_user.restaurants
+        already_saved = [x.restaurant_id for x in user_restaurants]
+        for i in data:
+            id = i["id"]
+            i["already_saved"] = True if id in already_saved else False
+        return json.dumps({"error": False, "data": json.dumps(data)})
 
 
 @app.route("/api/search-for-recipe", methods=["POST"])
+@login_required
 def search_for_recipe():
     keyword = flask.request.json.get("keyword")
     data = edamam.recipe_search(keyword)
     if not data:
         return {"error": True}
     else:
-        return json.dumps({"error": False, "data": data})
+        user_recipes = current_user.recipes
+        already_saved = [x.recipe_id for x in user_recipes]
+        for i in data:
+            id = i["recipe_id"]
+            i["already_saved"] = True if id in already_saved else False
+        return json.dumps({"error": False, "data": json.dumps(data)})
 
 
+@app.route("/api/recommended_recipes", methods=["POST"])
+@login_required
+def recommended_recipes():
+
+    data = edamam.recommended_recipes()
+    return {"data": data}
+
+
+@app.route("/api/recommended_restaurants", methods=["POST"])
+@login_required
+def recommended_restaurants():
+    # zip = flask.request.json.get("zip")
+    data = yelp.recommended_restaurants()
+    if not data:
+        return {"error": True}
+    else:
+        return {"error": False, "data": data}
+
+
+# TODO: in development
+@app.route("/api/favorite")
+@login_required
+def get_favorite():
+    recipes = Recipe.query.filter_by(username=current_user.username).all()
+    recipe_id = [a.artist_id for a in recipes]
+    has_recipes_saved = len(recipe_id) > 0
+    if has_recipes_saved:
+        artist_id = random.choice(recipe_id)
+        (recipe_id) = edamam.recipe_from_id(recipe_id)
+    else:
+        (recipe_id) = (None,)
+    data = json.dumps(
+        {
+            "username": current_user.username,
+            "recipe_id": recipe_id,
+        }
+    )
+    return flask.render_template(
+        "favorite.html",
+        data=data,
+    )
+
+
+# ASSETS
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory("./build", "favicon.ico")

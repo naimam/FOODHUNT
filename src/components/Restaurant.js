@@ -1,9 +1,13 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Button, Card, Row, Col, Accordion, ListGroup } from 'react-bootstrap';
+import Grading from './Grading';
 import './Restaurant.css';
 
 function Restaurant(props) {
+    var item = JSON.parse(props.restaurant);
+    const wide = 7
+
     const saveBtn = {
         text: "Save",
         buttonClass: "save-button",
@@ -11,7 +15,6 @@ function Restaurant(props) {
         action: "save",
         variant: "success",
     }
-
 
     const savedBtn = {
         text: "Saved",
@@ -22,10 +25,21 @@ function Restaurant(props) {
 
     };
     const [button, setButton] = useState(saveBtn);
-    const wide = 7
+
     const saveRestaurant = (id) => {
-        alert(id)
-        setButton(savedBtn)
+        console.log(id)
+        fetch(`${process.env.PUBLIC_URL}/api/save-restaurant`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ "restaurant_id": id })
+        }).then(response => response.json()).then(data => {
+            console.log(data)
+            if (!data.error) { /* if no error */
+                setButton(savedBtn);
+            } else {
+                //TODO show error message
+            }
+        });
     }
 
 
@@ -33,7 +47,9 @@ function Restaurant(props) {
         window.location.assign(url);
     };
 
-    var item = JSON.parse(props.restaurant);
+    useEffect(() => {
+        item.already_saved == true ? setButton(savedBtn) : setButton(saveBtn);
+    }, [])
 
 
     return (
@@ -56,11 +72,11 @@ function Restaurant(props) {
                             </Row>
                         </Card.Text>
                         <Button onClick={() => goToMore(item.url)} variant="danger">More</Button>
-                        <Button onClick={() => saveRestaurant(item.id)} variant="success">{button.text}</Button>
+                        <Button className={button.buttonClass} variant={button.variant} disabled={button.disabled} onClick={() => saveRestaurant(item.id)}>{button.text}</Button>
                     </Card.Body>
                     <ListGroup variant="flush">
-                        <ListGroup.Item>Rating: {item.rating}</ListGroup.Item>
-                        <ListGroup.Item>Price: {item.price}</ListGroup.Item>
+                        <ListGroup.Item>Rating: <Grading mode="rating" num={item.rating} /> </ListGroup.Item>
+                        <ListGroup.Item>Price: <Grading mode="pricing" num={item.price.length} /></ListGroup.Item>
                     </ListGroup>
                 </div>
             </Card>
