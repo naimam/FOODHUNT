@@ -4,11 +4,40 @@ import { Button, Card, Row, Col, Accordion, ListGroup } from 'react-bootstrap';
 import './Restaurant.css';
 
 function Restaurant(props) {
+    const saveBtn = {
+        text: "Save",
+        buttonClass: "save-button",
+        disabled: false,
+        action: "save",
+        variant: "success",
+    }
+
+
+    const savedBtn = {
+        text: "Saved",
+        buttonClass: "saved-button",
+        disabled: true,
+        action: "save",
+        variant: "secondary",
+
+    };
+    const [button, setButton] = useState(saveBtn);
     const wide = 7
-    var results = JSON.parse(props.data);
-    const display = results.map((item) => {
-        console.log(item.image_url)
-        return <Col>
+    const saveRestaurant = (id) => {
+        alert(id)
+        setButton(savedBtn)
+    }
+
+
+    const goToMore = (url) => {
+        window.location.assign(url);
+    };
+
+    var item = JSON.parse(props.restaurant);
+
+
+    return (
+        <Col>
             <Card>
                 <div>
                     <Card.Img variant="top" className="restaurant-image" src={item.image_url} alt={item.name} />
@@ -27,6 +56,7 @@ function Restaurant(props) {
                             </Row>
                         </Card.Text>
                         <Button onClick={() => goToMore(item.url)} variant="danger">More</Button>
+                        <Button onClick={() => saveRestaurant(item.id)} variant="success">{button.text}</Button>
                     </Card.Body>
                     <ListGroup variant="flush">
                         <ListGroup.Item>Rating: {item.rating}</ListGroup.Item>
@@ -34,19 +64,7 @@ function Restaurant(props) {
                     </ListGroup>
                 </div>
             </Card>
-        </Col>
-    })
-
-
-    const goToMore = (url) => {
-        window.location.assign(url);
-    };
-
-    return (
-        <>
-            <h1 className="page-title">{props.keyword} near {props.zip}</h1>
-            <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{display}</Row>
-        </>
+        </Col >
     )
 }
 

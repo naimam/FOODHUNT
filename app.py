@@ -50,6 +50,7 @@ login_manager.login_view = "login"
 def load_user(user_name):
     return User.query.get(user_name)
 
+
 @app.before_request
 def make_session_permanent():
     session.permanent = False
@@ -57,17 +58,19 @@ def make_session_permanent():
     """create table"""
     db.create_all()
 
+
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True)
     email = db.Column(db.String(50), unique=True)
     password = db.Column(db.String(100))
-    recipes = db.relationship("Recipe", backref = "user", lazy=True)
-    restaurants = db.relationship("Restaurant", backref = "user", lazy=True)
-    #zipcode = db.Column(db.Integer)
+    recipes = db.relationship("Recipe", backref="user", lazy=True)
+    restaurants = db.relationship("Restaurant", backref="user", lazy=True)
+    # zipcode = db.Column(db.Integer)
 
     def get_id(self):
         return self.user_id
+
 
 class Recipe(db.Model):
     rec_id = db.Column(db.Integer, primary_key=True)
@@ -77,6 +80,7 @@ class Recipe(db.Model):
     def __repr__(self):
         return f"<Recipe {self.recipe_id}>"
 
+
 class Restaurant(db.Model):
     res_id = db.Column(db.Integer, primary_key=True)
     restaurant_id = db.Column(db.String(80), nullable=False)
@@ -84,6 +88,7 @@ class Restaurant(db.Model):
 
     def __repr__(self):
         return f"<Restaurant {self.restaurant_id}>"
+
 
 class LoginForm(FlaskForm):
     username = StringField(
@@ -98,8 +103,7 @@ class LoginForm(FlaskForm):
 class SignupForm(FlaskForm):
     email = StringField(
         "email",
-        validators=[InputRequired(), Email(
-            message="Invalid email"), Length(max=50)],
+        validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
     )
     username = StringField(
         "username", validators=[InputRequired(), Length(min=4, max=15)]
@@ -126,6 +130,7 @@ def home():
         data=data,
     )
 
+
 @bp.route("/favorite")
 @login_required
 def index():
@@ -136,9 +141,7 @@ def index():
         artist_id = random.choice(recipe_id)
         (recipe_id) = recipe_from_id(recipe_id)
     else:
-        (recipe_id) = (
-            None,
-        )
+        (recipe_id) = (None,)
     data = json.dumps(
         {
             "username": current_user.username,
@@ -149,6 +152,7 @@ def index():
         "favorite.html",
         data=data,
     )
+
 
 @app.route("/<path:path>", methods=["GET"])
 @login_required
@@ -166,7 +170,9 @@ def signup():
     if form.validate_on_submit():
 
         hashed_password = generate_password_hash(form.password.data, method="sha256")
-        new_user = User(username=form.username.data, password=hashed_password, email=form.email.data)
+        new_user = User(
+            username=form.username.data, password=hashed_password, email=form.email.data
+        )
 
         db.session.add(new_user)
         try:
@@ -197,8 +203,7 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                app.logger.info("%s logged in successfully",
-                                current_user.username)
+                app.logger.info("%s logged in successfully", current_user.username)
                 return flask.redirect(flask.url_for("bp.home"))
         flash("Invalid username or password.", "error")
     return flask.render_template("login.html", form=form)
@@ -212,33 +217,34 @@ def logout():
     logout_user()
     return redirect(url_for("login"))
 
-@app.route("/Save", methods=["POST"])
+
+@app.route("/save-recipe", methods=["POST"])
 def save():
-    recipe_ids = flask.request.json.get("recipe_id")
-    print(flask.request.json)
-    valid_ids = set()
-    for recipe_id in recipe_ids:
-        try:
-            recipe_from_id(recipe_id)
-            valid_ids.add(recipe_id)
-        except Exception:
-            pass
+    recipe_ids = flask.request.json.get("recipe_ids")
 
-    username = current_user.username
-    existing_ids = {
-        v.recipe_id for v in Recipe.query.filter_by(username=username).all()
-    }
-    new_ids = valid_ids - existing_ids
-    for new_id in new_ids:
-        db.session.add(Recipe(recipe_id=new_id, username=username))
-    for recipe in Recipe.query.filter_by(username=username).filter(
-        Recipe.recipe_id.notin_(valid_ids)
-    ):
-        db.session.delete(recipe)
-    db.session.commit()
+    print("recipe ids", recipe_ids)
 
-    response = {"recipe_ids": [a for a in recipe_ids if a in valid_ids]}
-    return flask.jsonify(response)
+    user = User.query.filter_by(username=current_user.username).first()
+    current_user_recipes = user.recipes
+    current_user_recipe_ids = []
+    for recipe in current_user_recipes:
+        current_user_recipe_ids.append(recipe.recipe_id)
+
+    db.session.add(Recipe(recipe_id=recipe_ids, user_id=current_user.user_id))
+    try:
+        if recipe_ids not in current_user_recipe_ids:
+            current_user_recipe_ids.append(recipe_ids)
+            db.session.commit()
+    except IntegrityError as err:
+        db.session.rollback()
+        app.logger.debug(err)
+        if (
+            'duplicate key value violates unique constraint "recipe_recipe_id_key"'
+            in str(err)
+        ):
+            return {"error": True}
+
+    return {"error": False, "id_list": current_user_recipe_ids}
 
 
 # API
@@ -256,9 +262,20 @@ def search_for_restaurant():
         return json.dumps({"error": False, "data": data})
 
 
+@app.route("/api/search-for-recipe", methods=["POST"])
+def search_for_recipe():
+    keyword = flask.request.json.get("keyword")
+    data = edamam.recipe_search(keyword)
+    if not data:
+        return {"error": True}
+    else:
+        return json.dumps({"error": False, "data": data})
+
+
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory("./build", "favicon.ico")
+
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.getenv("PORT", 8080)), debug=True)
