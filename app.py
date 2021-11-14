@@ -279,7 +279,7 @@ def removeRestaurant():
 def search_for_restaurant():
     keyword = flask.request.json.get("keyword")
     zip = flask.request.json.get("zip")
-    data = yelp.resturant_search(keyword, zip)
+    data = yelp.restaurant_search(keyword, zip)
 
     if not data:
         return {"error": True}
@@ -349,9 +349,9 @@ def favorite_recipes():
 
 
 @app.route("/api/favorite-restaurants")
-# @login_required
+@login_required
 def favorite_restaurants():
-    user = User.query.filter_by(username="naima").first()
+    user = User.query.filter_by(username=current_user.id).first()
     user_restaurants = user.restaurants
     if user_restaurants:
         restaurants = [x.restaurant_id for x in user_restaurants]
