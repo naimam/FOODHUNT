@@ -286,7 +286,7 @@ def save_resta():
 
     return {"error": False, "id_list": current_user_restaurant_ids}
 
-@app.route("/remove-recipe", method=["POST"])
+@app.route("/remove-recipe", methods=["POST"])
 @login_required
 def removeRecipe():
     recipe_id = flask.request.json.get("recipe_ids")
@@ -300,7 +300,7 @@ def removeRecipe():
         return json.dumps({"error": True})
     return json.dumps({"error": False})
     
-@app.route("/remove-restaurant", method=["POST"])
+@app.route("/remove-restaurant", methods=["POST"])
 @login_required
 def removeRestaurant():
     restaurant_id = flask.request.json.get("restaurant_ids")
