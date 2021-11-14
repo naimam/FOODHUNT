@@ -334,8 +334,7 @@ def recipe_search(keyword):
     else:
         return False
 
-    recipes_info = json.dumps(recipes)
-    return recipes_info
+    return recipes
 
 
 def recipe_from_id(recipe_id):

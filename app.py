@@ -305,10 +305,16 @@ def search_for_restaurant():
     keyword = flask.request.json.get("keyword")
     zip = flask.request.json.get("zip")
     data = yelp.resturant_search(keyword, zip)
+
     if not data:
         return {"error": True}
     else:
-        return json.dumps({"error": False, "data": data})
+        user_restaurants = current_user.restaurants
+        already_saved = [x.restaurant_id for x in user_restaurants]
+        for i in data:
+            id = i["id"]
+            i["already_saved"] = True if id in already_saved else False
+        return json.dumps({"error": False, "data": json.dumps(data)})
 
 
 @app.route("/api/search-for-recipe", methods=["POST"])
@@ -319,7 +325,12 @@ def search_for_recipe():
     if not data:
         return {"error": True}
     else:
-        return json.dumps({"error": False, "data": data})
+        user_recipes = current_user.recipes
+        already_saved = [x.recipe_id for x in user_recipes]
+        for i in data:
+            id = i["recipe_id"]
+            i["already_saved"] = True if id in already_saved else False
+        return json.dumps({"error": False, "data": json.dumps(data)})
 
 
 @login_required
