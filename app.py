@@ -279,7 +279,7 @@ def removeRestaurant():
 def search_for_restaurant():
     keyword = flask.request.json.get("keyword")
     zip = flask.request.json.get("zip")
-    data = yelp.resturant_search(keyword, zip)
+    data = yelp.restaurant_search(keyword, zip)
 
     if not data:
         return {"error": True}
@@ -327,28 +327,46 @@ def recommended_restaurants():
         return {"error": False, "data": data}
 
 
-# TODO: in development
-@app.route("/api/favorite")
+@app.route("/api/favorite-recipes")
 @login_required
-def get_favorite():
-    recipes = Recipe.query.filter_by(username=current_user.username).all()
-    recipe_id = [a.artist_id for a in recipes]
-    has_recipes_saved = len(recipe_id) > 0
-    if has_recipes_saved:
-        artist_id = random.choice(recipe_id)
-        (recipe_id) = edamam.recipe_from_id(recipe_id)
-    else:
-        (recipe_id) = (None,)
-    data = json.dumps(
-        {
-            "username": current_user.username,
-            "recipe_id": recipe_id,
-        }
-    )
-    return flask.render_template(
-        "favorite.html",
-        data=data,
-    )
+def favorite_recipes():
+    user = User.query.filter_by(user_id=current_user.id).first()
+    user_recipes = user.recipes
+    if user_recipes:
+        recipes = [x.recipe_id for x in user_recipes]
+        print("recipes", recipes)
+
+        recipe_info = []
+        for i in recipes:
+            recipe_info.append(edamam.recipe_from_id(i))
+        recipe_info = json.dumps(recipe_info)
+        print("recipe info", recipe_info)
+        data = json.dumps(
+            {"error": False, "data": recipe_info, "username": current_user.username}
+        )
+        return data
+    return {"error": True}
+
+
+@app.route("/api/favorite-restaurants")
+@login_required
+def favorite_restaurants():
+    user = User.query.filter_by(username=current_user.id).first()
+    user_restaurants = user.restaurants
+    if user_restaurants:
+        restaurants = [x.restaurant_id for x in user_restaurants]
+        print("restaurants", restaurants)
+
+        restaurant_info = []
+        for i in restaurants:
+            restaurant_info.append(yelp.restaurant_from_id(i))
+        restaurant_info = json.dumps(restaurant_info)
+        print("restaurant info", restaurant_info)
+        data = json.dumps(
+            {"error": False, "data": restaurant_info, "username": current_user.username}
+        )
+        return data
+    return {"error": True}
 
 
 # ASSETS
