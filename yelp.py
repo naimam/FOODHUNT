@@ -145,8 +145,7 @@ def resturant_search(term, zip, limit=10):
     else:
         return False
 
-    resturants_info = json.dumps(resturants[:limit])
-    return resturants_info
+    return resturants[:limit]
 
 
 # for more accurate results from yelp
