@@ -155,7 +155,7 @@ def get_state_from_zip(zip):
     return json["places"][0]["state abbreviation"]
 
 
-def resturant_from_id(resturant_id):
+def restaurant_from_id(resturant_id):
     """returns dictionary of resturant information given a resturant id"""
     url = "https://api.yelp.com/v3/businesses/" + resturant_id
     headers = {"Authorization": "Bearer %s" % YELP_API_KEY}

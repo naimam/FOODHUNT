@@ -349,9 +349,9 @@ def favorite_recipes():
 
 
 @app.route("/api/favorite-restaurants")
-@login_required
+# @login_required
 def favorite_restaurants():
-    user = User.query.filter_by(user_id=current_user.id).first()
+    user = User.query.filter_by(username="naima").first()
     user_restaurants = user.restaurants
     if user_restaurants:
         restaurants = [x.restaurant_id for x in user_restaurants]
