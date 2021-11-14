@@ -64,7 +64,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100))
     recipes = db.relationship("Recipe", backref = "user", lazy=True)
     restaurants = db.relationship("Restaurant", backref = "user", lazy=True)
-    zipcode = db.Column(db.Integer)
+    #zipcode = db.Column(db.Integer)
 
     def get_id(self):
         return self.user_id
