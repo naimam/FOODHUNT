@@ -29,18 +29,17 @@ function Recipe(props) {
 
     const [button, setButton] = useState(saveBtn);
 
-    let idList = []
+
     function saveRecipe(id) {
         console.log(id)
-        fetch(`${process.env.PUBLIC_URL}/save-recipe`, {
+        fetch(`${process.env.PUBLIC_URL}/api/save-recipe`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ "recipe_ids": id })
+            body: JSON.stringify({ "recipe_id": id })
         }).then(response => response.json()).then(data => {
             console.log(data)
             if (!data.error) { /* if no error */
                 setButton(savedBtn);
-                console.log(idList)
             }
         });
     }
@@ -88,8 +87,6 @@ function Recipe(props) {
                                 </Accordion.Item>
                             </Accordion>
                             <a href={item.url}> <Button className="info-btn" variant="danger">Recipe Info</Button></a>
-                            {/* If item.recipe_id in idList */}
-                            {/* {idList.includes(item.recipe_id) ? <Button className="save-btn" variant="success" disabled>Saved</Button> : <Button className="save-btn" variant="success" onClick={() => saveRecipe(item.recipe_id)}>Save</Button>} */}
                             <Button className={button.buttonClass} variant={button.variant} disabled={button.disabled} onClick={() => saveRecipe(item.recipe_id)}>{button.text} {button.icon}</Button >
 
 
