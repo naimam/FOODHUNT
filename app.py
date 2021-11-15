@@ -308,15 +308,15 @@ def search_for_recipe():
         return json.dumps({"error": False, "data": json.dumps(data)})
 
 
-@app.route("/api/recommended_recipes", methods=["POST"])
+@app.route("/api/recommended-recipes", methods=["POST"])
 @login_required
 def recommended_recipes():
 
     data = edamam.recommended_recipes()
-    return {"data": data}
+    return {"error": False, "data": data}
 
 
-@app.route("/api/recommended_restaurants", methods=["POST"])
+@app.route("/api/recommended-restaurants", methods=["POST"])
 @login_required
 def recommended_restaurants():
     # zip = flask.request.json.get("zip")

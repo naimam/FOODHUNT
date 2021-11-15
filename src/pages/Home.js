@@ -1,12 +1,21 @@
 import { useState, useEffect } from 'react';
-import { Card, Row, Col, Carousel, Container } from 'react-bootstrap';
+import { Card, Row, Col, Carousel, Container, Button, ListGroup } from 'react-bootstrap';
+import Grading from '../components/Grading';
+
 
 function Home(props) {
+    const wide = 7
     const [recipeData, setRecipeData] = useState([])
     const [restaurantData, setRestaurantData] = useState([])
+    const resCarousel = [[], [], []]
+    const recCarousel = [[], [], []]
+
+    const goToMore = (url) => {
+        window.location.assign(url);
+    };
 
     useEffect(() => {
-        fetch(`${process.env.PUBLIC_URL}/api/recommended_recipes`, {
+        fetch(`${process.env.PUBLIC_URL}/api/recommended-recipes`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
         }).then(response => response.json()).then(data => {
@@ -14,7 +23,7 @@ function Home(props) {
             setRecipeData(data.data)
         });
 
-        fetch(`${process.env.PUBLIC_URL}/api/recommended_restaurants`, {
+        fetch(`${process.env.PUBLIC_URL}/api/recommended-restaurants`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ "zip": null })
@@ -24,100 +33,101 @@ function Home(props) {
         });
     }, []);
 
+    restaurantData.map((restaurant, i) => {
+        resCarousel[i % 3].push(
+            <Col>
+                <Card>
+                    <Card.Img variant="top" className="restaurant-image" src={restaurant.image_url} alt={restaurant.name} />
+                    <Card.Body>
+                        <Card.Title>{restaurant.name}</Card.Title>
+                        <Card.Text>
+                            <Row>
+                                <Col>Address:</Col>
+                                <Col xs={wide}><Row>{restaurant.address}</Row> <Row>{restaurant.city}, {restaurant.state} {restaurant.zip_code} </Row></Col>
+                            </Row>
+                            <Row>
+                                <Col>Phone:</Col>
+                                <Col xs={wide}>{restaurant.phone}</Col>
+                            </Row>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item />
+                                <ListGroup.Item>Rating: <Grading mode="rating" num={restaurant.rating} /> </ListGroup.Item>
+                                <ListGroup.Item>Price: <Grading mode="pricing" num={restaurant.price.length} /></ListGroup.Item>
+                            </ListGroup>
+                        </Card.Text>
+                        <Button onClick={() => goToMore(restaurant.url)} variant="danger">More</Button>
+
+                    </Card.Body>
+                </Card>
+            </Col>
+        )
+    })
+
+    recipeData.map((recipe, i) => {
+        recCarousel[i % 3].push(
+            <Col>
+                <Card>
+                    <Card.Img variant="top" className="recipe-image" src={recipe.image} alt={recipe.label} />
+                    <Card.Body>
+                        <Card.Title>{recipe.label}</Card.Title>
+                        <ListGroup variant="flush">
+                            <ListGroup.Item className="recipe-calories"><b>Calories:</b> {recipe.calories}. </ListGroup.Item>
+                            <ListGroup.Item className="recipe-cookingtime"><b>Cooking Time:</b> {recipe.cookingtime} mins.</ListGroup.Item>
+                            <ListGroup.Item className="recipe-health-labels"><b>Health Labels:</b>  {recipe.healthLabels.slice(0, 5).map((healthLabel) => (
+                                <span className="recipe-health-label">{healthLabel}</span>
+                            ))}
+                            </ListGroup.Item>
+                        </ListGroup>
+                        <a href={recipe.url}> <Button className="info-btn" variant="danger">Recipe Info</Button></a>
+                    </Card.Body>
+                </Card>
+            </Col>
+        )
+    })
+
     return (
         <>
-            <h1>Recommended Restaurants</h1>
+            <Container>
+                <h1 className="mt-4 mb-3">Recommended Restaurants</h1>
 
-            <Carousel variant="dark" className="m-3">
+                <Carousel variant="dark" className="m-3">
+                    <Carousel.Item>
+                        <Row >
+                            {resCarousel[0]}
+                        </Row>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <Row>
+                            {resCarousel[1]}
+                        </Row>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <Row>
+                            {resCarousel[2]}
+                        </Row>
+                    </Carousel.Item>
+                </Carousel>
 
-                <Carousel.Item>
-                    <Row >
-                        <Col>
-                            <Card>
-                                <Card.Img variant="top" src="holder.js/100px160" />
-                                <Card.Body>
-                                    <Card.Title>Card title 1</Card.Title>
-                                    <Card.Text>
-                                        This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card>
-                                <Card.Img variant="top" src="holder.js/100px160" />
-                                <Card.Body>
-                                    <Card.Title>Card title 2</Card.Title>
-                                    <Card.Text>
-                                        This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <Row>
-                        <Col>
-                            <Card>
-                                <Card.Img variant="top" src="holder.js/100px160" />
-                                <Card.Body>
-                                    <Card.Title>Card title 3</Card.Title>
-                                    <Card.Text>
-                                        This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card>
-                                <Card.Img variant="top" src="holder.js/100px160" />
-                                <Card.Body>
-                                    <Card.Title>Card title 4</Card.Title>
-                                    <Card.Text>
-                                        This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Carousel.Item>
-                <Carousel.Item>
-                    <Row>
-                        <Col>
-                            <Card>
-                                <Card.Img variant="top" src="holder.js/100px160" />
-                                <Card.Body>
-                                    <Card.Title>Card title</Card.Title>
-                                    <Card.Text>
-                                        This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                        <Col>
-                            <Card>
-                                <Card.Img variant="top" src="holder.js/100px160" />
-                                <Card.Body>
-                                    <Card.Title>Card title</Card.Title>
-                                    <Card.Text>
-                                        This is a longer card with supporting text below as a natural
-                                        lead-in to additional content. This content is a little bit longer.
-                                    </Card.Text>
-                                </Card.Body>
-                            </Card>
-                        </Col>
-                    </Row>
-                </Carousel.Item>
+                <h1 className="mt-5">Selected Recipes</h1>
 
-            </Carousel>
-
-            <h1>Selected Recipes</h1>
+                <Carousel variant="dark" className="m-3">
+                    <Carousel.Item>
+                        <Row >
+                            {recCarousel[0]}
+                        </Row>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <Row>
+                            {recCarousel[1]}
+                        </Row>
+                    </Carousel.Item>
+                    <Carousel.Item>
+                        <Row>
+                            {recCarousel[2]}
+                        </Row>
+                    </Carousel.Item>
+                </Carousel>
+            </Container>
 
         </>
     )
