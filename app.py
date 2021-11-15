@@ -264,7 +264,7 @@ def removeRestaurant():
     app.logger.info("REMOVING: %s", restaurant_id)
     try:
         restaurant = Restaurant.query.filter_by(
-            restaurant_id=restaurant_id, user_id=current_user.id
+            restaurant_id=restaurant_id, user_id=current_user.user_id
         ).first()
         db.session.delete(restaurant)
         db.session.commit()
@@ -348,18 +348,17 @@ def favorite_recipes():
 @app.route("/api/favorite-restaurants", methods=["POST", "GET"])
 @login_required
 def favorite_restaurants():
-    user = User.query.filter_by(username=current_user.user_id).first()
+    user = User.query.filter_by(user_id=current_user.user_id).first()
     user_restaurants = user.restaurants
     if user_restaurants:
-        restaurants = [x.restaurant_id for x in user_restaurants]
-        print("restaurants", restaurants)
 
         restaurant_info = []
-        for i in restaurants:
-            restaurant_info.append(yelp.restaurant_from_id(i))
-        restaurant_info = json.dumps(restaurant_info)
-        print("restaurant info", restaurant_info)
-        data = json.dumps({"error": False, "data": restaurant_info})
+        for i in user_restaurants:
+            print(i.restaurant_id)
+            restaurant_info.append(yelp.restaurant_from_id(i.restaurant_id))
+        # print("recipe info", recipe_info)
+        data = {"error": False, "data": restaurant_info}
+        print(data)
         return data
     return {"error": True}
 

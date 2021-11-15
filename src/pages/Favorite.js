@@ -8,7 +8,7 @@ class Favorite extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            option: 'recipe',
+            option: 'restaurant',
             recipes: [],
             restaurants: [],
             hasError: false,
@@ -44,7 +44,7 @@ class Favorite extends Component {
                 if (data.error === true) {
                     this.setState({ hasError: true })
                 } else {
-                    this.setState({ restaurants: data })
+                    this.setState({ restaurants: data.data })
                 }
 
             });
@@ -59,6 +59,13 @@ class Favorite extends Component {
 
     }
 
+    removeRestaurant(index) {
+        const newArray = [...this.state.restaurants];
+        newArray.splice(index, 1);
+        this.setState({ restaurants: newArray });
+
+    }
+
     render() {
         console.log("this state", this.state.recipes)
         if (this.state.hasError === true) {
@@ -68,7 +75,7 @@ class Favorite extends Component {
             return <>
                 <h1 className="page-title">Favorite Recipes</h1>
                 <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{this.state.recipes && (this.state.recipes).map((recipe, i) => {
-                    return <FavRecipe recipe={recipe} index={i} remove={() => this.removeRecipe(i)} />
+                    return <FavRecipe recipe={recipe} remove={() => this.removeRecipe(i)} />
                 })}</Row>
 
             </>
@@ -76,9 +83,8 @@ class Favorite extends Component {
         } else if (this.state.option === 'restaurant') {
             return <>
                 <h1 className="page-title">Favorite Restaurants</h1>
-                <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{this.state.restaurants.map((restaurant, i) => {
-                    const arg = JSON.stringify(restaurant)
-                    return <FavRestaurant restaurant={arg} index={i} />
+                <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{this.state.restaurants && (this.state.restaurants).map((restaurant, i) => {
+                    return <FavRestaurant restaurant={restaurant} remove={() => this.removeRestaurant(i)} />
                 })}</Row>
             </>
 
