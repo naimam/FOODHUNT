@@ -20,7 +20,7 @@ function App() {
         <NavBar username={username} />
         <Routes>
           <Route path="/home" element={<Home />} />
-          <Route path='/favorite' element={<Favorite />} />
+          <Route path='/favorite' element={<Favorite option='recipe' />} />
           <Route path='/search/:option/:zip/:keyword' element={<Search />} />
           <Route path="/*" element={<PageNotFound />} />`
           <Route path="/logout" render={() => {
