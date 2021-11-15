@@ -212,4 +212,4 @@ def recommended_restaurants(zip=None):
     if zip:
         return restaurant_search("", zip, limit=6)
     else:
-        return json.dumps(RECOMMENDED_RESTAURANTS)
+        return RECOMMENDED_RESTAURANTS

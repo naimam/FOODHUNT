@@ -313,7 +313,7 @@ def search_for_recipe():
 def recommended_recipes():
 
     data = edamam.recommended_recipes()
-    return {"data": data}
+    return {"error": False, "data": data}
 
 
 @app.route("/api/recommended-restaurants", methods=["POST"])
