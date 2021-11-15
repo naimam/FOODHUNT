@@ -1,21 +1,27 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import sadFace from '../assets/sad.png'
+import surprisedFace from '../assets/surprised.png'
 import './NoResult.css';
 
-function NoResult() {
+function NoResult(props) {
+    const emoji = [sadFace, surprisedFace, surprisedFace]
+    const title = ["No Result Found", "Favorite Recipe is Empty", "Favorite Restaurant is Empty"]
+    const message = ["Sorry! We couldn't find what you're looking for. Please try another way.", "We have nothing to show you here. Would you please go save some recipe then come back?", "We have nothing to show you here. Would you please go save some restaurant then come back?"]
+
+
 
     return (
         <div id="parent">
             <img
                 id="sad-face"
                 alt="sad face"
-                src={sadFace}
+                src={emoji[props.num]}
             />
             <h2 id="title">
-                No Result Found
+                {title[props.num]}
             </h2>
             <p id="message">
-                Sorry! We couldn't find what you're looking for. Please try another way.
+                {message[props.num]}
             </p>
         </div>
     )

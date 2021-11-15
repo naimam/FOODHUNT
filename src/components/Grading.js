@@ -9,8 +9,6 @@ function Grading(props) {
     const num = props.num
     const mode = props.mode
 
-    console.log("NUM " + num)
-
     const HalfStar = <div id="half-star" className="fa-layers">
         <FontAwesomeIcon icon={faStarHalf} className="fill" />
         <FontAwesomeIcon icon={faStarHalf} flip="horizontal" className="empty" />

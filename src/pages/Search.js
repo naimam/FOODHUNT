@@ -13,6 +13,7 @@ function Search() {
     const [hasError, setHasError] = useState(false)
 
     useEffect(() => {
+        console.log('USE EFFECT', option, keyword)
         if (option === 'recipe') {
             console.log('recipe')
             fetch(`${process.env.PUBLIC_URL}/api/search-for-recipe`, {
@@ -29,6 +30,7 @@ function Search() {
 
             });
         } else {
+            console.log('restaurant')
             fetch(`${process.env.PUBLIC_URL}/api/search-for-restaurant`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -43,11 +45,11 @@ function Search() {
             });
         }
         //depedency
-    }, [keyword, option]);
+    }, [option, keyword, zip]);
 
 
     if (hasError === true) {
-        return (<NoResult />)
+        return (<NoResult num={0} />)
     } else if (option === 'restaurant') {
         return <>
             <h1 className="page-title">{keyword} near {zip}</h1>
@@ -57,16 +59,13 @@ function Search() {
             })}</Row>
         </>
 
-        // return (<p>{data[0].name}</p>)
     } else if (option === 'recipe') {
-
         return <>
             <h1 className="page-title">{keyword} </h1>
             <Row xs={1} sm={2} md={3} xl={4} xxl={5} className="g-4 restaurant-row m-2">{data.map((recipe, i) => {
                 const arg = JSON.stringify(recipe)
                 return <Recipe recipe={arg} index={i} />
             })}</Row>
-
         </>
     }
 }

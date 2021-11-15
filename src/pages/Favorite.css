@@ -1,0 +1,33 @@
+.switch-btn {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+}
+
+#rec-btn {
+    color: #fff;
+    background-color: #d63663;
+    border: 0px;
+}
+
+#rec-btn:hover {
+    background-color: #590d22;
+}
+
+#rec-btn:focus {
+    box-shadow: 0 0 0 0;
+}
+
+#res-btn {
+    color: #fff;
+    background-color: #1780a1;
+    border: 0px;
+}
+
+#res-btn:hover {
+    background-color: #012a4a;
+}
+
+#res-btn:focus {
+    box-shadow: 0 0 0 0;
+}
