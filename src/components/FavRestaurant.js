@@ -47,15 +47,17 @@ function Restaurant(props) {
                                 <Col>Phone:</Col>
                                 <Col xs={wide}>{item.phone}</Col>
                             </Row>
+                            <ListGroup variant="flush">
+                                <ListGroup.Item />
+                                <ListGroup.Item>Rating: <Grading mode="rating" num={item.rating} /> </ListGroup.Item>
+                                <ListGroup.Item>Price: <Grading mode="pricing" num={item.price.length} /></ListGroup.Item>
+                            </ListGroup>
                         </Card.Text>
                         <Button onClick={() => goToMore(item.url)} variant="danger">More</Button>
                         <Button className="deleteBtn" variant="danger" onClick={() => removeRestaurant(item.id)}>Delete</Button >
 
                     </Card.Body>
-                    <ListGroup variant="flush">
-                        <ListGroup.Item>Rating: <Grading mode="rating" num={item.rating} /> </ListGroup.Item>
-                        <ListGroup.Item>Price: <Grading mode="pricing" num={item.price.length} /></ListGroup.Item>
-                    </ListGroup>
+
                 </div>
             </Card>
         </Col >
