@@ -170,6 +170,7 @@ function NavBar(props) {
                                     Zip code
                                 </InputGroup.Text>
                                 <Form.Control
+                                    data-testid="zipcode-input"
                                     type="number"
                                     pattern="000"
                                     placeholder="Enter your zip code here.."
@@ -193,6 +194,7 @@ function NavBar(props) {
                                 </InputGroup.Text>
 
                                 <Form.Control
+                                    data-testid="restaurant-input"
                                     type="text"
                                     placeholder="Search for restaurant, cuisine, or a dish"
                                     onChange={(e) => setField('restaurant_keyword', e.target.value)}
@@ -217,6 +219,7 @@ function NavBar(props) {
                                 </InputGroup.Text>
 
                                 <Form.Control
+                                    data-testid="recipe-input"
                                     type="text"
                                     placeholder="Find a recipe"
                                     onChange={(e) => setField('recipe_keyword', e.target.value)}
