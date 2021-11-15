@@ -247,7 +247,7 @@ def removeRecipe():
     app.logger.info("REMOVING: %s", recipe_id)
     try:
         recipe = Recipe.query.filter_by(
-            recipe_id=recipe_id, user_id=current_user.id
+            recipe_id=recipe_id, user_id=current_user.user_id
         ).first()
         db.session.delete(recipe)
         db.session.commit()
@@ -264,7 +264,7 @@ def removeRestaurant():
     app.logger.info("REMOVING: %s", restaurant_id)
     try:
         restaurant = Restaurant.query.filter_by(
-            restaurant_id=restaurant_id, user_id=current_user.id
+            restaurant_id=restaurant_id, user_id=current_user.user_id
         ).first()
         db.session.delete(restaurant)
         db.session.commit()
@@ -327,44 +327,38 @@ def recommended_restaurants():
         return {"error": False, "data": data}
 
 
-@app.route("/api/favorite-recipes")
+@app.route("/api/favorite-recipes", methods=["POST", "GET"])
 @login_required
 def favorite_recipes():
-    user = User.query.filter_by(user_id=current_user.id).first()
+    user = User.query.filter_by(user_id=current_user.user_id).first()
     user_recipes = user.recipes
     if user_recipes:
-        recipes = [x.recipe_id for x in user_recipes]
-        print("recipes", recipes)
 
         recipe_info = []
-        for i in recipes:
-            recipe_info.append(edamam.recipe_from_id(i))
-        recipe_info = json.dumps(recipe_info)
-        print("recipe info", recipe_info)
-        data = json.dumps(
-            {"error": False, "data": recipe_info, "username": current_user.username}
-        )
+        for i in user_recipes:
+            print(i.recipe_id)
+            recipe_info.append(edamam.recipe_from_id(i.recipe_id))
+        # print("recipe info", recipe_info)
+        data = {"error": False, "data": recipe_info}
+        print(data)
         return data
     return {"error": True}
 
 
-@app.route("/api/favorite-restaurants")
+@app.route("/api/favorite-restaurants", methods=["POST", "GET"])
 @login_required
 def favorite_restaurants():
-    user = User.query.filter_by(username=current_user.id).first()
+    user = User.query.filter_by(user_id=current_user.user_id).first()
     user_restaurants = user.restaurants
     if user_restaurants:
-        restaurants = [x.restaurant_id for x in user_restaurants]
-        print("restaurants", restaurants)
 
         restaurant_info = []
-        for i in restaurants:
-            restaurant_info.append(yelp.restaurant_from_id(i))
-        restaurant_info = json.dumps(restaurant_info)
-        print("restaurant info", restaurant_info)
-        data = json.dumps(
-            {"error": False, "data": restaurant_info, "username": current_user.username}
-        )
+        for i in user_restaurants:
+            print(i.restaurant_id)
+            restaurant_info.append(yelp.restaurant_from_id(i.restaurant_id))
+        # print("recipe info", recipe_info)
+        data = {"error": False, "data": restaurant_info}
+        print(data)
         return data
     return {"error": True}
 
