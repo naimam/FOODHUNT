@@ -1,4 +1,4 @@
-"""yelp.py: returns list of information on resturants given location and term. using yelp api.  """
+"""yelp.py: returns list of information on restaurants given location and term. using yelp api.  """
 import os
 import json
 from dotenv import find_dotenv, load_dotenv
@@ -93,33 +93,75 @@ RECOMMENDED_RESTAURANTS = [
         "zip_code": "30303",
         "transactions": ["pickup", "delivery"],
     },
+    {
+        "name": "Blossom Tree",
+        "id": "JTGjHr9ii1TWq0TNLFkiQw",
+        "rating": 4.5,
+        "price": "$$",
+        "url": "https://www.yelp.com/biz/blossom-tree-atlanta?adjust_creative=buRGvSb5SxSRwVojQ1NvZA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=buRGvSb5SxSRwVojQ1NvZA",
+        "phone": "+14042237500",
+        "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/JSvShvXLDWzD5XPKFDUMNQ/o.jpg",
+        "address": "64 Peachtree St NW",
+        "city": "Atlanta",
+        "state": "GA",
+        "zip_code": "30303",
+        "transactions": ["pickup", "delivery"],
+    },
+    {
+        "name": "Amalfi Pizza",
+        "id": "Slj9yz_RfDRqiMRH8VxUMQ",
+        "rating": 4.0,
+        "price": "$$",
+        "url": "https://www.yelp.com/biz/amalfi-pizza-atlanta?adjust_creative=buRGvSb5SxSRwVojQ1NvZA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=buRGvSb5SxSRwVojQ1NvZA",
+        "phone": "+14042287528",
+        "image_url": "https://s3-media1.fl.yelpcdn.com/bphoto/wOcBWyV-eYQTzxPU5gQ-VQ/o.jpg",
+        "address": "17 Andrew Young International Blvd NE",
+        "city": "Atlanta",
+        "state": "GA",
+        "zip_code": "30303",
+        "transactions": ["delivery"],
+    },
+    {
+        "name": "Baraka Shawarma",
+        "id": "_BNuP4qFCrUxBt2dGpUMaA",
+        "rating": 4.5,
+        "price": "$$",
+        "url": "https://www.yelp.com/biz/baraka-shawarma-atlanta?adjust_creative=buRGvSb5SxSRwVojQ1NvZA&utm_campaign=yelp_api_v3&utm_medium=api_v3_business_search&utm_source=buRGvSb5SxSRwVojQ1NvZA",
+        "phone": "+14042309232",
+        "image_url": "https://s3-media3.fl.yelpcdn.com/bphoto/_7Ag5oHjcoDoB-5tXaBXWQ/o.jpg",
+        "address": "68 Walton St NW",
+        "city": "Atlanta",
+        "state": "GA",
+        "zip_code": "30303",
+        "transactions": ["pickup", "delivery"],
+    },
 ]
 
 
-def get_resturant_info(resturant):
-    """returns dictionary of information given a resturant"""
+def get_restaurant_info(restaurant):
+    """returns dictionary of information given a restaurant"""
     try:
-        resturant_info = {
-            "name": resturant["name"],
-            "id": resturant["id"],
-            "rating": resturant["rating"],
-            "price": resturant["price"],
-            "url": resturant["url"],
-            "phone": resturant["phone"],
-            "image_url": resturant["image_url"],
-            "address": resturant["location"]["address1"],
-            "city": resturant["location"]["city"],
-            "state": resturant["location"]["state"],
-            "zip_code": resturant["location"]["zip_code"],
-            "transactions": resturant["transactions"],
+        restaurant_info = {
+            "name": restaurant["name"],
+            "id": restaurant["id"],
+            "rating": restaurant["rating"],
+            "price": restaurant["price"],
+            "url": restaurant["url"],
+            "phone": restaurant["phone"],
+            "image_url": restaurant["image_url"],
+            "address": restaurant["location"]["address1"],
+            "city": restaurant["location"]["city"],
+            "state": restaurant["location"]["state"],
+            "zip_code": restaurant["location"]["zip_code"],
+            "transactions": restaurant["transactions"],
         }
     except KeyError:
-        resturant_info = None
-    return resturant_info
+        restaurant_info = None
+    return restaurant_info
 
 
-def resturant_search(term, zip, limit=10):
-    """returns list of dictionaries of resturants given location and term."""
+def restaurant_search(term, zip, limit=10):
+    """returns list of dictionaries of restaurants given location and term."""
 
     location = str(zip) + " " + get_state_from_zip(zip)
 
@@ -138,14 +180,14 @@ def resturant_search(term, zip, limit=10):
         return False
 
     if results:
-        resturants = [get_resturant_info(resturant) for resturant in results]
-        resturants = [
-            resturant for resturant in resturants if resturant is not None
+        restaurants = [get_restaurant_info(restaurant) for restaurant in results]
+        restaurants = [
+            restaurant for restaurant in restaurants if restaurant is not None
         ]  # filter out None values
     else:
         return False
 
-    return resturants[:limit]
+    return restaurants[:limit]
 
 
 # for more accurate results from yelp
@@ -155,19 +197,19 @@ def get_state_from_zip(zip):
     return json["places"][0]["state abbreviation"]
 
 
-def resturant_from_id(resturant_id):
-    """returns dictionary of resturant information given a resturant id"""
-    url = "https://api.yelp.com/v3/businesses/" + resturant_id
+def restaurant_from_id(restaurant_id):
+    """returns dictionary of restaurant information given a restaurant id"""
+    url = "https://api.yelp.com/v3/businesses/" + restaurant_id
     headers = {"Authorization": "Bearer %s" % YELP_API_KEY}
     response = requests.get(url, headers=headers)
     data = response.json()
-    resturant = get_resturant_info(data)
-    resturant_info = json.dumps(resturant)
-    return resturant_info
+    restaurant = get_restaurant_info(data)
+    restaurant_info = json.dumps(restaurant)
+    return restaurant_info
 
 
 def recommended_restaurants(zip=None):
     if zip:
-        return resturant_search("", zip, limit=6)
+        return restaurant_search("", zip, limit=6)
     else:
-        return json.dumps(RECOMMENDED_RESTAURANTS)
+        return RECOMMENDED_RESTAURANTS
