@@ -7,8 +7,6 @@ import './Recipe.css';
 const Recipe = function (props) {
     const item = JSON.parse(props.recipe);
     function removeRecipe(recipe_id) {
-        console.log(recipe_id);
-
         fetch(`${process.env.PUBLIC_URL}/api/remove-recipe`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -32,35 +30,28 @@ const Recipe = function (props) {
                         <ListGroup variant="flush">
                             <ListGroup.Item className="recipe-calories">
                                 <b>Calories:</b>
-                                {' '}
                                 {item.calories}
                                 .
-                                {' '}
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-cookingtime">
                                 <b>Cooking Time:</b>
-                                {' '}
                                 {item.cookingtime}
-                                {' '}
                                 mins.
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-health-labels">
                                 <b>Health Labels:</b>
-                                {' '}
                                 {item.healthLabels.slice(0, 5).map((healthLabel) => (
                                     <span className="recipe-health-label">{healthLabel}</span>
                                 ))}
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-diet-labels">
                                 <b>Diet Labels:</b>
-                                {' '}
                                 {item.dietLabels.slice(0, 5).map((dietLabel) => (
                                     <span className="recipe-diet-label">{dietLabel}</span>
                                 ))}
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-cautions">
                                 <b>Cautons:</b>
-                                {' '}
                                 {item.cautions.slice(0, 5).map((cautions) => (
                                     <span className="recipe-cautions">{cautions}</span>
                                 ))}
@@ -69,7 +60,6 @@ const Recipe = function (props) {
                         <Accordion>
                             <Accordion.Item eventKey="1">
                                 <Accordion.Header>
-                                    {' '}
                                     <div className="more-info">Ingredients</div>
                                 </Accordion.Header>
                                 <Accordion.Body>
@@ -84,7 +74,6 @@ const Recipe = function (props) {
                             </Accordion.Item>
                         </Accordion>
                         <a href={item.url}>
-                            {' '}
                             <Button className="info-btn" variant="info">Recipe Info</Button>
                         </a>
                         <Button className="deleteBtn" variant="danger" onClick={() => removeRecipe(item.recipe_id)}>Delete</Button>
