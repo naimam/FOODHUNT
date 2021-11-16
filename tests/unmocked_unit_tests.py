@@ -1,9 +1,10 @@
+from yelp import get_restaurant_info
+from edamam import get_recipe_info
 import unittest
 from unittest.mock import MagicMock, patch
-from edamam import get_recipe_info
-from yelp import get_restaurant_info
 import sys
 import os
+
 
 # getting the name of the directory
 # where the this file is present.
@@ -16,6 +17,7 @@ parent = os.path.dirname(current)
 # adding the parent directory to
 # the sys.path.
 sys.path.append(parent)
+
 
 INPUT = "INPUT"
 EXPECTED_OUTPUT = "EXPECTED_OUTPUT"
