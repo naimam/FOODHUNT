@@ -6,6 +6,7 @@
         "no-undef": "off",
         "react/no-array-index-key": "off",
         "react-hooks/exhaustive-deps": "off",
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "indent": "off"
     }
 }
