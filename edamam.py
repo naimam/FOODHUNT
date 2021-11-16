@@ -487,4 +487,5 @@ def recipe_from_id(recipe_id):
 
 
 def recommended_recipes():
+    """Returns a list of recommended recipes on home page"""
     return RECOMMENDED_RECIPES
