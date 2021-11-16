@@ -1,89 +1,87 @@
 import { useState } from 'react';
 import './NavBar.css';
-import { Nav, Navbar, NavDropdown, Button, Form, Modal, ToggleButton, ButtonGroup, InputGroup, Container } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSearch } from '@fortawesome/free-solid-svg-icons'
+import {
+    Nav, Navbar, NavDropdown, Button, Form, Modal, ToggleButton, ButtonGroup, InputGroup, Container,
+} from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
-import restaurantIcon from '../assets/restaurantIcon.svg'
-import recipeIcon from '../assets/recipeIcon.svg'
-import pinIcon from '../assets/pinIcon.svg'
+import restaurantIcon from '../assets/restaurantIcon.svg';
+import recipeIcon from '../assets/recipeIcon.svg';
+import pinIcon from '../assets/pinIcon.svg';
 
-
-function NavBar(props) {
-    let navigate = useNavigate();
+const NavBar = function (props) {
+    const navigate = useNavigate();
     const [showModal, setShowModal] = useState(false);
-    const [errors, setErrors] = useState({})
+    const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
         option: 'recipe',
         zip: '',
         restaurant_keyword: '',
-        recipe_keyword: ''
+        recipe_keyword: '',
     });
-    const zipRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/
+    const zipRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
+    const openSearch = () => {
+        setShowModal(true);
+    };
+    const resetInput = () => {
+        setInput({
+            option: 'recipe',
+            zip: '',
+            restaurant_keyword: '',
+            recipe_keyword: '',
+        });
+        setErrors({});
+    };
+    const hideSearch = () => {
+        resetInput();
+        setShowModal(false);
+    };
 
     const setField = (field, value) => {
         if (field === 'option') {
-            resetInput()
+            resetInput();
         }
         setInput({
             ...input,
-            [field]: value
-        })
+            [field]: value,
+        });
 
-        if (!!errors[field]) setErrors({
-            ...errors,
-            [field]: null
-        })
-    }
+        if (errors[field]) {
+            setErrors({
+                ...errors,
+                [field]: null,
+            });
+        }
+    };
 
     const findFormErrors = () => {
-        const { option, zip, restaurant_keyword, recipe_keyword } = input
-        const newErrors = {}
+        const {
+            option, zip, restaurant_keyword, recipe_keyword,
+        } = input;
+        const newErrors = {};
         if (option === 'restaurant') {
-            if (!restaurant_keyword || restaurant_keyword === '') newErrors.restaurant_keyword = 'cannot be blank!'
-            if (!zip || zip === '' || !zipRegex.test(zip)) newErrors.zip = 'invalid zip code!'
-        } else {
-            if (!recipe_keyword || recipe_keyword === '') newErrors.recipe_keyword = 'cannot be blank!'
-        }
-        return newErrors
-    }
+            if (!restaurant_keyword || restaurant_keyword === '') newErrors.restaurant_keyword = 'cannot be blank!';
+            if (!zip || zip === '' || !zipRegex.test(zip)) newErrors.zip = 'invalid zip code!';
+        } else if (!recipe_keyword || recipe_keyword === '') newErrors.recipe_keyword = 'cannot be blank!';
+        return newErrors;
+    };
 
     const handleSubmit = (event) => {
-        event.preventDefault()
-        const newErrors = findFormErrors()
+        event.preventDefault();
+        const newErrors = findFormErrors();
         if (Object.keys(newErrors).length > 0) {
-            setErrors(newErrors)
-            console.log(errors)
+            setErrors(newErrors);
         } else {
             if (input.option === 'recipe') {
                 navigate(`search/${input.option}/null/${input.recipe_keyword}`);
             } else {
                 navigate(`search/${input.option}/${input.zip}/${input.restaurant_keyword}`);
             }
-            hideSearch()
+            hideSearch();
         }
     };
-
-
-
-    const openSearch = () => {
-        setShowModal(true)
-    }
-    const hideSearch = () => {
-        resetInput()
-        setShowModal(false)
-    }
-
-    const resetInput = () => {
-        setInput({
-            option: 'recipe',
-            zip: '',
-            restaurant_keyword: '',
-            recipe_keyword: ''
-        })
-        setErrors({})
-    }
 
     return (
         <>
@@ -95,23 +93,30 @@ function NavBar(props) {
                         width="40"
                         height="40"
                         className="d-inline-block align-center mx-2"
-                    />{' '}
-                    Food Hunt</Navbar.Brand>
+                    />
+                    Food Hunt
+                </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/home">Home</Nav.Link>
                         <Nav.Link as={Link} to="/favorite">Favorite</Nav.Link>
                         <NavDropdown title="Profile" id="basic-nav-dropdown">
-                            <NavDropdown.Item>Signed in as: {props.username}</NavDropdown.Item>
+                            <NavDropdown.Item>
+                                Signed in as:
+                                {props.username}
+                            </NavDropdown.Item>
                             <NavDropdown.Divider />
                             <NavDropdown.Item href={`${process.env.PUBLIC_URL}/logout`}>Log out</NavDropdown.Item>
 
                         </NavDropdown>
                     </Nav>
 
-                    <Form inline className="pe-md-3" >
-                        <Button id="search-btn" onClick={openSearch} variant="primary"> <FontAwesomeIcon icon={faSearch} /> Search</Button>
+                    <Form inline className="pe-md-3">
+                        <Button id="search-btn" onClick={openSearch} variant="primary">
+                            <FontAwesomeIcon icon={faSearch} />
+                            Search
+                        </Button>
                     </Form>
 
                 </Navbar.Collapse>
@@ -128,12 +133,12 @@ function NavBar(props) {
                         <ButtonGroup size="lg">
                             <ToggleButton
                                 key={0}
-                                id={`radio-recipe`}
+                                id="radio-recipe"
                                 type="radio"
-                                variant='outline-warning'
+                                variant="outline-warning"
                                 name="radio"
                                 value="recipe"
-                                checked={input.option === "recipe"}
+                                checked={input.option === 'recipe'}
                                 onChange={(e) => setField('option', e.target.value)}
                                 className="btn-text"
                             >
@@ -141,12 +146,12 @@ function NavBar(props) {
                             </ToggleButton>
                             <ToggleButton
                                 key={1}
-                                id={`radio-restaurant`}
+                                id="radio-restaurant"
                                 type="radio"
-                                variant='outline-warning'
+                                variant="outline-warning"
                                 name="radio"
                                 value="restaurant"
-                                checked={input.option === "restaurant"}
+                                checked={input.option === 'restaurant'}
                                 onChange={(e) => setField('option', e.target.value)}
                                 className="btn-text"
                             >
@@ -157,7 +162,7 @@ function NavBar(props) {
                 </Modal.Header>
                 <Modal.Body>
                     <Form onSubmit={handleSubmit}>
-                        <div className={input.option === 'restaurant' ? "show" : "hide"}>
+                        <div className={input.option === 'restaurant' ? 'show' : 'hide'}>
                             <InputGroup className="w-50 mb-4 px-3">
                                 <InputGroup.Text>
                                     <img
@@ -205,7 +210,7 @@ function NavBar(props) {
                                 </Form.Control.Feedback>
                             </InputGroup>
                         </div>
-                        <div className={input.option === 'recipe' ? "show" : "hide"}>
+                        <div className={input.option === 'recipe' ? 'show' : 'hide'}>
                             <InputGroup className="mb-4  px-3">
                                 <InputGroup.Text>
                                     <img
@@ -240,6 +245,6 @@ function NavBar(props) {
             </Modal>
         </>
     );
-}
+};
 
-export default NavBar
+export default NavBar;
