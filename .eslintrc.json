@@ -1,0 +1,8 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "jsx-a11y/media-has-caption": "off",
+        "react/jsx-filename-extension": "off",
+        "no-undef": "warn"
+    }
+}
