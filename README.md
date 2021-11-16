@@ -19,7 +19,7 @@
     <a href="https://github.com/naimam/4350-Group-11-Project"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/naimam/4350-Group-11-Project">View Demo</a>
+    <a href="https://sanst.herokuapp.com/">View Demo</a>
     ·
     <a href="https://github.com/naimam/4350-Group-11-Project/issues">Report Bug</a>
     ·
@@ -88,12 +88,12 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To get started you will need to installsome frameworks and 
+
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+You will need to install the following on your host before deployment
 * npm
   ```sh
   npm install npm@latest -g
@@ -133,10 +133,41 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] Feature 1
-- [] Feature 2
-- [] Feature 3
-    - [] Nested Feature
+- [] As a user, I should be able to view my account settings, so I can modify my display name and location.
+    - [] ‘Account’ button on the Menu bar at the top of all pages is visible. 
+    - [] Clicking on the ‘Account’ button should redirect the user to their account settings page.
+    - [] On the account settings page, there are input fields to input the user’s new display name and location.
+    - [] Besides the input fields, are ‘Update’ buttons.
+    - [] Once the ‘Update’ button is clicked, the user’s account information is updated.
+
+- [] As a user, I should be able to view recipes based on categories (breakfast, lunch, dairy free, gluten free, etc)
+    - [] A selection bar that has different categories based on recipes.
+    - [] When a user clicks on a category, only items with that tag show up.
+    - [] Users could also click on multiple categories to filter further.
+    - [] A clear button so the user can clear the filter.
+    - [] Check boxes will be visible to let the user know whether or not that filter has been selected.
+
+- [] As a user, I should be able to save my location and use GPS to find my location. 
+    - [] There will be a text on the navigation bar that shows the user saved location
+    - [] When the user clicks on the text there will be a layover screen with search bar, save button, and a GPS icon with “Use my location” text.
+    - [] When the user clicks on the “use my location” button it will automatically fill in the location.
+    - [] Show an error message if the location service is blocked.
+    - [] The user should be able to click on the save button and save the location they selected through search or through location detection.
+
+- [] As a user, I will be able to click a button to display a search of randomized recipes or restaurants. 
+    - [] On the homepage, there will be a button labeled “Random” the user can click on.
+    - [] If Recipes are selected, then when pressing the “Random” button, random recipes will be displayed.
+    - [] If Restaurants are selected, then random restaurants in the user's area will be displayed.
+    - [] Users will still be able to search for recipes or restaurants after clicking the random button.
+    - [] After clicking the random button, the user can filter through the results.
+
+- [] As a user, I should be able to save my preferences of food types.
+    - [] On the accounts preference I should be able to select any food preferences I may have
+    - [] If the user select a food type that they do not wish to eat it should not be displayed 
+    - [] This should be saved to the user's profile and can roam with the user
+    - [] This should be grouped in types such as halal or vegetarian 
+    - [] This should be separate from allergies 
+
 
 See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) for a full list of proposed features (and known issues).
 
