@@ -1,9 +1,7 @@
 import React from 'react';
 import {
-    Button, Card, Col, Accordion, ListGroup
+    Button, Card, Col, Accordion, ListGroup,
 } from 'react-bootstrap';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
 import './Recipe.css';
 
 const Recipe = function (props) {
@@ -16,7 +14,6 @@ const Recipe = function (props) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ recipe_id }),
         }).then((response) => response.json()).then((data) => {
-            console.log(data);
             if (!data.error) { /* if no error */
                 props.remove();
             } else {
@@ -24,7 +21,6 @@ const Recipe = function (props) {
             }
         });
     }
-    console.log('item,', item);
     return (
         <Col className="recipe-col">
             <Card className="recipe-item">
