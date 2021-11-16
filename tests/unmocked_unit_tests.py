@@ -1,23 +1,13 @@
-from yelp import get_restaurant_info
-from edamam import get_recipe_info
 import unittest
-from unittest.mock import MagicMock, patch
 import sys
 import os
 
-
-# getting the name of the directory
-# where the this file is present.
 current = os.path.dirname(os.path.realpath(__file__))
-
-# Getting the parent directory name
-# where the current directory is present.
 parent = os.path.dirname(current)
-
-# adding the parent directory to
-# the sys.path.
 sys.path.append(parent)
 
+from yelp import get_restaurant_info
+from edamam import get_recipe_info
 
 INPUT = "INPUT"
 EXPECTED_OUTPUT = "EXPECTED_OUTPUT"
@@ -81,8 +71,7 @@ class get_restaurant_search_test1(unittest.TestCase):
 
     def test_get_restaurant_info(self):
         for test in self.success_test_params:
-            self.assertEqual(get_restaurant_info(
-                test[INPUT]), test[EXPECTED_OUTPUT])
+            self.assertEqual(get_restaurant_info(test[INPUT]), test[EXPECTED_OUTPUT])
 
 
 class get_recipe_search_test1(unittest.TestCase):
@@ -234,8 +223,7 @@ class get_recipe_search_test1(unittest.TestCase):
 
     def test_get_recipe_info(self):
         for test in self.success_test_params:
-            self.assertEqual(get_recipe_info(
-                test[INPUT]), test[EXPECTED_OUTPUT])
+            self.assertEqual(get_recipe_info(test[INPUT]), test[EXPECTED_OUTPUT])
 
 
 if __name__ == "__main__":
