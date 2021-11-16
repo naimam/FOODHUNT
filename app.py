@@ -60,9 +60,9 @@ def make_session_permanent():
 
 class User(UserMixin, db.Model):
     user_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(15), unique=True)
-    email = db.Column(db.String(50), unique=True)
-    password = db.Column(db.String(100))
+    username = db.Column(db.String(15), unique=True, nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    password = db.Column(db.String(100), nullable=False)
     recipes = db.relationship("Recipe", backref="user", lazy=True)
     restaurants = db.relationship("Restaurant", backref="user", lazy=True)
     # zipcode = db.Column(db.Integer)
@@ -336,11 +336,8 @@ def favorite_recipes():
 
         recipe_info = []
         for i in user_recipes:
-            print(i.recipe_id)
             recipe_info.append(edamam.recipe_from_id(i.recipe_id))
-        # print("recipe info", recipe_info)
         data = {"error": False, "data": recipe_info}
-        print(data)
         return data
     return {"error": True}
 
@@ -354,11 +351,8 @@ def favorite_restaurants():
 
         restaurant_info = []
         for i in user_restaurants:
-            print(i.restaurant_id)
             restaurant_info.append(yelp.restaurant_from_id(i.restaurant_id))
-        # print("recipe info", recipe_info)
         data = {"error": False, "data": restaurant_info}
-        print(data)
         return data
     return {"error": True}
 
@@ -367,6 +361,28 @@ def favorite_restaurants():
 @app.route("/favicon.ico")
 def favicon():
     return send_from_directory("./build", "favicon.ico")
+
+
+def query_favorite_recipes(uid):
+    user = User.query.filter_by(user_id=uid).first()
+    user_recipes = user.recipes
+    if user_recipes:
+        recipe_info = []
+        for i in user_recipes:
+            recipe_info.append(edamam.recipe_from_id(i.recipe_id))
+        data = {"error": False, "data": recipe_info}
+        return data
+    return {"error": True}
+
+
+def save_recipe(uid, rid):
+    db.session.add(Recipe(recipe_id=rid, user_id=uid))
+    try:
+        db.session.commit()
+    except Exception as err:
+        db.session.rollback()
+        return {"error": True}
+    return {"error": False}
 
 
 if __name__ == "__main__":
