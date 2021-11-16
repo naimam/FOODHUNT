@@ -1,3 +1,4 @@
+# pylint: disable=E1101, C0413, W1508, W0703, R0903, R0914, W0603, W0632, C0301
 """yelp.py: returns list of information on restaurants given location and term. using yelp api.  """
 import os
 import json
@@ -160,10 +161,10 @@ def get_restaurant_info(restaurant):
     return restaurant_info
 
 
-def restaurant_search(term, zip, limit=10):
+def restaurant_search(term, zipcode, limit=10):
     """returns list of dictionaries of restaurants given location and term."""
 
-    location = str(zip) + " " + get_state_from_zip(zip)
+    location = str(zipcode) + " " + get_state_from_zip(zipcode)
 
     url = "https://api.yelp.com/v3/businesses/search"
     headers = {"Authorization": "Bearer %s" % YELP_API_KEY}
@@ -191,10 +192,11 @@ def restaurant_search(term, zip, limit=10):
 
 
 # for more accurate results from yelp
-def get_state_from_zip(zip):
-    response = requests.get("http://api.zippopotam.us/us/" + str(zip))
-    json = response.json()
-    return json["places"][0]["state abbreviation"]
+def get_state_from_zip(zipcode):
+    """Function to retrieve the state based on the zipcode given from the user"""
+    response = requests.get("http://api.zippopotam.us/us/" + str(zipcode))
+    zipcoding = response.json()
+    return zipcoding["places"][0]["state abbreviation"]
 
 
 def restaurant_from_id(restaurant_id):
@@ -208,8 +210,11 @@ def restaurant_from_id(restaurant_id):
     return restaurant_info
 
 
-def recommended_restaurants(zip=None):
-    if zip:
-        return restaurant_search("", zip, limit=6)
-    else:
-        return RECOMMENDED_RESTAURANTS
+def recommended_restaurants(zipcode=None):
+    """
+    Function that returns either a search of restaurants if the user decided to
+    or just return recommended restaurants
+    """
+    if zipcode:
+        return restaurant_search("", zipcode, limit=6)
+    return RECOMMENDED_RESTAURANTS

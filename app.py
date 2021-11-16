@@ -1,7 +1,14 @@
-import flask
-from flask import request, send_from_directory, redirect, url_for, flash, session
+"""
+Logic for the whole app
+"""
+
+# pylint: disable=E1101, C0413, W1508, W0703, R0903, R0914, W0603, W0632, E0237, W0613
+
 import os
 import json
+from datetime import timedelta
+import flask
+from flask import send_from_directory, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.exc import IntegrityError
 from flask_bootstrap import Bootstrap
@@ -9,7 +16,7 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, BooleanField
 from wtforms.validators import InputRequired, Email, Length
 from dotenv import load_dotenv, find_dotenv
-from datetime import timedelta
+
 
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login.utils import login_required
@@ -17,13 +24,11 @@ from flask_login import (
     LoginManager,
     UserMixin,
     login_user,
-    login_required,
     logout_user,
     current_user,
 )
 import yelp
 import edamam
-import random
 
 load_dotenv(find_dotenv())
 
@@ -47,18 +52,21 @@ login_manager.login_view = "login"
 
 @login_manager.user_loader
 def load_user(user_name):
+    """Function to retrieve the users username"""
     return User.query.get(user_name)
 
 
 @app.before_request
 def make_session_permanent():
+    """Function to make session valid for only 60 minutes"""
     session.permanent = False
     app.permanent_session_lifetime = timedelta(minutes=60)
-    """create table"""
     db.create_all()
 
 
 class User(UserMixin, db.Model):
+    """Creating database tables for Usernames"""
+
     user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(15), unique=True, nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
@@ -72,6 +80,8 @@ class User(UserMixin, db.Model):
 
 
 class Recipe(db.Model):
+    """Creating database for Recipes"""
+
     rec_id = db.Column(db.Integer, primary_key=True)
     recipe_id = db.Column(db.String(80), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
@@ -81,6 +91,8 @@ class Recipe(db.Model):
 
 
 class Restaurant(db.Model):
+    """Creating database for Restaurants"""
+
     res_id = db.Column(db.Integer, primary_key=True)
     restaurant_id = db.Column(db.String(80), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
@@ -90,6 +102,8 @@ class Restaurant(db.Model):
 
 
 class LoginForm(FlaskForm):
+    """Form to allow user to type in their credentials to login"""
+
     username = StringField(
         "username", validators=[InputRequired(), Length(min=4, max=15)]
     )
@@ -100,6 +114,8 @@ class LoginForm(FlaskForm):
 
 
 class SignupForm(FlaskForm):
+    """Form to allow user to signup for a profile"""
+
     email = StringField(
         "email",
         validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
@@ -115,15 +131,16 @@ class SignupForm(FlaskForm):
 @app.route("/")
 @login_required
 def root():
+    """Function to reroute user to homepage"""
     return flask.redirect(flask.url_for("bp.home"))
 
 
 @bp.route("/home")
 @login_required
 def home():
-    # TODO: insert the data fetched by your app main page here as a JSON
-    DATA = {"username": current_user.username}
-    data = json.dumps(DATA)
+    """Function to display the users informationon the home page"""
+    user_data = {"username": current_user.username}
+    data = json.dumps(user_data)
     return flask.render_template(
         "index.html",
         data=data,
@@ -133,6 +150,7 @@ def home():
 @app.route("/<path:path>", methods=["GET"])
 @login_required
 def any_root_path(path):
+    """Function to reroute a newly logged in user to the index.html or homepage"""
     return flask.render_template("index.html")
 
 
@@ -141,6 +159,7 @@ app.register_blueprint(bp)
 
 @app.route("/signup", methods=["GET", "POST"])
 def signup():
+    """Function to allow a user to signup for a profile on this app"""
     failed = False
     form = SignupForm()
     if form.validate_on_submit():
@@ -173,6 +192,7 @@ def signup():
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
+    """Function to allow user to login to their profile if it is in the database"""
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
@@ -188,6 +208,7 @@ def login():
 @app.route("/logout", methods=["GET", "POST"])
 @login_required
 def logout():
+    """Function to allow the user to logout of their profile"""
     app.logger.debug("logging out user: " + current_user.username)
     session.clear()
     logout_user()
@@ -197,6 +218,7 @@ def logout():
 @app.route("/get-username", methods=["GET"])
 @login_required
 def get_user_info():
+    """Function to retrieve the users data"""
     return json.dumps(
         {
             "username": current_user.username,
@@ -204,12 +226,13 @@ def get_user_info():
     )
 
 
-# API
+# API"""
 
 
 @app.route("/api/save-recipe", methods=["POST"])
 @login_required
 def save():
+    """Function to save a recipe to the favorites page"""
     recipe_id = flask.request.json.get("recipe_id")
     app.logger.info("SAVING: %s", recipe_id)
     db.session.add(Recipe(recipe_id=recipe_id, user_id=current_user.user_id))
@@ -225,6 +248,7 @@ def save():
 @app.route("/api/save-restaurant", methods=["POST"])
 @login_required
 def save_resta():
+    """Function to save a restaurant to the favorites page"""
     restaurant_id = flask.request.json.get("restaurant_id")
     app.logger.info("SAVING: %s", restaurant_id)
 
@@ -242,7 +266,8 @@ def save_resta():
 
 @app.route("/api/remove-recipe", methods=["POST"])
 @login_required
-def removeRecipe():
+def remove_recipe():
+    """Function to remove a favorite recipe if shown in favorites page"""
     recipe_id = flask.request.json.get("recipe_id")
     app.logger.info("REMOVING: %s", recipe_id)
     try:
@@ -259,7 +284,8 @@ def removeRecipe():
 
 @app.route("/api/remove-restaurant", methods=["POST"])
 @login_required
-def removeRestaurant():
+def remove_restaurant():
+    """Function to remove a favorite restaurant if shown in favorites page"""
     restaurant_id = flask.request.json.get("restaurant_id")
     app.logger.info("REMOVING: %s", restaurant_id)
     try:
@@ -277,41 +303,45 @@ def removeRestaurant():
 @app.route("/api/search-for-restaurant", methods=["POST"])
 @login_required
 def search_for_restaurant():
+    """Function to search for a restaurant based on keyowrd and zipcode"""
     keyword = flask.request.json.get("keyword")
-    zip = flask.request.json.get("zip")
-    data = yelp.restaurant_search(keyword, zip)
+    zipcode = flask.request.json.get("zip")
+    data = yelp.restaurant_search(keyword, zipcode)
 
     if not data:
         return {"error": True}
-    else:
-        user_restaurants = current_user.restaurants
-        already_saved = [x.restaurant_id for x in user_restaurants]
-        for i in data:
-            id = i["id"]
-            i["already_saved"] = True if id in already_saved else False
-        return json.dumps({"error": False, "data": json.dumps(data)})
+    user_restaurants = current_user.restaurants
+    already_saved = [x.restaurant_id for x in user_restaurants]
+    for i in data:
+        res_id = i["id"]
+        i["already_saved"] = False
+        if res_id in already_saved:
+            i["already_saved"] = True
+    return json.dumps({"error": False, "data": json.dumps(data)})
 
 
 @app.route("/api/search-for-recipe", methods=["POST"])
 @login_required
 def search_for_recipe():
+    """Function to search for a recipe based on keyword"""
     keyword = flask.request.json.get("keyword")
     data = edamam.recipe_search(keyword)
     if not data:
         return {"error": True}
-    else:
-        user_recipes = current_user.recipes
-        already_saved = [x.recipe_id for x in user_recipes]
-        for i in data:
-            id = i["recipe_id"]
-            i["already_saved"] = True if id in already_saved else False
-        return json.dumps({"error": False, "data": json.dumps(data)})
+    user_recipes = current_user.recipes
+    already_saved = [x.recipe_id for x in user_recipes]
+    for i in data:
+        rec_id = i["recipe_id"]
+        i["already_saved"] = False
+        if rec_id in already_saved:
+            i["already_saved"] = True
+    return json.dumps({"error": False, "data": json.dumps(data)})
 
 
 @app.route("/api/recommended-recipes", methods=["POST"])
 @login_required
 def recommended_recipes():
-
+    """Function to retrieve a random list of recommended recipes"""
     data = edamam.recommended_recipes()
     return {"error": False, "data": data}
 
@@ -319,17 +349,18 @@ def recommended_recipes():
 @app.route("/api/recommended-restaurants", methods=["POST"])
 @login_required
 def recommended_restaurants():
+    """Function to retrieve a random list of recommended restaurants"""
     # zip = flask.request.json.get("zip")
     data = yelp.recommended_restaurants()
     if not data:
         return {"error": True}
-    else:
-        return {"error": False, "data": data}
+    return {"error": False, "data": data}
 
 
 @app.route("/api/favorite-recipes", methods=["POST", "GET"])
 @login_required
 def favorite_recipes():
+    """Function to store a users favorite recipe"""
     user = User.query.filter_by(user_id=current_user.user_id).first()
     user_recipes = user.recipes
     if user_recipes:
@@ -345,6 +376,7 @@ def favorite_recipes():
 @app.route("/api/favorite-restaurants", methods=["POST", "GET"])
 @login_required
 def favorite_restaurants():
+    """Function to store a users favorite restaurant"""
     user = User.query.filter_by(user_id=current_user.user_id).first()
     user_restaurants = user.restaurants
     if user_restaurants:
@@ -360,10 +392,12 @@ def favorite_restaurants():
 # ASSETS
 @app.route("/favicon.ico")
 def favicon():
+    """Function to retireve the app's icon"""
     return send_from_directory("./build", "favicon.ico")
 
 
 def query_favorite_recipes(uid):
+    """Query favorite recipes from database"""
     user = User.query.filter_by(user_id=uid).first()
     user_recipes = user.recipes
     if user_recipes:
@@ -376,10 +410,11 @@ def query_favorite_recipes(uid):
 
 
 def save_recipe(uid, rid):
+    """Saves recipe id to the database"""
     db.session.add(Recipe(recipe_id=rid, user_id=uid))
     try:
         db.session.commit()
-    except Exception as err:
+    except Exception:
         db.session.rollback()
         return {"error": True}
     return {"error": False}
