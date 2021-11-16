@@ -9,6 +9,7 @@
         "react/react-in-jsx-scope": "off",
         "indent": "off",
         "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
         "linebreak-style": "off",
         "react/destructuring-assignment": "off",
         "react/prop-types": "off",
