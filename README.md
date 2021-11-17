@@ -1,5 +1,3 @@
-
-<<<<<<< yenandrew-patch-3
 <div id="top"></div>
 
 
@@ -61,7 +59,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
+[![Food Hunt Screen Shot][product-screenshot]](http://sanst.herokuapp.com/)
 
 %APPNAME% aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
 
@@ -73,14 +71,10 @@
 
 ### Built With
 
-* [Next.js](https://nextjs.org/)
 * [React.js](https://reactjs.org/)
-* [Vue.js](https://vuejs.org/)
-* [Angular](https://angular.io/)
-* [Svelte](https://svelte.dev/)
-* [Postregsql](https://laravel.com)
-* [Bootstrap](https://getbootstrap.com)
-* [JQuery](https://jquery.com)
+* [Flask](https://flask.palletsprojects.com/)
+* [Bootstrap](https://getbootstrap.com/)
+* [Heroku](https://www.heroku.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -89,7 +83,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-To get started you will need to installsome frameworks and 
+To get started you will need to install some frameworks. The frontend of our website was written in React to display user interfaces in a visually appealing way. The code that powers the backend of our website is in Python, using Flask. Flask Login will be used to manage user sessions. The app is deployed using Heroku. Heroku will also be used to storet he database using Heroku Postgres. Flask SQLAlchemy will be used to create the database models. The Zomato API is used to find restaurants based on a user’s location, and the Edamam Recipe API to find recipes given the user's input of ingredients.
 
 
 ### Prerequisites
@@ -99,11 +93,21 @@ You will need to install the following on your host before deployment
   ```sh
   npm install npm@latest -g
   ```
+* python3
+  ```sh
+  npm install python3@latest -g
+  ```
+* Flask
+  ```sh
+  npm install flask@latest -g
+  ```
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Get a free Zomato API Key at [https://www.zomato.com/](https://www.zomato.com/)
+2. Get a free Edamam API Key at [https://developer.edamam.com/](https://developer.edamam.com/)
+3. Setup a Heroku repository [https://www.heroku.com/](https://www.heroku.com/)
+4. Clone the repo
    ```sh
    git clone https://github.com/naimam/4350-Group-11-Project.git
    ```
@@ -123,9 +127,7 @@ You will need to install the following on your host before deployment
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+You can use this webapp to find restraunts and recipies and save them for access later.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -233,5 +235,4 @@ Project Link: [https://github.com/naimam/4350-Group-11-Project](https://github.c
 
 
 
-=======
->>>>>>> main
+
