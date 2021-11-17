@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/naimam/4350-Group-11-Project">
-    <img src="logo.png" alt="Logo" width="80" height="80">
+    <img src="src/logo.png" alt="Logo" width="80" height="80">
   </a>
 
 <h3 align="center">Food Hunt</h3>
@@ -57,7 +57,9 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Food Hunt Screen Shot][product-screenshot]](http://sanst.herokuapp.com/)
+<a href="https://i.imgur.com/cwAAIlg.png">
+    <img src="https://i.imgur.com/cwAAIlg.png" alt="Screenshot" width="1000" height="600">
+</a>
 
 Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
 
@@ -102,7 +104,7 @@ You will need to install the following on your host before deployment
 
 ### Installation
 
-1. Get a free Zomato API Key at [https://www.zomato.com/](https://www.zomato.com/)
+1. Get a free Yelp API Key at [https://www.yelp.com/developers](https://www.yelp.com/developers)
 2. Get a free Edamam API Key at [https://developer.edamam.com/](https://developer.edamam.com/)
 3. Setup a Heroku repository [https://www.heroku.com/](https://www.heroku.com/)
 4. Clone the repo
@@ -113,10 +115,8 @@ You will need to install the following on your host before deployment
    ```sh
    npm install
    ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
+4. Enter your API in `.env`
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -259,9 +259,7 @@ Project Link: [https://github.com/naimam/4350-Group-11-Project](https://github.c
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
 
-* []()
-* []()
-* []()
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
