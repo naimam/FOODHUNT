@@ -13,7 +13,7 @@
 <h3 align="center">project_title</h3>
 
   <p align="center">
-    project_description
+    Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. http://sanst.herokuapp.com/
     <br />
     <a href="https://github.com/naimam/4350-Group-11-Project"><strong>Explore the docs »</strong></a>
     <br />
@@ -61,7 +61,7 @@
 
 [![Food Hunt Screen Shot][product-screenshot]](http://sanst.herokuapp.com/)
 
-%APPNAME% aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
+Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
 
 
 
@@ -170,6 +170,30 @@ You can use this webapp to find restraunts and recipies and save them for access
     - [] This should be saved to the user's profile and can roam with the user
     - [] This should be grouped in types such as halal or vegetarian 
     - [] This should be separate from allergies 
+
+##Known Issues / Errors
+
+- [] Linting:
+- [] Python:
+- [] yelp.py:
+- [] C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
+
+- [] app.py:
+- [] E0237: Required to make login session limited
+- [] W0613: Ignored because React route is being used
+
+- [] "no-undef": "off",
+- [] "linebreak-style": "off",
+- [] "react/destructuring-assignment": "off",
+- [] "react/prop-types": "off",
+- [] "func-names": "off",
+- [] "no-unused-expressions": "off" 
+- 
+Eslint:
+- [] react/no-array-index-key, react-hooks/exhaustive-deps, react/jsx-filename-extension: given to ignore in milestone 3
+- [] index, react/jsx-indent, react/jsx-indent-props: indent conficts with prettier and eslint so decided to ignore
+- [] camelcase - risk with renamed variables
+- [] react/react-in-jsx-scope - not using react as a global variable
 
 
 See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) for a full list of proposed features (and known issues).
