@@ -169,6 +169,7 @@ You can use this webapp to find restraunts and recipies and save them for access
     - This should be grouped in types such as halal or vegetarian 
     - This should be separate from allergies 
 
+See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -178,18 +179,12 @@ You can use this webapp to find restraunts and recipies and save them for access
 
 - Python:
 - yelp.py:
-- C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
+  - C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
 
 - app.py:
   - E0237: Required to make login session limited
   - W0613: Ignored because React route is being used
 
-  - "no-undef": "off",
-  - "linebreak-style": "off",
-  - "react/destructuring-assignment": "off",
-  - "react/prop-types": "off",
-  - "func-names": "off",
-  - "no-unused-expressions": "off" 
 
 Eslint:
 - Eslint:
@@ -203,7 +198,7 @@ Eslint:
   - no-unused-expressions: would mark expressions that we needed for our code as unused
 
 
-See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) for a full list of proposed features (and known issues).
+
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
