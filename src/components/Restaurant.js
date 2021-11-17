@@ -67,7 +67,9 @@ const Restaurant = function (props) {
                                     <Row>
                                         {item.city}
                                         ,
+                                        {' '}
                                         {item.state}
+                                        {' '}
                                         {item.zip_code}
                                     </Row>
                                 </Col>
@@ -80,10 +82,12 @@ const Restaurant = function (props) {
                                 <ListGroup.Item />
                                 <ListGroup.Item>
                                     Rating:
+                                    {' '}
                                     <Grading mode="rating" num={item.rating} />
                                 </ListGroup.Item>
                                 <ListGroup.Item>
                                     Price:
+                                    {' '}
                                     <Grading mode="pricing" num={item.price.length} />
                                 </ListGroup.Item>
                             </ListGroup>

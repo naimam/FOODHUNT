@@ -30,28 +30,33 @@ const Recipe = function (props) {
                         <ListGroup variant="flush">
                             <ListGroup.Item className="recipe-calories">
                                 <b>Calories:</b>
+                                {' '}
                                 {item.calories}
                                 .
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-cookingtime">
                                 <b>Cooking Time:</b>
+                                {' '}
                                 {item.cookingtime}
                                 mins.
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-health-labels">
                                 <b>Health Labels:</b>
+                                {' '}
                                 {item.healthLabels.slice(0, 5).map((healthLabel) => (
                                     <span className="recipe-health-label">{healthLabel}</span>
                                 ))}
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-diet-labels">
                                 <b>Diet Labels:</b>
+                                {' '}
                                 {item.dietLabels.slice(0, 5).map((dietLabel) => (
                                     <span className="recipe-diet-label">{dietLabel}</span>
                                 ))}
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-cautions">
                                 <b>Cautons:</b>
+                                {' '}
                                 {item.cautions.slice(0, 5).map((cautions) => (
                                     <span className="recipe-cautions">{cautions}</span>
                                 ))}
