@@ -181,7 +181,8 @@ def restaurant_search(term, zipcode, limit=10):
         return False
 
     if results:
-        restaurants = [get_restaurant_info(restaurant) for restaurant in results]
+        restaurants = [get_restaurant_info(restaurant)
+                       for restaurant in results]
         restaurants = [
             restaurant for restaurant in restaurants if restaurant is not None
         ]  # filter out None values
@@ -213,7 +214,7 @@ def restaurant_from_id(restaurant_id):
 def recommended_restaurants(zipcode=None):
     """
     Function that returns either a search of restaurants if the user decided to
-    or just return recommended restaurants
+    or just return recommended restaurants ok ok
     """
     if zipcode:
         return restaurant_search("", zipcode, limit=6)
