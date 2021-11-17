@@ -1,8 +1,5 @@
 <div id="top"></div>
 
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
@@ -10,7 +7,7 @@
     <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Food Hunt</h3>
 
   <p align="center">
     Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. http://sanst.herokuapp.com/
@@ -47,6 +44,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#Known Issues / Errors">Known Issues / Errors</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -136,64 +134,74 @@ You can use this webapp to find restraunts and recipies and save them for access
 <!-- ROADMAP -->
 ## Roadmap
 
-- [] As a user, I should be able to view my account settings, so I can modify my display name and location.
-    - [] ‘Account’ button on the Menu bar at the top of all pages is visible. 
-    - [] Clicking on the ‘Account’ button should redirect the user to their account settings page.
-    - [] On the account settings page, there are input fields to input the user’s new display name and location.
-    - [] Besides the input fields, are ‘Update’ buttons.
-    - [] Once the ‘Update’ button is clicked, the user’s account information is updated.
+- As a user, I should be able to view my account settings, so I can modify my display name and location.
+    - ‘Account’ button on the Menu bar at the top of all pages is visible. 
+    - Clicking on the ‘Account’ button should redirect the user to their account settings page.
+    - On the account settings page, there are input fields to input the user’s new display name and location.
+    - Besides the input fields, are ‘Update’ buttons.
+    - Once the ‘Update’ button is clicked, the user’s account information is updated.
 
-- [] As a user, I should be able to view recipes based on categories (breakfast, lunch, dairy free, gluten free, etc)
-    - [] A selection bar that has different categories based on recipes.
-    - [] When a user clicks on a category, only items with that tag show up.
-    - [] Users could also click on multiple categories to filter further.
-    - [] A clear button so the user can clear the filter.
-    - [] Check boxes will be visible to let the user know whether or not that filter has been selected.
+- As a user, I should be able to view recipes based on categories (breakfast, lunch, dairy free, gluten free, etc)
+    - A selection bar that has different categories based on recipes.
+    - When a user clicks on a category, only items with that tag show up.
+    - Users could also click on multiple categories to filter further.
+    - A clear button so the user can clear the filter.
+    - Check boxes will be visible to let the user know whether or not that filter has been selected.
 
-- [] As a user, I should be able to save my location and use GPS to find my location. 
-    - [] There will be a text on the navigation bar that shows the user saved location
-    - [] When the user clicks on the text there will be a layover screen with search bar, save button, and a GPS icon with “Use my location” text.
-    - [] When the user clicks on the “use my location” button it will automatically fill in the location.
-    - [] Show an error message if the location service is blocked.
-    - [] The user should be able to click on the save button and save the location they selected through search or through location detection.
+- As a user, I should be able to save my location and use GPS to find my location. 
+    - There will be a text on the navigation bar that shows the user saved location
+    - When the user clicks on the text there will be a layover screen with search bar, save button, and a GPS icon with “Use my location” text.
+    - When the user clicks on the “use my location” button it will automatically fill in the location.
+    - Show an error message if the location service is blocked.
+    - The user should be able to click on the save button and save the location they selected through search or through location detection.
 
-- [] As a user, I will be able to click a button to display a search of randomized recipes or restaurants. 
-    - [] On the homepage, there will be a button labeled “Random” the user can click on.
-    - [] If Recipes are selected, then when pressing the “Random” button, random recipes will be displayed.
-    - [] If Restaurants are selected, then random restaurants in the user's area will be displayed.
-    - [] Users will still be able to search for recipes or restaurants after clicking the random button.
-    - [] After clicking the random button, the user can filter through the results.
+- As a user, I will be able to click a button to display a search of randomized recipes or restaurants. 
+    - On the homepage, there will be a button labeled “Random” the user can click on.
+    - If Recipes are selected, then when pressing the “Random” button, random recipes will be displayed.
+    - If Restaurants are selected, then random restaurants in the user's area will be displayed.
+    - Users will still be able to search for recipes or restaurants after clicking the random button.
+    - After clicking the random button, the user can filter through the results.
 
-- [] As a user, I should be able to save my preferences of food types.
-    - [] On the accounts preference I should be able to select any food preferences I may have
-    - [] If the user select a food type that they do not wish to eat it should not be displayed 
-    - [] This should be saved to the user's profile and can roam with the user
-    - [] This should be grouped in types such as halal or vegetarian 
-    - [] This should be separate from allergies 
+- As a user, I should be able to save my preferences of food types.
+    - On the accounts preference I should be able to select any food preferences I may have
+    - If the user select a food type that they do not wish to eat it should not be displayed 
+    - This should be saved to the user's profile and can roam with the user
+    - This should be grouped in types such as halal or vegetarian 
+    - This should be separate from allergies 
 
-##Known Issues / Errors
 
-- [] Linting:
-- [] Python:
-- [] yelp.py:
-- [] C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-- [] app.py:
-- [] E0237: Required to make login session limited
-- [] W0613: Ignored because React route is being used
 
-- [] "no-undef": "off",
-- [] "linebreak-style": "off",
-- [] "react/destructuring-assignment": "off",
-- [] "react/prop-types": "off",
-- [] "func-names": "off",
-- [] "no-unused-expressions": "off" 
-- 
+<!-- Known Issues / Errors -->
+## Known Issues / Errors
+
+- Linting:
+- Python:
+- yelp.py:
+- C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
+
+- app.py:
+  - E0237: Required to make login session limited
+  - W0613: Ignored because React route is being used
+
+  - "no-undef": "off",
+  - "linebreak-style": "off",
+  - "react/destructuring-assignment": "off",
+  - "react/prop-types": "off",
+  - "func-names": "off",
+  - "no-unused-expressions": "off" 
+
 Eslint:
-- [] react/no-array-index-key, react-hooks/exhaustive-deps, react/jsx-filename-extension: given to ignore in milestone 3
-- [] index, react/jsx-indent, react/jsx-indent-props: indent conficts with prettier and eslint so decided to ignore
-- [] camelcase - risk with renamed variables
-- [] react/react-in-jsx-scope - not using react as a global variable
+- Eslint:
+  - react/no-array-index-key, react-hooks/exhaustive-deps, react/jsx-filename-extension: given to ignore in milestone 3
+  - index, react/jsx-indent, react/jsx-indent-props: indent conficts with prettier and eslint so decided to ignore
+  - camelcase - risk with renamed variables
+  - react/react-in-jsx-scope - not using react as a global variable
+  - no-undef - because we did not want to explicitly declare global variables
+  - react/destructuring-assignment- to simplify the component structure
+  - linebreak-style - because we aren't concerned about having different line endings within our code
+  - no-unused-expressions: would mark expressions that we needed for our code as unused
 
 
 See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) for a full list of proposed features (and known issues).
@@ -256,7 +264,5 @@ Project Link: [https://github.com/naimam/4350-Group-11-Project](https://github.c
 * []()
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
 
 
