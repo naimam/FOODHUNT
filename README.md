@@ -44,7 +44,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#Known Issues / Errors">Known Issues / Errors</a></li>
+    <li><a href="#Linting">Linting</a></li>
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
@@ -173,10 +173,9 @@ You can use this webapp to find restraunts and recipies and save them for access
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 
-<!-- Known Issues / Errors -->
-## Known Issues / Errors
+<!-- Linting -->
+## Linting
 
-- Linting:
 - Python:
 - yelp.py:
 - C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
