@@ -10,10 +10,10 @@
     <img src="logo.png" alt="Logo" width="80" height="80">
   </a>
 
-<h3 align="center">project_title</h3>
+<h3 align="center">Food Hunt</h3>
 
   <p align="center">
-    project_description
+    Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. https://sanst.herokuapp.com
     <br />
     <a href="https://github.com/naimam/4350-Group-11-Project"><strong>Explore the docs »</strong></a>
     <br />
@@ -61,7 +61,7 @@
 
 [![Food Hunt Screen Shot][product-screenshot]](http://sanst.herokuapp.com/)
 
-%APPNAME% aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
+Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
 
 
 
