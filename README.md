@@ -1,73 +1,260 @@
-# Getting Started with Create React App
+<div id="top"></div>
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a href="https://github.com/naimam/4350-Group-11-Project">
+    <img src="src/logo.png" alt="Logo" width="80" height="80">
+  </a>
+
+<h3 align="center">Food Hunt</h3>
+
+  <p align="center">
+    Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. http://sanst.herokuapp.com/
+    <br />
+    <a href="https://github.com/naimam/4350-Group-11-Project"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    <a href="https://sanst.herokuapp.com/">View Demo</a>
+    ·
+    <a href="https://github.com/naimam/4350-Group-11-Project/issues">Report Bug</a>
+    ·
+    <a href="https://github.com/naimam/4350-Group-11-Project/issues">Request Feature</a>
+  </p>
+</div>
 
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#Linting">Linting</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+<a href="https://i.imgur.com/cwAAIlg.png">
+    <img src="https://i.imgur.com/cwAAIlg.png" alt="Screenshot" width="1000" height="600">
+</a>
 
-### `npm test`
+Food Hunt aim's to deliver an web application that allows users to find recipes and restaurants for foods they are craving. Sometimes users will have ingredients that they do not know what to make with. Other times, the users may not want to cook, but still want to eat with those ingredients. We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. The app will allow users to login so they can save recipes and store their location to view restaurants in their area. Users will be able to search for recipes based on various ingredients/keywords. If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
-### `npm run build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### Built With
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+* [React.js](https://reactjs.org/)
+* [Flask](https://flask.palletsprojects.com/)
+* [Bootstrap](https://getbootstrap.com/)
+* [Heroku](https://www.heroku.com/)
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+<!-- GETTING STARTED -->
+## Getting Started
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+To get started you will need to install some frameworks. The frontend of our website was written in React to display user interfaces in a visually appealing way. The code that powers the backend of our website is in Python, using Flask. Flask Login will be used to manage user sessions. The app is deployed using Heroku. Heroku will also be used to storet he database using Heroku Postgres. Flask SQLAlchemy will be used to create the database models. The Zomato API is used to find restaurants based on a user’s location, and the Edamam Recipe API to find recipes given the user's input of ingredients.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
+### Prerequisites
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+You will need to install the following on your host before deployment
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
+* python3
+  ```sh
+  npm install python3@latest -g
+  ```
+* Flask
+  ```sh
+  npm install flask@latest -g
+  ```
 
-### Analyzing the Bundle Size
+### Installation
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+1. Get a free Yelp API Key at [https://www.yelp.com/developers](https://www.yelp.com/developers)
+2. Get a free Edamam API Key at [https://developer.edamam.com/](https://developer.edamam.com/)
+3. Setup a Heroku repository [https://www.heroku.com/](https://www.heroku.com/)
+4. Clone the repo
+   ```sh
+   git clone https://github.com/naimam/4350-Group-11-Project.git
+   ```
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Enter your API in `.env`
 
-### Making a Progressive Web App
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-### Advanced Configuration
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+<!-- USAGE EXAMPLES -->
+## Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+You can use this webapp to find restraunts and recipies and save them for access later.
 
-### `npm run build` fails to minify
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
 
-Hello 
+
+<!-- ROADMAP -->
+## Roadmap
+
+- As a user, I should be able to view my account settings, so I can modify my display name and location.
+    - ‘Account’ button on the Menu bar at the top of all pages is visible. 
+    - Clicking on the ‘Account’ button should redirect the user to their account settings page.
+    - On the account settings page, there are input fields to input the user’s new display name and location.
+    - Besides the input fields, are ‘Update’ buttons.
+    - Once the ‘Update’ button is clicked, the user’s account information is updated.
+
+- As a user, I should be able to view recipes based on categories (breakfast, lunch, dairy free, gluten free, etc)
+    - A selection bar that has different categories based on recipes.
+    - When a user clicks on a category, only items with that tag show up.
+    - Users could also click on multiple categories to filter further.
+    - A clear button so the user can clear the filter.
+    - Check boxes will be visible to let the user know whether or not that filter has been selected.
+
+- As a user, I should be able to save my location and use GPS to find my location. 
+    - There will be a text on the navigation bar that shows the user saved location
+    - When the user clicks on the text there will be a layover screen with search bar, save button, and a GPS icon with “Use my location” text.
+    - When the user clicks on the “use my location” button it will automatically fill in the location.
+    - Show an error message if the location service is blocked.
+    - The user should be able to click on the save button and save the location they selected through search or through location detection.
+
+- As a user, I will be able to click a button to display a search of randomized recipes or restaurants. 
+    - On the homepage, there will be a button labeled “Random” the user can click on.
+    - If Recipes are selected, then when pressing the “Random” button, random recipes will be displayed.
+    - If Restaurants are selected, then random restaurants in the user's area will be displayed.
+    - Users will still be able to search for recipes or restaurants after clicking the random button.
+    - After clicking the random button, the user can filter through the results.
+
+- As a user, I should be able to save my preferences of food types.
+    - On the accounts preference I should be able to select any food preferences I may have
+    - If the user select a food type that they do not wish to eat it should not be displayed 
+    - This should be saved to the user's profile and can roam with the user
+    - This should be grouped in types such as halal or vegetarian 
+    - This should be separate from allergies 
+
+See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+<!-- Linting -->
+## Linting
+
+- Python:
+- yelp.py:
+  - C0301: Line too long, this was disabled because we needed the URL's for the restaurants but it thought it was too long.
+
+- app.py:
+  - E0237: Required to make login session limited
+  - W0613: Ignored because React route is being used
+
+
+Eslint:
+- Eslint:
+  - react/no-array-index-key, react-hooks/exhaustive-deps, react/jsx-filename-extension: given to ignore in milestone 3
+  - index, react/jsx-indent, react/jsx-indent-props: indent conficts with prettier and eslint so decided to ignore
+  - camelcase - risk with renamed variables
+  - react/react-in-jsx-scope - not using react as a global variable
+  - no-undef - because we did not want to explicitly declare global variables
+  - react/destructuring-assignment- to simplify the component structure
+  - linebreak-style - because we aren't concerned about having different line endings within our code
+  - no-unused-expressions: would mark expressions that we needed for our code as unused
+
+
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the MIT License. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Thu Vo ([tvo55@student.gsu.edu](mailto:tvo55@student.gsu.edu))
+  
+Naima Mohamed ([nmohamed6@student.gsu.edu](mailto:nmohamed6@student.gsu.edu))
+
+Shafaat Huda ([shuda3@student.gsu.edu](mailto:shuda3@student.gsu.edu))
+   
+Solumtochukwu Orji([sorji1@student.gsu.edu](mailto:sorji1@student.gsu.edu) )
+   
+Andrew Yen ([ayen4@gsu.edu](mailto:ayen4@gsu.edu))
+
+Project Link: [https://github.com/naimam/4350-Group-11-Project](https://github.com/naimam/4350-Group-11-Project)
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+
+
+<p align="right">(<a href="#top">back to top</a>)</p>
+
+

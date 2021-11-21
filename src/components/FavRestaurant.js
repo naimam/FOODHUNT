@@ -1,33 +1,31 @@
 import React from 'react';
-import { useState, useEffect } from 'react';
-import { Button, Card, Row, Col, Accordion, ListGroup } from 'react-bootstrap';
+import {
+    Button, Card, Row, Col, ListGroup,
+} from 'react-bootstrap';
 import Grading from './Grading';
 import './Restaurant.css';
 
-function Restaurant(props) {
-    var item = JSON.parse(props.restaurant);
-    const wide = 7
+const Restaurant = function (props) {
+    const item = JSON.parse(props.restaurant);
+    const wide = 7;
 
     function removeRestaurant(restaurant_id) {
         fetch(`${process.env.PUBLIC_URL}/api/remove-restaurant`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ "restaurant_id": restaurant_id })
-        }).then(response => response.json()).then(data => {
-            console.log(data)
+            body: JSON.stringify({ restaurant_id }),
+        }).then((response) => response.json()).then((data) => {
             if (!data.error) { /* if no error */
-                props.remove()
+                props.remove();
             } else {
-                //TODO show error message
+                // TODO show error message
             }
         });
     }
 
-
     const goToMore = (url) => {
         window.location.assign(url);
     };
-
 
     return (
         <Col>
@@ -41,7 +39,17 @@ function Restaurant(props) {
                         <Card.Text>
                             <Row>
                                 <Col>Address:</Col>
-                                <Col xs={wide}><Row>{item.address}</Row> <Row>{item.city}, {item.state} {item.zip_code} </Row></Col>
+                                <Col xs={wide}>
+                                    <Row>{item.address}</Row>
+                                    <Row>
+                                        {item.city}
+                                        ,
+                                        {' '}
+                                        {item.state}
+                                        {' '}
+                                        {item.zip_code}
+                                    </Row>
+                                </Col>
                             </Row>
                             <Row>
                                 <Col>Phone:</Col>
@@ -49,19 +57,27 @@ function Restaurant(props) {
                             </Row>
                             <ListGroup variant="flush">
                                 <ListGroup.Item />
-                                <ListGroup.Item>Rating: <Grading mode="rating" num={item.rating} /> </ListGroup.Item>
-                                <ListGroup.Item>Price: <Grading mode="pricing" num={item.price.length} /></ListGroup.Item>
+                                <ListGroup.Item>
+                                    Rating:
+                                    {' '}
+                                    <Grading mode="rating" num={item.rating} />
+                                </ListGroup.Item>
+                                <ListGroup.Item>
+                                    Price:
+                                    {' '}
+                                    <Grading mode="pricing" num={item.price.length} />
+                                </ListGroup.Item>
                             </ListGroup>
                         </Card.Text>
                         <Button onClick={() => goToMore(item.url)} variant="danger">More</Button>
-                        <Button className="deleteBtn" variant="danger" onClick={() => removeRestaurant(item.id)}>Delete</Button >
+                        <Button className="deleteBtn" variant="danger" onClick={() => removeRestaurant(item.id)}>Delete</Button>
 
                     </Card.Body>
 
                 </div>
             </Card>
-        </Col >
-    )
-}
+        </Col>
+    );
+};
 
-export default Restaurant
+export default Restaurant;

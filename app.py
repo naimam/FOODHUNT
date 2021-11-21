@@ -1,7 +1,6 @@
 """
 Logic for the whole app
 """
-
 # pylint: disable=E1101, C0413, W1508, W0703, R0903, R0914, W0603, W0632, E0237, W0613
 
 import os
