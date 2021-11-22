@@ -12,10 +12,13 @@ EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
 EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 
 
-def meal_plan(plan_type, callower=1800, calupper=2500, diet=None, health=[]):
+def meal_plan(
+    meal_count, plan_type, callower=1800, calupper=2500, diet=None, health=[]
+):
     """function meal_plan: get recipe info based on parameters"""
     avglow = round(callower / 3)
     avghigh = round(calupper / 3)
+
     if plan_type == "weekly":
         length = 7
     else:
@@ -31,6 +34,7 @@ def meal_plan(plan_type, callower=1800, calupper=2500, diet=None, health=[]):
         + str(avglow)
         + "-"
         + str(avghigh)
+        + "&random=True"
     )
     if diet is not None:
         url += "&diet=" + diet
@@ -44,6 +48,7 @@ def meal_plan(plan_type, callower=1800, calupper=2500, diet=None, health=[]):
             "mealType": m_t,
         }
         response = requests.get(url, params=params)
+        print(response.url)
         data = response.json()
         try:
             results = data["hits"]
@@ -62,7 +67,7 @@ def meal_plan(plan_type, callower=1800, calupper=2500, diet=None, health=[]):
             meals = []
             for i in range(length):
                 # append meal to random index of recipes
-                meals.append(random.choice(recipes))
+                meals.append(recipes[i])
 
             return meals
 
@@ -70,21 +75,26 @@ def meal_plan(plan_type, callower=1800, calupper=2500, diet=None, health=[]):
             False  # no recipes found <- TODO: handle this case by including dummy data
         )
 
-    breakfast = meal_type("Breakfast")
-    lunch = meal_type("Lunch")
+    all_meals = {}
     dinner = meal_type("Dinner")
+    all_meals["dinner"] = dinner
 
-    return (breakfast, lunch, dinner)
+    if meal_count == 2:
+        brunch = meal_type("Brunch")
+        all_meals["brunch"] = brunch
+
+    else:
+        breakfast = meal_type("Breakfast")
+        lunch = meal_type("Lunch")
+        all_meals["breakfast"] = breakfast
+        all_meals["lunch"] = lunch
+
+    return all_meals
 
 
 # TEST
-# breakfast, lunch, dinner = meal_plan(
-#     plan_type="daily", diet="balanced", health=["vegan", "alcohol-free"]
-# )
-# print(breakfast)
-# print(lunch)
-# print(dinner)
+test = meal_plan(
+    meal_count=3, plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
+)
 
-# if breakfast is not False:
-#     for i in range(len(breakfast)):
-#         print(recipe_from_id(breakfast[i]))
+print(test)
