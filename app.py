@@ -74,6 +74,7 @@ class User(UserMixin, db.Model):
     recipes = db.relationship("Recipe", backref="user", lazy=True)
     restaurants = db.relationship("Restaurant", backref="user", lazy=True)
     zipcode = db.Column(db.Integer)
+    mealplan = db.relationship("MealPlan", backref="user", lazy=True)
 
     def get_id(self):
         return self.user_id
