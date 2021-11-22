@@ -19,7 +19,7 @@ const NavBar = function (props) {
     const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
         option: 'recipe',
-        zip: '',
+        zip: props.zipcode,
         restaurant_keyword: '',
         recipe_keyword: '',
     });
@@ -84,6 +84,8 @@ const NavBar = function (props) {
             hideSearch();
         }
     };
+
+    const handleFocus = (event) => event.target.select();
 
     return (
         <>
@@ -187,9 +189,10 @@ const NavBar = function (props) {
                                 <Form.Control
                                     data-testid="zipcode-input"
                                     type="number"
-                                    pattern="000"
+                                    defaultValue={props.zipcode}
                                     placeholder="Enter your zip code here.."
                                     onChange={(e) => setField('zip', e.target.value)}
+                                    onFocus={handleFocus}
                                     isInvalid={!!errors.zip}
                                 />
                                 <Form.Control.Feedback type="invalid">

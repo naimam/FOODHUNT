@@ -10,21 +10,26 @@ import PageNotFound from './pages/PageNotFound';
 
 const App = function () {
   const [username, setUsername] = useState('');
+  const [zipcode, setZipcode] = useState(null);
+
   useEffect(() => {
     fetch('/get-username').then((res) => res.json()).then((data) => {
       setUsername(data.username);
     });
+    fetch('/get-zipcode').then((res) => res.json()).then((data) => {
+      setZipcode(data.zipcode);
+    });
   }, []);
   return (
     <Router>
-      <NavBar username={username} />
+      <NavBar username={username} zipcode={zipcode} />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/favorite" element={<Favorite option="recipe" />} />
         <Route path="/search/:option/:zip/:keyword" element={<Search />} />
         <Route path="/*" element={<PageNotFound />} />
         `
-        <Route path="/setting" element={<Setting />} />
+        <Route path="/setting" element={<Setting zipcode={zipcode} setZipcode={setZipcode} />} />
         <Route
           path="/logout"
           render={() => {
