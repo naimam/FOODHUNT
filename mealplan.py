@@ -3,7 +3,7 @@ import os
 from dotenv import find_dotenv, load_dotenv
 import requests
 import random
-from edamam import get_recipe_info
+from edamam import get_recipe_info, recipe_from_id
 
 
 load_dotenv(find_dotenv())
@@ -73,17 +73,13 @@ def meal_plan(plan_type, callower=2000, calupper=5000, diet=None, health=[]):
     lunch = meal_type("Lunch")
     dinner = meal_type("Dinner")
 
-    return {
-        "breakfast": breakfast,
-        "lunch": lunch,
-        "dinner": dinner,
-    }
+    return (breakfast, lunch, dinner)
 
 
-print(
-    meal_plan(
-        plan_type="weekly",
-        diet="balanced",
-        health=["vegan", "alcohol-free"],
-    )
+# TEST
+breakfast, lunch, dinner = meal_plan(
+    plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
 )
+print(breakfast)
+for i in breakfast:
+    print(recipe_from_id(i))
