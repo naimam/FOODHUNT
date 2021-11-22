@@ -12,7 +12,7 @@ EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
 EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 
 
-def meal_plan(plan_type, callower=2000, calupper=5000, diet=None, health=[]):
+def meal_plan(plan_type, callower=1800, calupper=2500, diet=None, health=[]):
     """function meal_plan: get recipe info based on parameters"""
     avglow = round(callower / 3)
     avghigh = round(calupper / 3)
@@ -64,10 +64,11 @@ def meal_plan(plan_type, callower=2000, calupper=5000, diet=None, health=[]):
                 # append meal to random index of recipes
                 meals.append(random.choice(recipes))
 
-        else:
-            print("No recipes found")
-            return False  # no recipes found <- TODO: handle this case by including dummy data
-        return meals
+            return meals
+
+        return (
+            False  # no recipes found <- TODO: handle this case by including dummy data
+        )
 
     breakfast = meal_type("Breakfast")
     lunch = meal_type("Lunch")
@@ -77,9 +78,13 @@ def meal_plan(plan_type, callower=2000, calupper=5000, diet=None, health=[]):
 
 
 # TEST
-breakfast, lunch, dinner = meal_plan(
-    plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
-)
-print(breakfast)
-for i in breakfast:
-    print(recipe_from_id(i))
+# breakfast, lunch, dinner = meal_plan(
+#     plan_type="daily", diet="balanced", health=["vegan", "alcohol-free"]
+# )
+# print(breakfast)
+# print(lunch)
+# print(dinner)
+
+# if breakfast is not False:
+#     for i in range(len(breakfast)):
+#         print(recipe_from_id(breakfast[i]))
