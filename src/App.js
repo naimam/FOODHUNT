@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import Favorite from './pages/Favorite';
+import Setting from './pages/Setting';
 import Search from './pages/Search';
 import PageNotFound from './pages/PageNotFound';
 
@@ -23,6 +24,7 @@ const App = function () {
         <Route path="/search/:option/:zip/:keyword" element={<Search />} />
         <Route path="/*" element={<PageNotFound />} />
         `
+        <Route path="/setting" element={<Setting />} />
         <Route
           path="/logout"
           render={() => {

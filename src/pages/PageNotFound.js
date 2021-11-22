@@ -18,7 +18,9 @@ const PageNotFound = function () {
             </h2>
             <p id="message">
                 Return to the
+                {' '}
                 <Link id="link" to="/home">homepage</Link>
+                {' '}
                 and remember: you have not seen anything!
             </p>
         </div>

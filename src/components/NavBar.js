@@ -4,7 +4,9 @@ import {
     Nav, Navbar, NavDropdown, Button, Form, Modal, ToggleButton, ButtonGroup, InputGroup, Container,
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import {
+    faSearch, faUser, faCog, faSignOutAlt,
+} from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
 import restaurantIcon from '../assets/restaurantIcon.svg';
@@ -103,11 +105,19 @@ const NavBar = function (props) {
                         <Nav.Link as={Link} to="/favorite">Favorite</Nav.Link>
                         <NavDropdown title="Profile" id="basic-nav-dropdown">
                             <NavDropdown.Item>
+                                <FontAwesomeIcon icon={faUser} className="me-2" />
                                 Signed in as:
                                 {props.username}
                             </NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/setting">
+                                <FontAwesomeIcon icon={faCog} className="me-2" />
+                                Setting
+                            </NavDropdown.Item>
                             <NavDropdown.Divider />
-                            <NavDropdown.Item href={`${process.env.PUBLIC_URL}/logout`}>Log out</NavDropdown.Item>
+                            <NavDropdown.Item href={`${process.env.PUBLIC_URL}/logout`}>
+                                <FontAwesomeIcon icon={faSignOutAlt} className="me-2" />
+                                Log out
+                            </NavDropdown.Item>
 
                         </NavDropdown>
                     </Nav>
