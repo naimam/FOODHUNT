@@ -1,6 +1,7 @@
 """
 Logic for the whole app
 """
+
 # pylint: disable=E1101, C0413, W1508, W0703, R0903, R0914, W0603, W0632, E0237, W0613
 
 import os
@@ -72,7 +73,7 @@ class User(UserMixin, db.Model):
     password = db.Column(db.String(100), nullable=False)
     recipes = db.relationship("Recipe", backref="user", lazy=True)
     restaurants = db.relationship("Restaurant", backref="user", lazy=True)
-    # zipcode = db.Column(db.Integer)
+    zipcode = db.Column(db.Integer)
 
     def get_id(self):
         return self.user_id
@@ -98,6 +99,26 @@ class Restaurant(db.Model):
 
     def __repr__(self):
         return f"<Restaurant {self.restaurant_id}>"
+
+
+class MealPlan(db.Model):
+    """Database for meal planner"""
+
+    mPlan_id = db.Column(db.Integer, primary_key=True)
+    plantype = db.Column(
+        db.String, nullable=False
+    )  # This is either for weekly or daily plans
+    monday = db.Column(db.ARRAY(db.String))
+    tuesday = db.Column(db.ARRAY(db.String))
+    wednesday = db.Column(db.ARRAY(db.String))
+    thursday = db.Column(db.ARRAY(db.String))
+    friday = db.Column(db.ARRAY(db.String))
+    saturday = db.Column(db.ARRAY(db.String))
+    sunday = db.Column(db.ARRAY(db.String))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
+
+    def __repr__(self):
+        return f"<MealPlan {self.mPlan_id}>"
 
 
 class LoginForm(FlaskForm):

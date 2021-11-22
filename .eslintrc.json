@@ -1,0 +1,20 @@
+{
+    "extends": "airbnb",
+    "rules": {
+        "jsx-a11y/media-has-caption": "off",
+        "react/jsx-filename-extension": "off",
+        "no-undef": "off",
+        "react/no-array-index-key": "off",
+        "react-hooks/exhaustive-deps": "off",
+        "react/react-in-jsx-scope": "off",
+        "indent": "off",
+        "react/jsx-indent": "off",
+        "react/jsx-indent-props": "off",
+        "linebreak-style": "off",
+        "react/destructuring-assignment": "off",
+        "react/prop-types": "off",
+        "func-names": "off",
+        "camelcase": "off",
+        "no-unused-expressions": "off"
+    }
+}
