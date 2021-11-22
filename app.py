@@ -126,12 +126,11 @@ class LoginForm(FlaskForm):
     """Form to allow user to type in their credentials to login"""
 
     username = StringField(
-        "username", validators=[InputRequired(), Length(min=4, max=15)]
+        "username", validators=[InputRequired(), Length(min=4, max=15)], render_kw={"placeholder": "Username"},
     )
     password = PasswordField(
-        "password", validators=[InputRequired(), Length(min=8, max=80)]
+        "password", validators=[InputRequired(), Length(min=8, max=80)], render_kw={"placeholder": "Password"},
     )
-    remember = BooleanField("remember me")
 
 
 class SignupForm(FlaskForm):
