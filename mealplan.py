@@ -2,6 +2,7 @@
 import os
 from dotenv import find_dotenv, load_dotenv
 import requests
+import random
 from edamam import get_recipe_info
 
 
@@ -11,7 +12,7 @@ EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
 EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 
 
-def meal_plan(plan_type="weekly", callower=2000, calupper=5000, diet=None, health=None):
+def meal_plan(plan_type, callower=2000, calupper=5000, diet=None, health=[]):
     """function meal_plan: get recipe info based on parameters"""
     avglow = round(callower / 3)
     avghigh = round(calupper / 3)
@@ -26,8 +27,6 @@ def meal_plan(plan_type="weekly", callower=2000, calupper=5000, diet=None, healt
         + EDAMAM_API_ID
         + "&app_key="
         + EDAMAM_API_KEY
-        + "&from=0&to="
-        + str(length)
         + "&calories="
         + str(avglow)
         + "-"
@@ -35,8 +34,9 @@ def meal_plan(plan_type="weekly", callower=2000, calupper=5000, diet=None, healt
     )
     if diet is not None:
         url += "&diet=" + diet
-    if health is not None:
-        url += "&health=" + health
+    if len(health) > 0:
+        for i in health:
+            url += "&health=" + i
 
     def meal_type(m_t):
         """function meal_type: get recipe info based on parameters"""
@@ -48,22 +48,32 @@ def meal_plan(plan_type="weekly", callower=2000, calupper=5000, diet=None, healt
         try:
             results = data["hits"]
         except KeyError:
-            return False
+            results = []
         if results:
-            recipes = [get_recipe_info(recipe["recipe"]) for recipe in results]
             recipes = [
-                recipe["label"] for recipe in recipes if recipe is not None
+                get_recipe_info(recipe["recipe"])
+                for recipe in results
+                if recipe is not None
+            ]
+            recipes = [
+                recipe["recipe_id"] for recipe in recipes if recipe is not None
             ]  # filter out None values
+
+            meals = []
+            for i in range(length):
+                # append meal to random index of recipes
+                meals.append(random.choice(recipes))
+
         else:
-            return False
-        return recipes
+            print("No recipes found")
+            return False  # no recipes found <- TODO: handle this case by including dummy data
+        return meals
 
     breakfast = meal_type("Breakfast")
     lunch = meal_type("Lunch")
     dinner = meal_type("Dinner")
 
     return {
-        "url": url,
         "breakfast": breakfast,
         "lunch": lunch,
         "dinner": dinner,
@@ -72,6 +82,8 @@ def meal_plan(plan_type="weekly", callower=2000, calupper=5000, diet=None, healt
 
 print(
     meal_plan(
-        plan_type="daily", callower=1000, calupper=3000, diet="balanced", health="vegan"
+        plan_type="weekly",
+        diet="balanced",
+        health=["vegan", "alcohol-free"],
     )
 )
