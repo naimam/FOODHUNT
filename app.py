@@ -123,12 +123,15 @@ class LoginForm(FlaskForm):
     """Form to allow user to type in their credentials to login"""
 
     username = StringField(
-        "username", validators=[InputRequired(), Length(min=4, max=15)]
+        "username",
+        validators=[InputRequired(), Length(min=4, max=15)],
+        render_kw={"placeholder": "Username"},
     )
     password = PasswordField(
-        "password", validators=[InputRequired(), Length(min=8, max=80)]
+        "password",
+        validators=[InputRequired(), Length(min=8, max=80)],
+        render_kw={"placeholder": "Password"},
     )
-    remember = BooleanField("remember me")
 
 
 class SignupForm(FlaskForm):
@@ -136,13 +139,19 @@ class SignupForm(FlaskForm):
 
     email = StringField(
         "email",
-        validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
+        validators=[InputRequired(), Email(
+            message="Invalid email"), Length(max=50)],
+        render_kw={"placeholder": "Email Address"},
     )
     username = StringField(
-        "username", validators=[InputRequired(), Length(min=4, max=15)]
+        "username",
+        validators=[InputRequired(), Length(min=4, max=15)],
+        render_kw={"placeholder": "Username"},
     )
     password = PasswordField(
-        "password", validators=[InputRequired(), Length(min=8, max=80)]
+        "password",
+        validators=[InputRequired(), Length(min=8, max=80)],
+        render_kw={"placeholder": "Password"},
     )
 
 
@@ -181,8 +190,8 @@ def signup():
     failed = False
     form = SignupForm()
     if form.validate_on_submit():
-
-        hashed_password = generate_password_hash(form.password.data, method="sha256")
+        hashed_password = generate_password_hash(
+            form.password.data, method="sha256")
         new_user = User(
             username=form.username.data, password=hashed_password, email=form.email.data
         )
@@ -217,7 +226,8 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                app.logger.info("%s logged in successfully", current_user.username)
+                app.logger.info("%s logged in successfully",
+                                current_user.username)
                 return flask.redirect(flask.url_for("bp.home"))
         flash("Invalid username or password.", "error")
     return flask.render_template("login.html", form=form)
@@ -430,6 +440,18 @@ def favorite_restaurants():
 def favicon():
     """Function to retireve the app's icon"""
     return send_from_directory("./build", "favicon.ico")
+
+
+@app.route("/tomato.png")
+def tomato():
+    """Function to retireve the tomato image"""
+    return send_from_directory("./build", "tomato.png")
+
+
+@app.route("/pepper.png")
+def pepper():
+    """Function to retireve the pepper image"""
+    return send_from_directory("./build", "pepper.png")
 
 
 def query_favorite_recipes(uid):
