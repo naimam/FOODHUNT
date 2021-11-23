@@ -29,6 +29,7 @@ from flask_login import (
 )
 import yelp
 import edamam
+import mealplan
 
 load_dotenv(find_dotenv())
 
@@ -404,6 +405,57 @@ def favorite_restaurants():
             restaurant_info.append(yelp.restaurant_from_id(i.restaurant_id))
         data = {"error": False, "data": restaurant_info}
         return data
+    return {"error": True}
+
+
+# Meal Planner
+@app.route("/api/save-mealplan", methods=["POST", "GET"])
+@login_required
+def save_mealplan():
+    """Function to save a meal plan to the meal planner page"""
+    user = User.query.filter_by(user_id=current_user.user_id).first()
+    meal_count = flask.request.json.get("meal_count")
+    plan_type = flask.request.json.get("plan_type")
+    cal_lower = flask.request.json.get("cal_lower")
+    cal_upper = flask.request.json.get("cal_upper")
+    diet = flask.request.json.get("diet")
+    health = flask.request.json.get("health")
+    plan = mealplan.meal_plan(meal_count, plan_type, cal_lower, cal_upper, diet, health)
+    if plan:
+        if meal_count == 2:
+            db.session.add(
+                MealPlan(
+                    plantype=plan_type,
+                    brunch=plan["brunch"],
+                    dinner=plan["dinner"],
+                    user_id=user.user_id,
+                )
+            )
+        else:
+            db.session.add(
+                MealPlan(
+                    plantype=plan_type,
+                    breakfast=plan["breakfast"],
+                    lunch=plan["lunch"],
+                    dinner=plan["dinner"],
+                    user_id=user.user_id,
+                )
+            )
+        db.session.commit()
+        return {"error": False}
+
+    return {"error": True}
+
+
+@app.route("/api/meal-plan", methods=["POST", "GET"])
+@login_required
+def meal_plan():
+    """Function to retrieve a users meal plan"""
+    user = User.query.filter_by(user_id=current_user.user_id).first()
+    user_meal_plan = user.mealplan
+    if user_meal_plan:
+
+        return {"error": False, "data": data}
     return {"error": True}
 
 
