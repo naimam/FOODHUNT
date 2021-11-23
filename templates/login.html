@@ -1,42 +1,51 @@
-{% extends "bootstrap/base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
-
-{% block title %}
-Food Hunt
-{% endblock %}
-
-{% block styles %}
-{{super()}}
-<style type="text/css">
-    p {
-        color: indianred;
-        font-size: x-large;
-        font-weight: 700;
-    }
-</style>
-<link rel="shortcut icon" type="image/jpg" href="/favicon.ico" />
-{% endblock %}
+{%- extends "base.html" %}
 
 {% block content %}
-<div class="container">
+<div class="container-fluid">
+    <div class="row mt-4 align-items-center mx-3">
+        <div class="col-md-5 p-lg-5 mb-5 mb-md-0">
+            <img src="pepper.png" />
+            <div class="redirect-link text-center w-100">
+                <p class="text-muted font-weight-bold">Don't Have an Account? <a href="/signup"
+                        class="text-primary ml-2">Signup</a></p>
+            </div>
+        </div>
+        <div class="col-md-7 col-lg-6 mx-auto">
+            <form class="form-signin" method="POST" action="/login">
+                <h2 class="form-signin-heading">Please Log In</h2>
+                {{ form.hidden_tag() }}
 
-    <form class="form-signin" method="POST" action="/login">
-        <h2 class="form-signin-heading">Please sign in</h2>
-        {{ form.hidden_tag() }}
-        {{ wtf.form_field(form.username) }}
-        {{ wtf.form_field(form.password) }}
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                <!-- Username -->
+                <div class="input-group col-lg-12 mb-5">
+                    {{ wtf.form_field(form.username, class="form-control form-control-lg bg-white border-md") }}
+                </div>
+                <!-- Password -->
+                <div class="input-group col-lg-12 mb-5">
+                    {{ wtf.form_field(form.password, class="form-control form-control-lg bg-white border-md") }}
+                </div>
+                <!-- Submit button -->
+                <div class="form-group col-lg-12 mx-auto mb-0 px-0">
+                    <button class="btn btn-success btn-block py-2" type="submit">
+                        <span class="font-weight-bold">Log In</span>
+                    </button>
+                </div>
+            </form>
 
-        <a href="signup" class="btn btn-lg btn-info btn-block" role="button">Signup</a>
-
-    </form>
-    {% with messages = get_flashed_messages(category_filter=["error"]) %}
-    {% if messages %}
-    {% for message in messages %}
-    <p>{{ message }}</p>
-    {% endfor %}
-    {% endif %}
-    {% endwith %}
-
+            {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible col-lg-12" role="alert">
+                <div class="alert-message">
+                    {{ message }}
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
+        </div>
+    </div>
 </div> <!-- /container -->
 {% endblock %}
