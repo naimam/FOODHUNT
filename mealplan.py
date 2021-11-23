@@ -93,8 +93,8 @@ def meal_plan(
 
 
 # TEST
-test = meal_plan(
-    meal_count=3, plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
-)
+# test = meal_plan(
+#     meal_count=3, plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
+# )
 
-print(test)
+# print(test)
