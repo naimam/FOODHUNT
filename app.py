@@ -236,13 +236,31 @@ def logout():
 
 @app.route("/get-username", methods=["GET"])
 @login_required
-def get_user_info():
-    """Function to retrieve the users data"""
-    return json.dumps(
-        {
-            "username": current_user.username,
-        }
-    )
+def get_username():
+    """Function to retrieve the username"""
+    return {"username": current_user.username}
+
+
+@app.route("/get-zipcode", methods=["GET"])
+@login_required
+def get_zipcode():
+    """Function to retrieve the user's zipcode"""
+    return {"zipcode": current_user.zipcode}
+
+
+@app.route("/update-zipcode", methods=["POST"])
+@login_required
+def update_zipcode():
+    """Function to update the user's zip code"""
+    input_zipcode = flask.request.json.get("zipcode")
+    current_user.zipcode = input_zipcode
+    try:
+        db.session.commit()
+    except Exception as err:
+        db.session.rollback()
+        app.logger.debug(err)
+        return {"error": True}
+    return {"error": False}
 
 
 # API"""
