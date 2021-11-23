@@ -109,13 +109,10 @@ class MealPlan(db.Model):
     plantype = db.Column(
         db.String, nullable=False
     )  # This is either for weekly or daily plans
-    monday = db.Column(db.ARRAY(db.String))
-    tuesday = db.Column(db.ARRAY(db.String))
-    wednesday = db.Column(db.ARRAY(db.String))
-    thursday = db.Column(db.ARRAY(db.String))
-    friday = db.Column(db.ARRAY(db.String))
-    saturday = db.Column(db.ARRAY(db.String))
-    sunday = db.Column(db.ARRAY(db.String))
+    breakfast = db.Column(db.ARRAY(db.String))
+    lunch = db.Column(db.ARRAY(db.String))
+    dinner = db.Column(db.ARRAY(db.String))
+    brunch = db.Column(db.ARRAY(db.String))
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
 
     def __repr__(self):
