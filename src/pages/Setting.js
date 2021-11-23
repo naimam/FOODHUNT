@@ -95,11 +95,9 @@ const Setting = function (props) {
             </Alert>
             <Alert variant="success" show={successAlert} onClose={() => setSuccessAlert(false)} dismissible>
                 <Alert.Heading>
-                    Save
+                    Successfully save
                     {' '}
                     {zip}
-                    {' '}
-                    successful
                 </Alert.Heading>
             </Alert>
         </div>
