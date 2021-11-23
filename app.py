@@ -29,6 +29,7 @@ from flask_login import (
 )
 import yelp
 import edamam
+import mealplan
 
 load_dotenv(find_dotenv())
 
@@ -109,6 +110,7 @@ class MealPlan(db.Model):
     plantype = db.Column(
         db.String, nullable=False
     )  # This is either for weekly or daily plans
+    mealcount = db.Column(db.Integer, nullable=False)
     breakfast = db.Column(db.ARRAY(db.String))
     lunch = db.Column(db.ARRAY(db.String))
     dinner = db.Column(db.ARRAY(db.String))
@@ -432,6 +434,81 @@ def favorite_restaurants():
             restaurant_info.append(yelp.restaurant_from_id(i.restaurant_id))
         data = {"error": False, "data": restaurant_info}
         return data
+    return {"error": True}
+
+
+# Meal Planner
+@app.route("/api/save-mealplan", methods=["POST", "GET"])
+@login_required
+def save_mealplan():
+    """Function to save a meal plan to the meal planner page"""
+    user = User.query.filter_by(user_id=current_user.user_id).first()
+    meal_count = flask.request.json.get("meal_count")
+    plan_type = flask.request.json.get("plan_type")
+    cal_lower = flask.request.json.get("cal_lower")
+    cal_upper = flask.request.json.get("cal_upper")
+    diet = flask.request.json.get("diet")
+    health = flask.request.json.get("health")
+    plan = mealplan.meal_plan(meal_count, plan_type, cal_lower, cal_upper, diet, health)
+    if plan:
+        if meal_count == 2:
+            db.session.add(
+                MealPlan(
+                    plantype=plan_type,
+                    mealcount=meal_count,
+                    brunch=plan["brunch"],
+                    dinner=plan["dinner"],
+                    user_id=user.user_id,
+                )
+            )
+        else:
+            db.session.add(
+                MealPlan(
+                    plantype=plan_type,
+                    mealcount=meal_count,
+                    breakfast=plan["breakfast"],
+                    lunch=plan["lunch"],
+                    dinner=plan["dinner"],
+                    user_id=user.user_id,
+                )
+            )
+        db.session.commit()
+        return {"error": False}
+
+    return {"error": True}
+
+
+@app.route("/api/display-mealplan", methods=["POST", "GET"])
+@login_required
+def meal_plan():
+    """Function to retrieve a users meal plan"""
+    user = User.query.filter_by(user_id=current_user.user_id).first()
+    user_meal_plan = user.mealplan
+    if user_meal_plan:
+        data = {}
+        data["plan_type"] = user_meal_plan.plantype
+        data["meal_count"] = user_meal_plan.mealcount
+        dinner = []
+        for i in user_meal_plan.dinner:
+            dinner.append(edamam.recipe_from_id(i))
+        data["dinner"] = dinner
+
+        if user_meal_plan.mealcount == 2:
+            brunch = []
+            for i in user_meal_plan.brunch:
+                brunch.append(edamam.recipe_from_id(i))
+            data["brunch"] = brunch
+        else:
+            breakfast = []
+            for i in user_meal_plan.breakfast:
+                breakfast.append(edamam.recipe_from_id(i))
+            data["breakfast"] = breakfast
+            lunch = []
+            for i in user_meal_plan.lunch:
+                lunch.append(edamam.recipe_from_id(i))
+            data["lunch"] = lunch
+
+            return {"error": False, "data": data}
     return {"error": True}
 
 
