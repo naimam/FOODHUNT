@@ -48,12 +48,50 @@
 
         img {
 
-            width: "304";
-            height: "236";
-            margin-left: auto;
+            width: 50%;
+            background-color: white;
+            text-align: left;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
 
         }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100%;
+        }
+
+        .left-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightcoral;
+            height: 100%;
+            width: 50%;
+        }
+
+        .right-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: lightgreen;
+            height: 100%;
+            width: 50%;
+        }
     </style>
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
         integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="shortcut icon" type="image/jpg" href="/favicon.ico" />
@@ -64,35 +102,36 @@
 
 <body>
 
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-sm">
-                <img src="pepper.png" />
-            </div>
-            <div class="col-sm">
-                <form class="form-signin" method="POST" action="/login">
-                    <div class="form-item">
-                        <h1 class="form-signin-heading">Login</h1>
-                    </div>
-                    {{ form.hidden_tag() }}
-                    <div class="form-item">{{ form.username(class="text-input") }}</div>
-                    <div class="form-item">{{ form.password(class="text-input") }}</div>
-                    <div class="form-item"><button id="login-btn" class="btn btn-lg btn-warning btn-block"
-                            type="submit">Login</button>
-                    </div>
-                </form>
-                <div class="signup">Doesn't have an account? <a href="/signup">Sign up now</a></div>
-                {% with messages = get_flashed_messages(category_filter=["error"]) %}
-                {% if messages %}
-                {% for message in messages %}
-                <div class="alert alert-danger alert-dismissible" role="alert">
-                    {{ message }}
+
+    <div class="container">
+        <div class="left-container">
+            <img src="pepper.png" />
+        </div>
+
+        <div class="right-container">
+            <form class="form-signin" method="POST" action="/login">
+                <div class="form-item">
+                    <h1 class="form-signin-heading">Login</h1>
                 </div>
-                {% endfor %}
-                {% endif %}
-                {% endwith %}
+                {{ form.hidden_tag() }}
+                <div class="form-item">{{ form.username(class="text-input") }}</div>
+                <div class="form-item">{{ form.password(class="text-input") }}</div>
+                <div class="form-item"><button id="login-btn" class="btn btn-lg btn-success btn-block"
+                        type="submit">Login</button>
+                </div>
+            </form>
+            <div class="signup">Doesn't have an account? <a href="/signup">Sign up now</a></div>
+            {% with messages = get_flashed_messages(category_filter=["error"]) %}
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-danger alert-dismissible" role="alert">
+                {{ message }}
             </div>
+            {% endfor %}
+            {% endif %}
+            {% endwith %}
         </div>
     </div>
 
-</body>
+
+</body>.
