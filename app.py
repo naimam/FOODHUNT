@@ -1,3 +1,4 @@
+
 """
 Logic for the whole app
 """
@@ -109,13 +110,10 @@ class MealPlan(db.Model):
     plantype = db.Column(
         db.String, nullable=False
     )  # This is either for weekly or daily plans
-    monday = db.Column(db.ARRAY(db.String))
-    tuesday = db.Column(db.ARRAY(db.String))
-    wednesday = db.Column(db.ARRAY(db.String))
-    thursday = db.Column(db.ARRAY(db.String))
-    friday = db.Column(db.ARRAY(db.String))
-    saturday = db.Column(db.ARRAY(db.String))
-    sunday = db.Column(db.ARRAY(db.String))
+    breakfast = db.Column(db.ARRAY(db.String))
+    lunch = db.Column(db.ARRAY(db.String))
+    dinner = db.Column(db.ARRAY(db.String))
+    brunch = db.Column(db.ARRAY(db.String))
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
 
     def __repr__(self):
@@ -126,10 +124,14 @@ class LoginForm(FlaskForm):
     """Form to allow user to type in their credentials to login"""
 
     username = StringField(
-        "username", validators=[InputRequired(), Length(min=4, max=15)], render_kw={"placeholder": "Username"},
+        "username",
+        validators=[InputRequired(), Length(min=4, max=15)],
+        render_kw={"placeholder": "Username"},
     )
     password = PasswordField(
-        "password", validators=[InputRequired(), Length(min=8, max=80)], render_kw={"placeholder": "Password"},
+        "password",
+        validators=[InputRequired(), Length(min=8, max=80)],
+        render_kw={"placeholder": "Password"},
     )
 
 
@@ -140,12 +142,17 @@ class SignupForm(FlaskForm):
         "email",
         validators=[InputRequired(), Email(
             message="Invalid email"), Length(max=50)],
+        render_kw={"placeholder": "Email Address"},
     )
     username = StringField(
-        "username", validators=[InputRequired(), Length(min=4, max=15)]
+        "username",
+        validators=[InputRequired(), Length(min=4, max=15)],
+        render_kw={"placeholder": "Username"},
     )
     password = PasswordField(
-        "password", validators=[InputRequired(), Length(min=8, max=80)]
+        "password",
+        validators=[InputRequired(), Length(min=8, max=80)],
+        render_kw={"placeholder": "Password"},
     )
 
 
@@ -184,7 +191,6 @@ def signup():
     failed = False
     form = SignupForm()
     if form.validate_on_submit():
-
         hashed_password = generate_password_hash(
             form.password.data, method="sha256")
         new_user = User(
@@ -240,13 +246,31 @@ def logout():
 
 @app.route("/get-username", methods=["GET"])
 @login_required
-def get_user_info():
-    """Function to retrieve the users data"""
-    return json.dumps(
-        {
-            "username": current_user.username,
-        }
-    )
+def get_username():
+    """Function to retrieve the username"""
+    return {"username": current_user.username}
+
+
+@app.route("/get-zipcode", methods=["GET"])
+@login_required
+def get_zipcode():
+    """Function to retrieve the user's zipcode"""
+    return {"zipcode": current_user.zipcode}
+
+
+@app.route("/update-zipcode", methods=["POST"])
+@login_required
+def update_zipcode():
+    """Function to update the user's zip code"""
+    input_zipcode = flask.request.json.get("zipcode")
+    current_user.zipcode = input_zipcode
+    try:
+        db.session.commit()
+    except Exception as err:
+        db.session.rollback()
+        app.logger.debug(err)
+        return {"error": True}
+    return {"error": False}
 
 
 # API"""
@@ -419,6 +443,18 @@ def favicon():
     return send_from_directory("./build", "favicon.ico")
 
 
+@app.route("/tomato.png")
+def tomato():
+    """Function to retireve the tomato image"""
+    return send_from_directory("./build", "tomato.png")
+
+
+@app.route("/pepper.png")
+def pepper():
+    """Function to retireve the pepper image"""
+    return send_from_directory("./build", "pepper.png")
+
+
 def query_favorite_recipes(uid):
     """Query favorite recipes from database"""
     user = User.query.filter_by(user_id=uid).first()
@@ -441,18 +477,6 @@ def save_recipe(uid, rid):
         db.session.rollback()
         return {"error": True}
     return {"error": False}
-
-
-@app.route("/tomato.png")
-def tomato():
-    """Function to retireve the app's icon"""
-    return send_from_directory("./build", "tomato.png")
-
-
-@app.route("/pepper.png")
-def pepper():
-    """Function to retireve the app's icon"""
-    return send_from_directory("./build", "pepper.png")
 
 
 if __name__ == "__main__":
