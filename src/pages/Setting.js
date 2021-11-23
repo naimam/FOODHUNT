@@ -1,14 +1,29 @@
 import { useState } from 'react';
 import {
-    Button, Form, InputGroup,
+    Button, Form, InputGroup, Alert,
 } from 'react-bootstrap';
 import './Setting.css';
 
 const Setting = function (props) {
     const zipRegex = /(^\d{5}$)|(^\d{5}-\d{4}$)/;
     const [zip, setZip] = useState(props.zipcode);
-    const [hasError, setHasError] = useState(false);
+    const [errorAlert, setErrorAlert] = useState(false);
+    const [successAlert, setSuccessAlert] = useState(false);
     const [invalidZip, setInvalidZip] = useState(false);
+    const alertTime = 6000;
+
+    function showSuccessAlert() {
+        setSuccessAlert(true);
+        setTimeout(() => {
+            setSuccessAlert(false);
+        }, alertTime);
+    }
+    function showErrorAlert() {
+        setErrorAlert(true);
+        setTimeout(() => {
+            setErrorAlert(false);
+        }, alertTime);
+    }
     const updateZipcode = (event) => {
         event.preventDefault();
         if (!zipRegex.test(zip)) {
@@ -21,9 +36,10 @@ const Setting = function (props) {
                 body: JSON.stringify({ zipcode: zip }),
             }).then((response) => response.json()).then((data) => {
                 if (data.error === true) {
-                    setHasError(true);
+                    showErrorAlert();
                 } else {
                     props.setZipcode(zip);
+                    showSuccessAlert();
                 }
             });
         }
@@ -46,10 +62,10 @@ const Setting = function (props) {
     };
 
     return (
-        <div id="parent">
-            Setting Page
+        <div id="parent" className="pt-3">
+            <h1 className="mb-5 ">Setting Page</h1>
             <Form onSubmit={updateZipcode} className="zip-form">
-                <InputGroup className="w-50 mb-4 px-3">
+                <InputGroup className="w-25 mb-4 px-3">
                     <InputGroup.Text>
                         Zip code
                     </InputGroup.Text>
@@ -57,7 +73,7 @@ const Setting = function (props) {
                         data-testid="zipcode-input"
                         type="number"
                         defaultValue={props.zipcode}
-                        placeholder="Enter your zip code here.."
+                        placeholder="zip code"
                         onChange={(e) => setZip(e.target.value)}
                         isInvalid={invalidZip}
                     />
@@ -72,17 +88,20 @@ const Setting = function (props) {
                     Remove
                 </Button>
             </Form>
-
-            <h2>
-                Has error:
-                {' '}
-                {hasError.toString()}
-            </h2>
-            <h2>
-                invalid zip code:
-                {' '}
-                {invalidZip.toString()}
-            </h2>
+            <Alert variant="danger" show={errorAlert} onClose={() => setErrorAlert(false)} dismissible>
+                <Alert.Heading>
+                    Sorry we are unable to save your change! Please try again!
+                </Alert.Heading>
+            </Alert>
+            <Alert variant="success" show={successAlert} onClose={() => setSuccessAlert(false)} dismissible>
+                <Alert.Heading>
+                    Save
+                    {' '}
+                    {zip}
+                    {' '}
+                    successful
+                </Alert.Heading>
+            </Alert>
         </div>
     );
 };
