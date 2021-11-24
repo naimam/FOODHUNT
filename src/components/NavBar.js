@@ -129,6 +129,7 @@ const NavBar = function (props) {
                     <Form inline className="pe-md-3">
                         <Button id="search-btn" onClick={openSearch} variant="primary">
                             <FontAwesomeIcon icon={faSearch} />
+                            {' '}
                             Search
                         </Button>
                     </Form>

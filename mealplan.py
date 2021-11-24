@@ -48,7 +48,6 @@ def meal_plan(
             "mealType": m_t,
         }
         response = requests.get(url, params=params)
-        print(response.url)
         data = response.json()
         try:
             results = data["hits"]
@@ -97,4 +96,4 @@ def meal_plan(
 #     meal_count=3, plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
 # )
 
-# print(test)
+# print(test["dinner"])
