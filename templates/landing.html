@@ -1,5 +1,128 @@
 {% extends "landingstyle.html" %}	
-{% block body %}
-    
-<h1> Hello</h1>
+{% block main %}
+ <main role="main">
+   
+    <div class="cover jumbotron text-center jumbotron-fluid" style="margin-bottom:0">
+        <div class="cover-info">
+            <h1 class="cover-heading">Food Hunt</h1>
+            <p class="cover-text">A website that allows users to find recipes and restaurants for foods they are craving.</p> 
+            <a class="btn btn-dark btn-lg" href="#about" role="button"> <i class="fas fa-arrow-circle-down"></i> Learn More...  </a>
+            <a class="btn btn-dark btn-lg" href="{{url_for('signup') }}" role="button">or Sign Up! <i class="fas fa-sign-in-alt"></i> </a>
+        </div>
+    </div>
+      <div class="container con">
+            <div id="about">
+                <br> <br> <br>
+                <hr>
+                <h1>About</h1>
+                <p class="lead"><strong>Motivation: </strong> Sometimes we have ingredients that we do not know what to make with.
+                    Other times, we may not want to cook, but still want to eat with those ingredients. 
+                    We wanted an app that lets us solve both problems by finding new recipes or restaurants near us based on certain cravings. </p>
+                <p class="lead"><strong>Deliverable: </strong> We aim to deliver an app that allows users to find recipes and restaurants for foods they are craving. 
+                    The app will allow users to login so they can save recipes and store their location to view restaurants in their area. 
+                    Users will be able to search for recipes based on various ingredients/keywords. 
+                    If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
+                </p>
+
+            </div>
+            <div id="features">
+                <hr>
+                <h1>Features</h1>
+                <div class="row features">
+                <div class="col-md-7">
+                    <h2 class="features-heading">Recipe Search </h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="features-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+                </div>
+
+                <hr>
+
+                <div class="row features">
+                <div class="col-md-7 order-md-2">
+                    <h2 class="features-heading">Restaurant Search</h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5 order-md-1">
+                    <img class="features-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+                </div>
+
+                <hr>
+
+                <div class="row features">
+                <div class="col-md-7">
+                    <h2 class="features-heading">Meal Planner</h2>
+                    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                </div>
+                <div class="col-md-5">
+                    <img class="features-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                </div>
+
+                </div>
+
+                <hr>
+                <div class="row features">
+                    <div class="col-md-7 order-md-2">
+                        <h2 class="features-heading">Account Creation</h2>
+                        <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+                    </div>
+                    <div class="col-md-5 order-md-1">
+                        <img class="features-image img-fluid mx-auto" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
+                    </div>
+                    </div>
+        
+            </div>
+
+            
+            <!-- Team-->
+            <div id="team">
+                <hr>
+                <h1>Our Team</h1>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/MWwhKDS.jpg" alt="Andrew cat" width="140" height="140">
+                        <h2>Andrew</h2>
+                        <p class="lead">Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>       
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/noOQz4b.jpg" alt="Thu cat" width="140" height="140">
+                        <h2>Thu</h2>
+                        <p class="lead">Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>  
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/L6atYze.jpeg" alt="Naima cat" width="140" height="140">
+                        <h2>Naima</h2>
+                        <p class="lead">Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/XzzzvJC.jpeg" alt="Shafaat cat" width="140" height="140">
+                        <h2>Shafaat</h2>
+                        <p class="lead">Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>   
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/TUqQKMC.png" alt="Solumtochukwu cat" width="140" height="140">
+                        <h2>Solumtochukwu</h2>
+                        <p class="lead">Donec sed odio dui. Etiam porta sem malesuada magna mollis euismod.</p>
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/cAWzkJb.jpeg" alt="Enrique cat" width="140" height="140">
+                        <h2>Enrique</h2>
+                        <p class="lead">Industry Mentor.</p> 
+                    </div>
+                </div>
+                <hr>
+                </div>
+        </div>
+
+      <!-- Footer -->
+        <footer class="container">
+            <p class="float-right"><a href="#">Back to top</a></p>
+            <p>Fall 2021, CSC 4350 Project by Group 11.</p>
+        </footer>
+    </main>
 {% endblock %}

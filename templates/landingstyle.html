@@ -13,10 +13,99 @@
         integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" />
    
         <style>
-            a, a:hover, a:visited, a:active {
-                text-decoration: none;
+            body, html {
+            height: 100%;
+            margin: 0;
+
+
             }
-        
+            body {
+            padding-top: 3rem;
+            padding-bottom: 3rem;
+            color: #5a5a5a;
+            }
+            ::-webkit-scrollbar {
+                width: 0px;
+            }
+            ::-moz-scrollbar {
+                width: 0px;
+            }
+            .nav-link{
+                color: black;
+            }
+            .btn{
+                margin: 1rem;
+            }
+            .con .col-lg-4 {
+            margin-bottom: 1.5rem;
+            text-align: center;
+            }
+            .con h1{
+                text-align: center;
+                font-size: 3rem;
+                margin-top: 3rem;
+                margin-bottom: 3rem;
+            }
+          
+            .con .col-lg-4 p {
+            margin-right: .75rem;
+            margin-left: .75rem;
+            }
+
+            hr {
+            margin: 3rem 0; 
+            }
+
+            .features-heading {
+            font-size: 2rem;
+            font-weight: 300;
+            line-height: 1;
+            }
+
+
+
+            @media (min-width: 40em) {
+                .features-heading {
+                    font-size: 50px;
+                }
+            }
+
+            @media (min-width: 62em) {
+                .features-heading {
+                    margin-top: 7rem;
+                }
+            }
+
+            .cover{
+                background: linear-gradient(rgba(255,255,255,0.5), rgba(255,255,255,0.3)), url("https://www.pexels.com/photo/1640777/download/") no-repeat center center fixed;
+                background-color: white;
+                height: 100vh;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .cover-info{
+                color: black;
+                padding-top: 5rem;
+            }
+            .cover-heading{
+                font-size: 5rem;
+                font-weight: bolder;
+                margin-top: 3rem;
+                margin-bottom: 1rem;
+
+            }
+            .cover-text{
+                font-size: 1.5rem;
+                font-weight: bold;
+            }
+            #team h2 {
+            margin-top: 1rem;
+            font-weight: 400;
+            }
+            
+           
         </style>
 
    </head>
@@ -26,10 +115,11 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
         <!-- NavBar-->
-        <nav class="navbar fixed-top navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+        <header>
+        <nav id="navbar" class="navbar fixed-top navbar-expand-lg navbar-light bg-light" style="background-color: #e3f2fd;">
             <a class="navbar-brand mb-0 h1" href="#">
                 <img src="/favicon.ico" width="30" height="30" class="d-inline-block align-top" alt="">
-                Food Hunt
+                FoodHunt
               </a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -37,26 +127,23 @@
           
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                  <a class="nav-link" href="#features">Features</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#purpose">Purpose</a>
-                </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="#team">Team</a>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
                 </li>
                 <li class="nav-item">
-                    
+                  <a class="nav-link" href="#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#team">Team</a>
                 </li>
             
               </ul>
               <a class="nav-link" href="https://github.com/naimam/4350-Group-11-Project"> <i class="fab fa-github"></i> Github</a>
-              <a class="btn btn-outline-primary" href="{{url_for('signup') }}" role="button">Sign Up <i class="fas fa-sign-in-alt"></i> </a>
+              <a class="btn btn-outline-dark" href="{{url_for('signup') }}" role="button">Sign Up <i class="fas fa-sign-in-alt"></i> </a>
             </div>
           </nav>
-        {% block body %}{% endblock %}
-      </main>
+        </header>
+        {% block main %}{% endblock %}
      
    </body>
 </html>
