@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './NavBar.css';
 import {
     Nav, Navbar, NavDropdown, Button, Form, Modal, ToggleButton, ButtonGroup, InputGroup, Container,
@@ -19,7 +19,7 @@ const NavBar = function (props) {
     const [errors, setErrors] = useState({});
     const [input, setInput] = useState({
         option: 'recipe',
-        zip: props.zipcode,
+        zip: null,
         restaurant_keyword: '',
         recipe_keyword: '',
     });
@@ -30,7 +30,7 @@ const NavBar = function (props) {
     const resetInput = () => {
         setInput({
             option: 'recipe',
-            zip: '',
+            zip: props.zipcode,
             restaurant_keyword: '',
             recipe_keyword: '',
         });
@@ -87,6 +87,7 @@ const NavBar = function (props) {
 
     const handleFocus = (event) => event.target.select();
 
+    useEffect(() => { setField('zip', props.zipcode); }, [props.zipcode]);
     return (
         <>
             <Navbar collapseOnSelect bg="dark" expand="lg" variant="dark">
@@ -189,7 +190,7 @@ const NavBar = function (props) {
                                 <Form.Control
                                     data-testid="zipcode-input"
                                     type="number"
-                                    defaultValue={props.zipcode}
+                                    defaultValue={input.zip}
                                     placeholder="Enter your zip code here.."
                                     onChange={(e) => setField('zip', e.target.value)}
                                     onFocus={handleFocus}
