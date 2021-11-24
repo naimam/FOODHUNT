@@ -8,7 +8,10 @@
         <title>Food Hunt</title>
         <!--Bootstrap CSS-->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+        <!--Icons-->
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+        integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous" />
+   
         <style>
             a, a:hover, a:visited, a:active {
                 text-decoration: none;
@@ -35,20 +38,21 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
               <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                  <a class="nav-link" href="#">Features</a>
+                  <a class="nav-link" href="#features">Features</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Purpose</a>
+                    <a class="nav-link" href="#purpose">Purpose</a>
                 </li>
                 <li class="nav-item active">
-                    <a class="nav-link" href="#">Developers</a>
+                    <a class="nav-link" href="#team">Team</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="https://github.com/naimam/4350-Group-11-Project">Github</a>
+                    
                 </li>
             
               </ul>
-              <a class="btn btn-outline-primary" href="{{url_for('signup') }}" role="button">Sign Up</a>
+              <a class="nav-link" href="https://github.com/naimam/4350-Group-11-Project"> <i class="fab fa-github"></i> Github</a>
+              <a class="btn btn-outline-primary" href="{{url_for('signup') }}" role="button">Sign Up <i class="fas fa-sign-in-alt"></i> </a>
             </div>
           </nav>
         {% block body %}{% endblock %}
