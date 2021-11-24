@@ -141,8 +141,7 @@ class SignupForm(FlaskForm):
 
     email = StringField(
         "email",
-        validators=[InputRequired(), Email(
-            message="Invalid email"), Length(max=50)],
+        validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
         render_kw={"placeholder": "Email Address"},
     )
     username = StringField(
@@ -192,8 +191,7 @@ def signup():
     failed = False
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(
-            form.password.data, method="sha256")
+        hashed_password = generate_password_hash(form.password.data, method="sha256")
         new_user = User(
             username=form.username.data, password=hashed_password, email=form.email.data
         )
@@ -228,8 +226,7 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                app.logger.info("%s logged in successfully",
-                                current_user.username)
+                app.logger.info("%s logged in successfully", current_user.username)
                 return flask.redirect(flask.url_for("bp.home"))
         flash("Invalid username or password.", "error")
     return flask.render_template("login.html", form=form)
@@ -437,12 +434,11 @@ def favorite_restaurants():
     return {"error": True}
 
 
-# Meal Planner
-@app.route("/api/save-mealplan", methods=["POST", "GET"])
+# MEAL PLANNER
+@app.route("/api/get-mealplan", methods=["POST"])
 @login_required
-def save_mealplan():
-    """Function to save a meal plan to the meal planner page"""
-    user = User.query.filter_by(user_id=current_user.user_id).first()
+def get_mealplan():
+    """Function to get a meal plan from edamam based on user's input"""
     meal_count = flask.request.json.get("meal_count")
     plan_type = flask.request.json.get("plan_type")
     cal_lower = flask.request.json.get("cal_lower")
@@ -450,6 +446,42 @@ def save_mealplan():
     diet = flask.request.json.get("diet")
     health = flask.request.json.get("health")
     plan = mealplan.meal_plan(meal_count, plan_type, cal_lower, cal_upper, diet, health)
+
+    if plan:
+        data = {}
+        dinner = []
+        for i in plan.dinner:
+            dinner.append(edamam.recipe_from_id(i))
+        data["dinner"] = dinner
+
+        if meal_count == 2:
+            brunch = []
+            for i in plan.brunch:
+                brunch.append(edamam.recipe_from_id(i))
+            data["brunch"] = brunch
+
+        else:
+            breakfast = []
+            for i in plan.breakfast:
+                breakfast.append(edamam.recipe_from_id(i))
+            data["breakfast"] = breakfast
+            lunch = []
+            for i in plan.lunch:
+                lunch.append(edamam.recipe_from_id(i))
+            data["lunch"] = lunch
+
+            return {"error": False, "data": data}
+    return {"error": True}
+
+
+@app.route("/api/save-mealplan", methods=["POST", "GET"])
+@login_required
+def save_mealplan():
+    """Function to save a meal plan from the meal planner page to database"""
+    user = User.query.filter_by(user_id=current_user.user_id).first()
+    meal_count = flask.request.json.get("meal_count")
+    plan_type = flask.request.json.get("plan_type")
+    plan = flask.request.json.get("meal_plan")
     if plan:
         if meal_count == 2:
             db.session.add(
@@ -478,10 +510,10 @@ def save_mealplan():
     return {"error": True}
 
 
-@app.route("/api/display-mealplan", methods=["POST", "GET"])
+@app.route("/api/fetch-mealplan", methods=["POST", "GET"])
 @login_required
-def meal_plan():
-    """Function to retrieve a users meal plan"""
+def fetch_mealplan():
+    """Function to retrieve a users meal plan from database"""
     user = User.query.filter_by(user_id=current_user.user_id).first()
     user_meal_plan = user.mealplan
     if user_meal_plan:
