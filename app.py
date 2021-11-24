@@ -141,8 +141,7 @@ class SignupForm(FlaskForm):
 
     email = StringField(
         "email",
-        validators=[InputRequired(), Email(
-            message="Invalid email"), Length(max=50)],
+        validators=[InputRequired(), Email(message="Invalid email"), Length(max=50)],
         render_kw={"placeholder": "Email Address"},
     )
     username = StringField(
@@ -158,10 +157,9 @@ class SignupForm(FlaskForm):
 
 
 @app.route("/")
-@login_required
 def root():
-    """Function to reroute user to homepage"""
-    return flask.redirect(flask.url_for("bp.home"))
+    """Function to reroute user to landing page"""
+    return flask.render_template("landing.html")
 
 
 @bp.route("/home")
@@ -192,8 +190,7 @@ def signup():
     failed = False
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(
-            form.password.data, method="sha256")
+        hashed_password = generate_password_hash(form.password.data, method="sha256")
         new_user = User(
             username=form.username.data, password=hashed_password, email=form.email.data
         )
@@ -228,8 +225,7 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user)
-                app.logger.info("%s logged in successfully",
-                                current_user.username)
+                app.logger.info("%s logged in successfully", current_user.username)
                 return flask.redirect(flask.url_for("bp.home"))
         flash("Invalid username or password.", "error")
     return flask.render_template("login.html", form=form)
