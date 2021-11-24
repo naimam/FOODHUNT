@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import {
     Button, Form, InputGroup, Alert,
 } from 'react-bootstrap';
@@ -9,8 +9,10 @@ const Setting = function (props) {
     const [zip, setZip] = useState(props.zipcode);
     const [errorAlert, setErrorAlert] = useState(false);
     const [successAlert, setSuccessAlert] = useState(false);
+    const [removeAlert, setRemoveAlert] = useState(false);
     const [invalidZip, setInvalidZip] = useState(false);
-    const alertTime = 6000;
+    const alertTime = 3000;
+    const formRef = useRef(null);
 
     function showSuccessAlert() {
         setSuccessAlert(true);
@@ -22,6 +24,15 @@ const Setting = function (props) {
         setErrorAlert(true);
         setTimeout(() => {
             setErrorAlert(false);
+        }, alertTime);
+    }
+    function showRemoveAlert() {
+        setRemoveAlert(true);
+        formRef.current.reset();
+        setTimeout(() => {
+            setRemoveAlert(false);
+            setZip(null);
+            props.setZipcode(null);
         }, alertTime);
     }
     const updateZipcode = (event) => {
@@ -55,8 +66,7 @@ const Setting = function (props) {
             if (data.error === true) {
                 setHasError(true);
             } else {
-                setZip(null);
-                props.setZipcode(zip);
+                showRemoveAlert();
             }
         });
     };
@@ -64,13 +74,12 @@ const Setting = function (props) {
     return (
         <div id="parent" className="pt-3">
             <h1 className="mb-5 ">Setting Page</h1>
-            <Form onSubmit={updateZipcode} className="zip-form">
+            <Form onSubmit={updateZipcode} className="zip-form" ref={formRef}>
                 <InputGroup className="w-25 mb-4 px-3">
                     <InputGroup.Text>
                         Zip code
                     </InputGroup.Text>
                     <Form.Control
-                        data-testid="zipcode-input"
                         type="number"
                         defaultValue={props.zipcode}
                         placeholder="zip code"
@@ -84,7 +93,7 @@ const Setting = function (props) {
                 <Button variant="success" type="submit" className="mb-4">
                     Save
                 </Button>
-                <Button variant="danger" onClick={clearZipcode} className="mb-4">
+                <Button variant="danger" className="mb-4" onClick={clearZipcode}>
                     Remove
                 </Button>
             </Form>
@@ -96,6 +105,13 @@ const Setting = function (props) {
             <Alert variant="success" show={successAlert} onClose={() => setSuccessAlert(false)} dismissible>
                 <Alert.Heading>
                     Successfully save
+                    {' '}
+                    {zip}
+                </Alert.Heading>
+            </Alert>
+            <Alert variant="warning" show={removeAlert} onClose={() => setRemoveAlert(false)} dismissible>
+                <Alert.Heading>
+                    Successfully remove
                     {' '}
                     {zip}
                 </Alert.Heading>
