@@ -6,6 +6,7 @@ import Home from './pages/Home';
 import Favorite from './pages/Favorite';
 import Setting from './pages/Setting';
 import Search from './pages/Search';
+import MealPlanner from './pages/MealPlanner';
 import PageNotFound from './pages/PageNotFound';
 
 const App = function () {
@@ -26,6 +27,7 @@ const App = function () {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/favorite" element={<Favorite option="recipe" />} />
+        <Route path="/meal-planner" element={<MealPlanner />} />
         <Route path="/search/:option/:zip/:keyword" element={<Search />} />
         <Route path="/*" element={<PageNotFound />} />
         `

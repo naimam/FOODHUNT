@@ -106,6 +106,7 @@ const NavBar = function (props) {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/home">Home</Nav.Link>
                         <Nav.Link as={Link} to="/favorite">Favorite</Nav.Link>
+                        <Nav.Link as={Link} to="/meal-planner">Meal Planner</Nav.Link>
                         <NavDropdown title="Profile" id="basic-nav-dropdown">
                             <NavDropdown.Item>
                                 <FontAwesomeIcon icon={faUser} className="me-2" />
