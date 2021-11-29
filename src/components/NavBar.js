@@ -5,7 +5,7 @@ import {
 } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faSearch, faUser, faCog, faSignOutAlt,
+    faSearch, faUser, faCog, faSignOutAlt, faAppleAlt, faPepperHot,
 } from '@fortawesome/free-solid-svg-icons';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../logo.png';
@@ -106,7 +106,16 @@ const NavBar = function (props) {
                     <Nav className="me-auto">
                         <Nav.Link as={Link} to="/home">Home</Nav.Link>
                         <Nav.Link as={Link} to="/favorite">Favorite</Nav.Link>
-                        <Nav.Link as={Link} to="/meal-planner">Meal Planner</Nav.Link>
+                        <NavDropdown title="Meal Planner">
+                            <NavDropdown.Item as={Link} to="/meal-survey">
+                                <FontAwesomeIcon icon={faPepperHot} className="me-2" />
+                                Meal Survey
+                            </NavDropdown.Item>
+                            <NavDropdown.Item as={Link} to="/meal-plan">
+                                <FontAwesomeIcon icon={faAppleAlt} className="me-2" />
+                                Meal Plan
+                            </NavDropdown.Item>
+                        </NavDropdown>
                         <NavDropdown title="Profile" id="basic-nav-dropdown">
                             <NavDropdown.Item>
                                 <FontAwesomeIcon icon={faUser} className="me-2" />

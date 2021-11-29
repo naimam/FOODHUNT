@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAEA,AAAA,EAAE,CAAA;EACE,KAAK,EAHG,OAAiB;CAI5B",
+    "sources": [
+        "MealPlan.scss"
+    ],
+    "names": [],
+    "file": "MealPlan.css"
+}

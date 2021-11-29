@@ -1,0 +1,104 @@
+@import url("https://fonts.googleapis.com/css?family=Pacifico|Quicksand|Scope+One|Nunito+Sans");
+/** FONTS **/
+/** COLORS **/
+.Tabs {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column wrap;
+          flex-flow: column wrap;
+}
+
+.Tabs__head {
+  margin: 0;
+  padding: 1rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+}
+
+.Tabs__content {
+  padding: 2rem;
+}
+
+.Tab__link {
+  padding: 1rem;
+  margin: 0 0.2rem;
+  color: #34495e;
+}
+
+.Tab__link:hover {
+  color: #ff4c5a;
+}
+
+.Tab__active {
+  font-size: larger;
+  border-radius: 1rem;
+  border: solid;
+  padding: 0 1rem;
+  -webkit-transition: all 0.1s ease-in-out;
+  transition: all 0.1s ease-in-out;
+  -webkit-transform: translateY(-0.3rem);
+          transform: translateY(-0.3rem);
+}
+
+.Button {
+  padding: 0.5rem 1.2rem;
+  display: inline-block;
+  cursor: pointer;
+  text-align: center;
+  font-size: 1rem;
+  font-family: "Scope One", serif;
+}
+
+.Button:hover {
+  -webkit-transform: translateY(0.51px);
+          transform: translateY(0.51px);
+}
+
+.Button--regular {
+  background-color: #1abc9c;
+  border-radius: 1rem;
+  color: white;
+}
+
+.Button--regular:hover {
+  background-color: #2ecc71;
+  color: #ecf0f1;
+}
+
+.Button--accent {
+  background-color: #ff4c5a;
+  padding: 1.5rem 2rem;
+  border-radius: 2rem;
+  color: white;
+}
+
+.Button--accent:hover {
+  background-color: #e74c3c;
+  color: #ecf0f1;
+}
+
+.Button--transparent {
+  background-color: transparent;
+  border-radius: 0;
+}
+
+.Tab__link span:last-of-type:after {
+  content: "";
+}
+
+.Select {
+  padding: 1rem;
+  background-color: white;
+  font-size: 1.2rem;
+  font-family: "Quicksand", sans-serif;
+  min-width: 45%;
+}
+/*# sourceMappingURL=MealSurveyForm.css.map */
