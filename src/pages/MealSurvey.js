@@ -114,7 +114,7 @@ class MealSurvey extends Component {
         const { mealCount, planType, healthPreferences, calories, diet } = this.state;
         const meals = this.state.data.mealTypes[mealCount];
         const input = {
-            plan: planType,
+            plan_type: planType,
             health: healthPreferences,
             calories: { min: calories.min, max: calories.max },
             diet: diet.name,
@@ -122,15 +122,23 @@ class MealSurvey extends Component {
         }
 
         alert(JSON.stringify(input))
-        // this.setState({loading:true},() => {
-        //   getPlan(res).then(
-        //     (data) => {
-        //       let par = {num:this.state.planType,data: data}
-        //       //stop loading and redirect to meal page
-        //       this.setState({loading:false, redirect: true, data: par});
-        //     }
-        //  );
-        // });
+        this.setState({ loading: true }, () => {
+            //   getPlan(res).then(
+            //     (data) => {
+            //       let par = {num:this.state.planType,data: data}
+            //       //stop loading and redirect to meal page
+            //       this.setState({loading:false, redirect: true, data: par});
+            //     }
+            //  );
+            fetch(`${process.env.PUBLIC_URL}/api/get-mealplan`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(input),
+            }).then((response) => response.json()).then((data) => {
+                console.log(data.data)
+                this.setState({ loading: false });
+            });
+        });
     }
 
 

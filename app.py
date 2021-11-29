@@ -439,42 +439,26 @@ def favorite_restaurants():
 @login_required
 def get_mealplan():
     """Function to get a meal plan from edamam based on user's input"""
-    meal_count = flask.request.json.get("meal_count")
+    meals = flask.request.json.get("meals")
     plan_type = flask.request.json.get("plan_type")
-    cal_lower = flask.request.json.get("cal_lower")
-    cal_upper = flask.request.json.get("cal_upper")
+    calories = flask.request.json.get("calories")
     diet = flask.request.json.get("diet")
     health = flask.request.json.get("health")
-    plan = mealplan.meal_plan(meal_count, plan_type, cal_lower, cal_upper, diet, health)
+    if not meals or not plan_type or not calories or not diet:
+        return {"error": True}
 
+    cal_lower = calories["min"]
+    cal_upper = calories["max"]
+
+    app.logger.info(type(plan_type))
+    app.logger.info(meals)
+    plan = mealplan.meal_plan(meals, plan_type, cal_lower, cal_upper, diet, health)
     if plan:
-        data = {}
-        dinner = []
-        for i in plan.dinner:
-            dinner.append(edamam.recipe_from_id(i))
-        data["dinner"] = dinner
-
-        if meal_count == 2:
-            brunch = []
-            for i in plan.brunch:
-                brunch.append(edamam.recipe_from_id(i))
-            data["brunch"] = brunch
-
-        else:
-            breakfast = []
-            for i in plan.breakfast:
-                breakfast.append(edamam.recipe_from_id(i))
-            data["breakfast"] = breakfast
-            lunch = []
-            for i in plan.lunch:
-                lunch.append(edamam.recipe_from_id(i))
-            data["lunch"] = lunch
-
-            return {"error": False, "data": data}
+        return {"error": False, "data": plan}
     return {"error": True}
 
 
-@app.route("/api/save-mealplan", methods=["POST", "GET"])
+@app.route("/api/save-mealplan", methods=["POST"])
 @login_required
 def save_mealplan():
     """Function to save a meal plan from the meal planner page to database"""
@@ -510,7 +494,7 @@ def save_mealplan():
     return {"error": True}
 
 
-@app.route("/api/fetch-mealplan", methods=["POST", "GET"])
+@app.route("/api/fetch-mealplan", methods=["POST"])
 @login_required
 def fetch_mealplan():
     """Function to retrieve a users meal plan from database"""
