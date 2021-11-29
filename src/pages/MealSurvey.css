@@ -73,11 +73,14 @@
 .Survey__heading {
   text-align: center;
   margin: 0;
-  font-size: 0.5rem;
   text-transform: uppercase;
-  color: #1abc9c;
+  color: #e74c3c;
   letter-spacing: 3px;
   font-family: "Nunito Sans", serif;
+}
+
+.Survey__heading h1 {
+  font-size: x-large;
 }
 
 .Survey__tabs {
@@ -156,38 +159,33 @@
   }
 }
 
-ul {
+.Survey ul {
   margin: 0;
   padding: 0;
 }
 
-li {
+.Survey li {
   cursor: pointer;
   list-style-type: none;
   margin: 0.4rem 0;
 }
 
-a {
+.Survey a {
   text-decoration: none;
 }
 
-h1 {
-  font-size: large;
-  color: #16a085;
-}
-
-label {
+.Survey label {
   margin: 0 1rem;
 }
 
-input {
+.Survey input {
   margin: 0.5rem;
   min-width: 3rem;
   border: 0;
   border-bottom: solid 1px;
 }
 
-input:focus {
+.Survey input:focus {
   outline: none;
 }
 /*# sourceMappingURL=MealSurvey.css.map */

@@ -154,7 +154,6 @@ class MealSurvey extends Component {
                     this.state.loading ?
                         <div className="Survey__loading">
                             <h1 className="Survey__loading__heading">Preparing Your Meal Plan</h1>
-                            {/* <FontAwesomeIcon icon={faCircleNotch} className="Survey__loading__icon" /> */}
                             <img src={logo} className="Survey__loading__icon" />
                         </div>
                         : <div className="Survey__content">
