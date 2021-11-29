@@ -450,8 +450,6 @@ def get_mealplan():
     cal_lower = calories["min"]
     cal_upper = calories["max"]
 
-    app.logger.info(type(plan_type))
-    app.logger.info(meals)
     plan = mealplan.meal_plan(meals, plan_type, cal_lower, cal_upper, diet, health)
     if plan:
         return {"error": False, "data": plan}

@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { Navigate } from 'react-router-dom';
 import React, { Component } from 'react';
 import './MealSurvey.css';
 import Tabs, { Tab, Button, Radio, RadioGroup, Select, CheckboxGroup } from '../components/MealSurveyForm'
@@ -121,7 +122,6 @@ class MealSurvey extends Component {
             meals: meals,
         }
 
-        alert(JSON.stringify(input))
         this.setState({ loading: true }, () => {
             //   getPlan(res).then(
             //     (data) => {
@@ -130,14 +130,17 @@ class MealSurvey extends Component {
             //       this.setState({loading:false, redirect: true, data: par});
             //     }
             //  );
+
             fetch(`${process.env.PUBLIC_URL}/api/get-mealplan`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(input),
             }).then((response) => response.json()).then((data) => {
                 console.log(data.data)
-                this.setState({ loading: false });
+                let par = { num: this.state.planType, data: data }
+                this.setState({ loading: false, redirect: true, data: par });
             });
+
         });
     }
 
@@ -220,7 +223,11 @@ class MealSurvey extends Component {
                                     </Tab>
                                 </Tabs>
                             </form>
-                        </div>}
+                        </div>
+                }
+                {
+                    this.state.redirect ? <Navigate to='/meal-plan' state={{ data: this.state.data }} /> : null
+                }
 
             </div>
         );
