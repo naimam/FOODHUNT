@@ -14,9 +14,12 @@ export default class Tabs extends Component {
         this.state = {
             activeIndex: props.defaultIndex || 0,
         }
+        this.handleClick = this.handleClick.bind(this);
     }
 
-    handleClick = (index) => this.setState({ activeIndex: index });
+    handleClick(index) {
+        this.setState({ activeIndex: index });
+    }
 
     // passing default props to all tabs
     passPropsToTabs() {
@@ -76,8 +79,9 @@ class Button extends Component {
             type: props.type || 'regular',
             link: props.link || false,
         }
+        this.get = this.get.bind(this);
     }
-    get = () => {
+    get() {
         return (
             <button name={this.props.name}
                 className={`Button Button--${this.state.type} ${this.props.className}`}
@@ -172,8 +176,12 @@ CheckboxGroup.propTypes = {
 }
 
 class RadioGroup extends Component {
+    constructor(props) {
+        super(props);
+        this.passPropsToChildren = this.passPropsToChildren.bind(this);
+    }
 
-    passPropsToChildren = () => {
+    passPropsToChildren() {
         const { children, handleChange, activeIndex } = this.props;
         return React.Children.map(children, (child, index) =>
             React.cloneElement(
@@ -194,6 +202,7 @@ class RadioGroup extends Component {
         )
     }
 }
+
 const Radio = (props) => {
     const id = generateId();
     return (

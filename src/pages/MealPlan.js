@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { Button, Row } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import './MealPlan.css';
 import Tabs, { Tab } from '../components/MealSurveyForm';
@@ -51,7 +51,6 @@ const MealPlan = function () {
     return (
         <div className="Plan">
             <MealTabs tabsData={mealData} tabsNum={mealNum} />
-            <Button>Save</Button>
         </div>
     );
 };
