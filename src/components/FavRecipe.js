@@ -38,6 +38,7 @@ const Recipe = function (props) {
                                 <b>Cooking Time:</b>
                                 {' '}
                                 {item.cookingtime}
+                                {' '}
                                 mins.
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-health-labels">
