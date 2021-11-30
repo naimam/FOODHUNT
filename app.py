@@ -435,19 +435,36 @@ def favorite_restaurants():
     return {"error": True}
 
 
-# Meal Planner
-@app.route("/api/save-mealplan", methods=["POST", "GET"])
+# MEAL PLANNER
+@app.route("/api/get-mealplan", methods=["POST"])
+@login_required
+def get_mealplan():
+    """Function to get a meal plan from edamam based on user's input"""
+    meals = flask.request.json.get("meals")
+    plan_type = flask.request.json.get("plan_type")
+    calories = flask.request.json.get("calories")
+    diet = flask.request.json.get("diet")
+    health = flask.request.json.get("health")
+    if not meals or not plan_type or not calories or not diet:
+        return {"error": True}
+
+    cal_lower = calories["min"]
+    cal_upper = calories["max"]
+
+    plan = mealplan.meal_plan(meals, plan_type, cal_lower, cal_upper, diet, health)
+    if plan:
+        return {"error": False, "data": plan}
+    return {"error": True}
+
+
+@app.route("/api/save-mealplan", methods=["POST"])
 @login_required
 def save_mealplan():
-    """Function to save a meal plan to the meal planner page"""
+    """Function to save a meal plan from the meal planner page to database"""
     user = User.query.filter_by(user_id=current_user.user_id).first()
     meal_count = flask.request.json.get("meal_count")
     plan_type = flask.request.json.get("plan_type")
-    cal_lower = flask.request.json.get("cal_lower")
-    cal_upper = flask.request.json.get("cal_upper")
-    diet = flask.request.json.get("diet")
-    health = flask.request.json.get("health")
-    plan = mealplan.meal_plan(meal_count, plan_type, cal_lower, cal_upper, diet, health)
+    plan = flask.request.json.get("meal_plan")
     if plan:
         if meal_count == 2:
             db.session.add(
@@ -476,10 +493,10 @@ def save_mealplan():
     return {"error": True}
 
 
-@app.route("/api/display-mealplan", methods=["POST", "GET"])
+@app.route("/api/fetch-mealplan", methods=["POST"])
 @login_required
-def meal_plan():
-    """Function to retrieve a users meal plan"""
+def fetch_mealplan():
+    """Function to retrieve a users meal plan from database"""
     user = User.query.filter_by(user_id=current_user.user_id).first()
     user_meal_plan = user.mealplan
     if user_meal_plan:

@@ -3,7 +3,7 @@ import os
 from dotenv import find_dotenv, load_dotenv
 import requests
 import random
-from edamam import get_recipe_info, recipe_from_id
+from edamam import get_recipe_info
 
 
 load_dotenv(find_dotenv())
@@ -12,17 +12,12 @@ EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
 EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 
 
-def meal_plan(
-    meal_count, plan_type, callower=1800, calupper=2500, diet=None, health=[]
-):
+def meal_plan(meals, plan_type, callower=1800, calupper=2500, diet=None, health=[]):
     """function meal_plan: get recipe info based on parameters"""
-    avglow = round(callower / 3)
-    avghigh = round(calupper / 3)
+    avglow = round(callower / len(meals))
+    avghigh = round(calupper / len(meals))
 
-    if plan_type == "weekly":
-        length = 7
-    else:
-        length = 1
+    length = plan_type
 
     url = (
         "https://api.edamam.com/search?q="
@@ -34,7 +29,6 @@ def meal_plan(
         + str(avglow)
         + "-"
         + str(avghigh)
-        + "&random=True"
     )
     if diet is not None:
         url += "&diet=" + diet
@@ -42,58 +36,33 @@ def meal_plan(
         for i in health:
             url += "&health=" + i
 
-    def meal_type(m_t):
-        """function meal_type: get recipe info based on parameters"""
-        params = {
-            "mealType": m_t,
-        }
+    all_meals = {}
+
+    for q in meals:
+        params = {"mealType": q, "q": q, "random": True}
         response = requests.get(url, params=params)
         data = response.json()
         try:
             results = data["hits"]
         except KeyError:
             results = []
-        if results:
-            recipes = [
-                get_recipe_info(recipe["recipe"])
-                for recipe in results
-                if recipe is not None
-            ]
-            recipes = [
-                recipe["recipe_id"] for recipe in recipes if recipe is not None
-            ]  # filter out None values
+        if not results:
+            # no recipes found <- TODO: handle error
+            return False
+        recipes = [
+            get_recipe_info(recipe["recipe"])
+            for recipe in results
+            if recipe is not None
+        ]
 
-            meals = []
-            for i in range(length):
-                # append meal to random index of recipes
-                meals.append(recipes[i])
+        # recipesId = [
+        #     recipe["recipe_id"] for recipe in recipes if recipe is not None
+        # ]  # filter out None values
 
-            return meals
-
-        return (
-            False  # no recipes found <- TODO: handle this case by including dummy data
-        )
-
-    all_meals = {}
-    dinner = meal_type("Dinner")
-    all_meals["dinner"] = dinner
-
-    if meal_count == 2:
-        brunch = meal_type("Brunch")
-        all_meals["brunch"] = brunch
-
-    else:
-        breakfast = meal_type("Breakfast")
-        lunch = meal_type("Lunch")
-        all_meals["breakfast"] = breakfast
-        all_meals["lunch"] = lunch
-
+        mealList = []
+        random.shuffle(recipes)
+        for i in range(length):
+            # append meal to random index of recipes
+            mealList.append(recipes[i])
+        all_meals[q] = mealList
     return all_meals
-
-
-# TEST
-# test = meal_plan(
-#     meal_count=3, plan_type="weekly", diet="balanced", health=["vegan", "alcohol-free"]
-# )
-
-# print(test["dinner"])
