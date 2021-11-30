@@ -115,6 +115,8 @@ class MealPlan(db.Model):
     lunch = db.Column(db.ARRAY(db.String))
     dinner = db.Column(db.ARRAY(db.String))
     brunch = db.Column(db.ARRAY(db.String))
+    breakfast_snack = db.Column(db.ARRAY(db.String))
+    afternoon_snack = db.Column(db.ARRAY(db.String))
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
 
     def __repr__(self):
