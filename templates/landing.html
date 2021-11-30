@@ -1,0 +1,136 @@
+{% extends "landingstyle.html" %}	
+{% block main %}
+ <main role="main">
+   
+    <div class="cover jumbotron text-center jumbotron-fluid" style="margin-bottom:0">
+        <div class="cover-info">
+            <h1 class="cover-heading">FOOD HUNT</h1>
+            <p class="cover-text">A website that allows users to find recipes and restaurants for foods they are craving.</p> 
+            <a class="btn btn-dark btn-lg" href="#about" role="button"> <i class="fas fa-arrow-circle-down"></i> Learn More...  </a>
+            <a class="btn btn-dark btn-lg" href="{{url_for('signup') }}" role="button">or Sign Up! <i class="fas fa-sign-in-alt"></i> </a>
+        </div>
+    </div>
+      <div class="container con">
+            <div id="about">
+                <br> <br> <br>
+                <hr>
+                <h1>About</h1>
+                <p class="lead"> <b>Problem: </b>Sometimes we have ingredients, but have no idea what to make with them.
+                    Other times, we may not want to cook, but still want to eat food with those ingredients. Furthermore, there may be some days where you just have no clue what meals to make.
+                    We wanted an app that lets us solve all of these problems.</p>
+                <p class="lead"> <b> Solution: </b>We aim to deliver an app that not only allows users to find recipes and restaurants for foods they are craving, but also allows users 
+                    to create meal plans based on their dietary & health prefrences.
+                    The app will allow users to create accounts so they can save recipes and store their location to view restaurants in their area. 
+                    Users will be able to search for recipes based on various ingredients/keywords. 
+                    If the user cannot find a suitable recipe, they will also be able to search for restaurants to satisfy their cravings.
+                </p>
+
+            </div>
+            <div id="features">
+                <hr>
+                <h1>Features</h1>
+                <div class="row features">
+                <div class="col-md-6">
+                    <h2 class="features-heading">Recipe Search </h2>
+                    <p class="lead">Do you want to make Chicken Alfredo but have no idea how to do so? Use the <b>Recipe Search</b> feature to get a list of recipes, 
+                        with each recipe including information on the calories, cooking time, health/diet labels, ingredients, and a link to the steps! </p>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://i.imgur.com/mufXUDQ.png" target="_blank"><img class="features-image img-fluid mx-auto" src="https://i.imgur.com/mufXUDQ.png" alt="Recipe Search"></a>
+                </div>
+                </div>
+
+                <hr>
+
+                <div class="row features">
+                <div class="col-md-6 order-md-2">
+                    <h2 class="features-heading">Restaurant Search</h2>
+                    <p class="lead">Maybe you want to get some Pizza in your area... You can use the <b>Restaurant Search</b> feature to search for restaurants 
+                        by inputing your zip code and whichever cuisine you want. For each restaurant, there is information on their address, phone number, 
+                        rating, price, and a link to their yelp page. </p>
+                </div>
+                <div class="col-md-6 order-md-1">
+                    <a href="https://i.imgur.com/mAgaXQT.png" target="_blank"><img class="features-image img-fluid mx-auto" src="https://i.imgur.com/mAgaXQT.png" alt="Restaurant Search"></a>
+
+                </div>
+                </div>
+
+                <hr>
+
+                <div class="row features">
+                <div class="col-md-6">
+                    <h2 class="features-heading">Meal Planner</h2>
+                    <p class="lead">What if you have no idea what to eat for the day- or even for the week? The <b>Meal Planner</b> feature is perfect for you! 
+                        By filling out a survey, the meal planner displays meals tailored to your dietary & health needs! </p>
+                </div>
+                <div class="col-md-6">
+                    <a href="https://i.imgur.com/mAgaXQT.png" target="_blank"><img class="features-image img-fluid mx-auto" src="https://i.imgur.com/mAgaXQT.png" alt="Meal Planner"></a>
+
+                </div>
+
+                </div>
+
+                <hr>
+                <div class="row features">
+                    <div class="col-md-6 order-md-2">
+                        <h2 class="features-heading">Account Creation</h2>
+                        <p class="lead">By creating an account, you are able to save and view your favorite recipes and restaurants. Plus, you can even store your meal planners!</p>
+                    </div>
+                    <div class="col-md-6 order-md-1">
+                        <a href="https://i.imgur.com/wyExS7k.png" target="_blank"><img class="features-image img-fluid mx-auto" src="https://i.imgur.com/wyExS7k.png" alt="Account Creation"></a>
+                    </div>
+                    </div>
+        
+            </div>
+
+            
+            <!-- Team-->
+            <div id="team">
+                <hr>
+                <h1>Our Team</h1>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/MWwhKDS.jpg" alt="Andrew cat" width="140" height="140">
+                        <h2>Andrew</h2>
+                        <p class="lead">Readme.</p>       
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/noOQz4b.jpg" alt="Thu cat" width="140" height="140">
+                        <h2>Thu</h2>
+                        <p class="lead">Frontend / React.</p>  
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/L6atYze.jpeg" alt="Naima cat" width="140" height="140">
+                        <h2>Naima</h2>
+                        <p class="lead">APIs / Client Tests.</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/XzzzvJC.jpeg" alt="Shafaat cat" width="140" height="140">
+                        <h2>Shafaat</h2>
+                        <p class="lead">Database / Pyinting. </p>   
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/TUqQKMC.png" alt="Solumtochukwu cat" width="140" height="140">
+                        <h2>Solumtochukwu</h2>
+                        <p class="lead">Login & Signup pgs / Server Tests. </p>
+                    </div>
+                    <div class="col-lg-4">
+                        <img class="rounded-circle" src="https://i.imgur.com/cAWzkJb.jpeg" alt="Enrique cat" width="140" height="140">
+                        <h2>Enrique</h2>
+                        <p class="lead">Industry Mentor.</p> 
+                    </div>
+                </div>
+                <hr>
+                </div>
+        </div>
+
+      <!-- Footer -->
+        <footer class="container">
+            <p class="float-right"><a href="#">Back to top.</a></p>
+            <p>Fall 2021, CSC 4350 Project by Group 11.</p>
+            <br> <br>
+        </footer>
+    </main>
+{% endblock %}
