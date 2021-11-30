@@ -82,7 +82,7 @@ const Recipe = function (props) {
                                 ))}
                             </ListGroup.Item>
                             <ListGroup.Item className="recipe-cautions">
-                                <b>Cautons:</b>
+                                <b>Cautions:</b>
                                 {' '}
                                 {item.cautions.slice(0, 5).map((cautions) => (
                                     <span className="recipe-cautions">{cautions}</span>

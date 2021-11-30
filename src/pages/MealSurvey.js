@@ -44,6 +44,7 @@ class MealSurvey extends Component {
             },
             loading: false,
             redirect: false,
+            callbackData: {},
         };
 
         this.tabs = React.createRef();
@@ -122,14 +123,9 @@ class MealSurvey extends Component {
             meals: meals,
         }
 
+        console.log(JSON.stringify(input))
+
         this.setState({ loading: true }, () => {
-            //   getPlan(res).then(
-            //     (data) => {
-            //       let par = {num:this.state.planType,data: data}
-            //       //stop loading and redirect to meal page
-            //       this.setState({loading:false, redirect: true, data: par});
-            //     }
-            //  );
 
             fetch(`${process.env.PUBLIC_URL}/api/get-mealplan`, {
                 method: 'POST',
@@ -137,8 +133,8 @@ class MealSurvey extends Component {
                 body: JSON.stringify(input),
             }).then((response) => response.json()).then((data) => {
                 console.log(data.data)
-                let par = { num: this.state.planType, data: data }
-                this.setState({ loading: false, redirect: true, data: par });
+                let par = { from: 'survey', num: this.state.planType, data: data.data }
+                this.setState({ loading: false, redirect: true, callbackData: par });
             });
 
         });
@@ -157,7 +153,6 @@ class MealSurvey extends Component {
                             <img src={logo} className="Survey__loading__icon" />
                         </div>
                         : <div className="Survey__content">
-
                             <div className="Survey__heading"><h1>Just Some Quick Questions</h1></div>
                             <form>
                                 <Tabs defaultIndex={0} ref={this.tabs} className="Survey__tabs">
@@ -225,7 +220,7 @@ class MealSurvey extends Component {
                         </div>
                 }
                 {
-                    this.state.redirect ? <Navigate to='/meal-plan' state={{ data: this.state.data }} /> : null
+                    this.state.redirect ? <Navigate to='/meal-plan' state={{ data: this.state.callbackData }} /> : null
                 }
 
             </div>
