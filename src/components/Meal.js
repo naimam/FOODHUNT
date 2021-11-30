@@ -5,10 +5,7 @@ import {
 import './Recipe.css';
 
 const Meal = function (props) {
-    console.log(JSON.stringify(props.mealLabel));
-    console.log(JSON.stringify(props.mealRecipe));
     const item = props.mealRecipe;
-
     return (
         <Col className="recipe-col meal-col">
             <h4 className="meal-label">{props.mealLabel}</h4>
