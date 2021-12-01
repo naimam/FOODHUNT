@@ -23,6 +23,11 @@
   padding-top: 0;
 }
 
+form.save-form {
+  float: right;
+  margin-right: 1rem;
+}
+
 .Plan ul {
   margin: 0;
   padding: 0;

@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { Row } from 'react-bootstrap';
+import { Row, Button, Form } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import './MealPlan.css';
 import Tabs, { Tab } from '../components/MealSurveyForm';
@@ -10,9 +10,10 @@ import Meal from '../components/Meal';
 const MealPlan = function () {
     const [mealNum, setMealNum] = useState([]);
     const [mealData, setMealData] = useState([]);
+    const [from, setFrom] = useState('navbar');
     const state = useLocation().state;
 
-    const MealTabs = (props) => {
+    const MealTabs = function () {
         const tabs = [];
         for (let i = 0; i < mealNum; i++) {
             const contentArr = [];
@@ -28,7 +29,6 @@ const MealPlan = function () {
                         contentArr.map((plan, i) => {
                             const recipe = plan.content;
                             return (
-
                                 <Meal mealRecipe={recipe} mealLabel={plan.label} />
                             );
                         })
@@ -43,16 +43,46 @@ const MealPlan = function () {
         )
     };
 
+    const onSaveMealPlan = function (e) {
+        alert('it works!');
+        e.preventDefault();
+    }
+
     useEffect(() => {
         setMealData(state.data.data);
         setMealNum(state.data.num)
-    }, [mealNum, mealData]);
+        setFrom(state.data.from)
+    }, [mealNum, mealData, from]);
 
-    return (
-        <div className="Plan">
-            <MealTabs tabsData={mealData} tabsNum={mealNum} />
-        </div>
-    );
+    if (from === 'navbar') {
+        return (<div className="Plan">
+            <h1>Nav Bar</h1>
+            <Form className="save-form" onSubmit={onSaveMealPlan}>
+                <Form.Group className="mb-3">
+                    <Form.Check required type="checkbox" label="By click save you will override previous saved meal plan" />
+                </Form.Group>
+                <Button variant="primary" type="submit">
+                    Save Meal Plan
+                </Button>
+            </Form>
+        </div>)
+    } else {
+        return (
+            <div className="Plan">
+                <MealTabs tabsData={mealData} tabsNum={mealNum} />
+                <Form className="save-form">
+                    <Form.Group className="mb-3">
+                        <Form.Check required type="checkbox" label="By click save you will override previous saved meal plan" />
+                    </Form.Group>
+                    <Button variant="primary" type="submit">
+                        Save Meal Plan
+                    </Button>
+                </Form>
+            </div>
+        );
+    }
+
+
 };
 
 export default MealPlan;
