@@ -5,14 +5,14 @@ import { useLocation } from 'react-router-dom';
 import './MealPlan.css';
 import Tabs, { Tab } from '../components/MealSurveyForm';
 import Meal from '../components/Meal';
+import NoResult from '../components/NoResult';
 
-
-const MealPlan = function () {
+const SavedMealPlan = function () {
     const [mealNum, setMealNum] = useState([]);
     const [mealData, setMealData] = useState([]);
-    const state = useLocation().state;
+    const [isEmpty, setIsEmpty] = useState(true);
 
-    const MealTabs = (props) => {
+    const MealTabs = function () {
         const tabs = [];
         for (let i = 0; i < mealNum; i++) {
             const contentArr = [];
@@ -28,7 +28,6 @@ const MealPlan = function () {
                         contentArr.map((plan, i) => {
                             const recipe = plan.content;
                             return (
-
                                 <Meal mealRecipe={recipe} mealLabel={plan.label} />
                             );
                         })
@@ -43,16 +42,30 @@ const MealPlan = function () {
         )
     };
 
+
     useEffect(() => {
-        setMealData(state.data.data);
-        setMealNum(state.data.num)
-    }, [mealNum, mealData]);
+        fetch(`${process.env.PUBLIC_URL}/api/fetch-mealplan`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ meal_count: mealNum, meal_plan: mealData }),
+        }).then((response) => response.json()).then((data) => {
+            if (data.error === false) {
+                setMealNum(data.data.meal_count)
+                setMealData(data.data.meal_plan)
+                setIsEmpty(false)
+            } else {
+                setIsEmpty(true)
+            }
+        });
+
+    }, [mealNum, mealData, isEmpty]);
+
 
     return (
         <div className="Plan">
-            <MealTabs tabsData={mealData} tabsNum={mealNum} />
+            {isEmpty ? <NoResult num={3} /> : <><h1 className="page-title">Your Saved Meal Plan</h1><MealTabs tabsData={mealData} tabsNum={mealNum} /> </>}
         </div>
     );
 };
 
-export default MealPlan;
+export default SavedMealPlan;

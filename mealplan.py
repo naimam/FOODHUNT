@@ -55,10 +55,6 @@ def meal_plan(meals, plan_type, callower=1800, calupper=2500, diet=None, health=
             if recipe is not None
         ]
 
-        # recipesId = [
-        #     recipe["recipe_id"] for recipe in recipes if recipe is not None
-        # ]  # filter out None values
-
         mealList = []
         random.shuffle(recipes)
         for i in range(length):

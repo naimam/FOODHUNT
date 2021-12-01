@@ -220,7 +220,7 @@ class MealSurvey extends Component {
                         </div>
                 }
                 {
-                    this.state.redirect ? <Navigate to='/meal-plan' state={{ data: this.state.callbackData }} /> : null
+                    this.state.redirect ? <Navigate to='/new-meal-plan' state={{ data: this.state.callbackData }} /> : null
                 }
 
             </div>

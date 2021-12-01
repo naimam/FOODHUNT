@@ -6,9 +6,10 @@ import Home from './pages/Home';
 import Favorite from './pages/Favorite';
 import Setting from './pages/Setting';
 import Search from './pages/Search';
-import MealPlan from './pages/MealPlan';
-import PageNotFound from './pages/PageNotFound';
+import NewMealPlan from './pages/NewMealPlan';
 import MealSurvey from './pages/MealSurvey';
+import SavedMealPlan from './pages/SavedMealPlan';
+import NoResult from './components/NoResult';
 
 const App = function () {
   const [username, setUsername] = useState('');
@@ -28,10 +29,11 @@ const App = function () {
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/favorite" element={<Favorite option="recipe" />} />
-        <Route path="/meal-plan" element={<MealPlan />} />
+        <Route path="/new-meal-plan" element={<NewMealPlan />} />
+        <Route path="/saved-meal-plan" element={<SavedMealPlan />} />
         <Route path="/meal-survey" element={<MealSurvey />} />
         <Route path="/search/:option/:zip/:keyword" element={<Search />} />
-        <Route path="/*" element={<PageNotFound />} />
+        <Route path="/*" element={<NoResult num={4} />} />
         `
         <Route path="/setting" element={<Setting zipcode={zipcode} setZipcode={setZipcode} />} />
         <Route

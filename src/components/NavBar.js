@@ -111,7 +111,7 @@ const NavBar = function (props) {
                                 <FontAwesomeIcon icon={faPepperHot} className="me-2" />
                                 Meal Survey
                             </NavDropdown.Item>
-                            <NavDropdown.Item as={Link} to="/meal-plan" state={{ data: { from: 'navbar' } }}>
+                            <NavDropdown.Item as={Link} to="/saved-meal-plan" state={{ data: { from: 'navbar' } }}>
                                 <FontAwesomeIcon icon={faAppleAlt} className="me-2" />
                                 Meal Plan
                             </NavDropdown.Item>
