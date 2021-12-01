@@ -7,11 +7,23 @@ import Tabs, { Tab } from '../components/MealSurveyForm';
 import Meal from '../components/Meal';
 
 
-const MealPlan = function () {
+const NewMealPlan = function () {
+    const saveBtn = {
+        text: 'Save Meal Plan',
+        disabled: false,
+        variant: 'primary',
+    };
+
+    const savedBtn = {
+        text: 'Meal Plan is Saved',
+        disabled: true,
+        variant: 'secondary',
+    };
+
     const [mealNum, setMealNum] = useState([]);
     const [mealData, setMealData] = useState([]);
-    const [from, setFrom] = useState('navbar');
     const state = useLocation().state;
+    const [button, setButton] = useState(saveBtn);
 
     const MealTabs = function () {
         const tabs = [];
@@ -44,45 +56,46 @@ const MealPlan = function () {
     };
 
     const onSaveMealPlan = function (e) {
-        alert('it works!');
         e.preventDefault();
+        fetch(`${process.env.PUBLIC_URL}/api/save-mealplan`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ meal_count: mealNum, meal_plan: mealData }),
+        }).then((response) => response.json()).then((data) => {
+            if (data.error === false) {
+                setButton(savedBtn)
+            }
+        });
+
     }
 
     useEffect(() => {
         setMealData(state.data.data);
         setMealNum(state.data.num)
-        setFrom(state.data.from)
-    }, [mealNum, mealData, from]);
+    }, [mealNum, mealData]);
 
-    if (from === 'navbar') {
-        return (<div className="Plan">
-            <h1>Nav Bar</h1>
+    useEffect(() => {
+        console.log(JSON.stringify(mealData))
+        console.log(mealNum)
+    }, [mealNum, mealData]);
+
+
+    return (
+        <div className="Plan">
+            <MealTabs tabsData={mealData} tabsNum={mealNum} />
             <Form className="save-form" onSubmit={onSaveMealPlan}>
                 <Form.Group className="mb-3">
                     <Form.Check required type="checkbox" label="By click save you will override previous saved meal plan" />
                 </Form.Group>
-                <Button variant="primary" type="submit">
-                    Save Meal Plan
+                <Button type="submit" variant={button.variant} disabled={button.disabled}>
+                    {button.text}
                 </Button>
             </Form>
-        </div>)
-    } else {
-        return (
-            <div className="Plan">
-                <MealTabs tabsData={mealData} tabsNum={mealNum} />
-                <Form className="save-form">
-                    <Form.Group className="mb-3">
-                        <Form.Check required type="checkbox" label="By click save you will override previous saved meal plan" />
-                    </Form.Group>
-                    <Button variant="primary" type="submit">
-                        Save Meal Plan
-                    </Button>
-                </Form>
-            </div>
-        );
-    }
+        </div>
+    );
+
 
 
 };
 
-export default MealPlan;
+export default NewMealPlan;

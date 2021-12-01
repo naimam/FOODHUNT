@@ -10,10 +10,11 @@ from datetime import timedelta
 import flask
 from flask import send_from_directory, redirect, url_for, flash, session
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import JSON
 from sqlalchemy.exc import IntegrityError
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, BooleanField
+from wtforms import StringField, PasswordField
 from wtforms.validators import InputRequired, Email, Length
 from dotenv import load_dotenv, find_dotenv
 
@@ -106,21 +107,13 @@ class Restaurant(db.Model):
 class MealPlan(db.Model):
     """Database for meal planner"""
 
-    mPlan_id = db.Column(db.Integer, primary_key=True)
-    plantype = db.Column(
-        db.String, nullable=False
-    )  # This is either for weekly or daily plans
-    mealcount = db.Column(db.Integer, nullable=False)
-    breakfast = db.Column(db.ARRAY(db.String))
-    lunch = db.Column(db.ARRAY(db.String))
-    dinner = db.Column(db.ARRAY(db.String))
-    brunch = db.Column(db.ARRAY(db.String))
-    breakfast_snack = db.Column(db.ARRAY(db.String))
-    afternoon_snack = db.Column(db.ARRAY(db.String))
+    meal_plan_id = db.Column(db.Integer, primary_key=True)
+    meal_count = db.Column(db.Integer, nullable=False)
+    meal_plan = db.Column(JSON)
     user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
 
     def __repr__(self):
-        return f"<MealPlan {self.mPlan_id}>"
+        return f"<MealPlan {self.meal_plan_id }>"
 
 
 class LoginForm(FlaskForm):
@@ -461,69 +454,40 @@ def get_mealplan():
 @login_required
 def save_mealplan():
     """Function to save a meal plan from the meal planner page to database"""
-    user = User.query.filter_by(user_id=current_user.user_id).first()
     meal_count = flask.request.json.get("meal_count")
-    plan_type = flask.request.json.get("plan_type")
-    plan = flask.request.json.get("meal_plan")
-    if plan:
-        if meal_count == 2:
-            db.session.add(
-                MealPlan(
-                    plantype=plan_type,
-                    mealcount=meal_count,
-                    brunch=plan["brunch"],
-                    dinner=plan["dinner"],
-                    user_id=user.user_id,
-                )
-            )
-        else:
-            db.session.add(
-                MealPlan(
-                    plantype=plan_type,
-                    mealcount=meal_count,
-                    breakfast=plan["breakfast"],
-                    lunch=plan["lunch"],
-                    dinner=plan["dinner"],
-                    user_id=user.user_id,
-                )
-            )
+    meal_plan = flask.request.json.get("meal_plan")
+    user_plan = current_user.mealplan
+    try:
+        # delete existing user's existing mealplan
+        if user_plan:
+            for plan in user_plan:
+                db.session.delete(plan)
+        # add new mealplan
+        new_plan = MealPlan(
+            meal_count=meal_count,
+            meal_plan=meal_plan,
+            user_id=current_user.user_id,
+        )
+        db.session.add(new_plan)
         db.session.commit()
-        return {"error": False}
 
-    return {"error": True}
+    except Exception as error:
+        app.logger.error(error)
+        return {"error": True}
+
+    return {"error": False}
 
 
 @app.route("/api/fetch-mealplan", methods=["POST"])
 @login_required
 def fetch_mealplan():
     """Function to retrieve a users meal plan from database"""
-    user = User.query.filter_by(user_id=current_user.user_id).first()
-    user_meal_plan = user.mealplan
+    user_meal_plan = current_user.mealplan
     if user_meal_plan:
         data = {}
-        data["plan_type"] = user_meal_plan.plantype
-        data["meal_count"] = user_meal_plan.mealcount
-        dinner = []
-        for i in user_meal_plan.dinner:
-            dinner.append(edamam.recipe_from_id(i))
-        data["dinner"] = dinner
-
-        if user_meal_plan.mealcount == 2:
-            brunch = []
-            for i in user_meal_plan.brunch:
-                brunch.append(edamam.recipe_from_id(i))
-            data["brunch"] = brunch
-        else:
-            breakfast = []
-            for i in user_meal_plan.breakfast:
-                breakfast.append(edamam.recipe_from_id(i))
-            data["breakfast"] = breakfast
-            lunch = []
-            for i in user_meal_plan.lunch:
-                lunch.append(edamam.recipe_from_id(i))
-            data["lunch"] = lunch
-
-            return {"error": False, "data": data}
+        data["meal_plan"] = user_meal_plan.meal_plan
+        data["meal_count"] = user_meal_plan.meal_count
+        return {"error": False, "data": data}
     return {"error": True}
 
 

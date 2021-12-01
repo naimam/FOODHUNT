@@ -25,7 +25,9 @@
 
 form.save-form {
   float: right;
+  width: 11rem;
   margin-right: 1rem;
+  margin-bottom: 1rem;
 }
 
 .Plan ul {
