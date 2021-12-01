@@ -1,29 +1,16 @@
 /* eslint-disable */
 import React, { useEffect, useState } from 'react';
-import { Row, Button, Form } from 'react-bootstrap';
+import { Row } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import './MealPlan.css';
 import Tabs, { Tab } from '../components/MealSurveyForm';
 import Meal from '../components/Meal';
 import NoResult from '../components/NoResult';
 
-const NewMealPlan = function () {
-    const saveBtn = {
-        text: 'Save Meal Plan',
-        disabled: false,
-        variant: 'primary',
-    };
-
-    const savedBtn = {
-        text: 'Meal Plan is Saved',
-        disabled: true,
-        variant: 'secondary',
-    };
-
+const SavedMealPlan = function () {
     const [mealNum, setMealNum] = useState([]);
     const [mealData, setMealData] = useState([]);
-    const state = useLocation().state;
-    const [button, setButton] = useState(saveBtn);
+    const [isEmpty, setIsEmpty] = useState(true);
 
     const MealTabs = function () {
         const tabs = [];
@@ -55,44 +42,30 @@ const NewMealPlan = function () {
         )
     };
 
-    const onSaveMealPlan = function (e) {
-        e.preventDefault();
-        fetch(`${process.env.PUBLIC_URL}/api/save-mealplan`, {
+
+    useEffect(() => {
+        fetch(`${process.env.PUBLIC_URL}/api/fetch-mealplan`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ meal_count: mealNum, meal_plan: mealData }),
         }).then((response) => response.json()).then((data) => {
             if (data.error === false) {
-                setButton(savedBtn)
+                setMealNum(data.data.meal_count)
+                setMealData(data.data.meal_plan)
+                setIsEmpty(false)
+            } else {
+                setIsEmpty(true)
             }
         });
 
-    }
+    }, [mealNum, mealData, isEmpty]);
 
-    if (!state) {
-        return (
-            <NoResult num={4} />
-        )
-    }
-
-    useEffect(() => {
-        setMealData(state.data.data);
-        setMealNum(state.data.num)
-    }, [mealNum, mealData]);
 
     return (
         <div className="Plan">
-            <MealTabs tabsData={mealData} tabsNum={mealNum} />
-            <Form className="save-form" onSubmit={onSaveMealPlan}>
-                <Form.Group className="mb-3">
-                    <Form.Check required type="checkbox" label="By click save you will override previous saved meal plan" />
-                </Form.Group>
-                <Button type="submit" variant={button.variant} disabled={button.disabled} className="w-100">
-                    {button.text}
-                </Button>
-            </Form>
+            {isEmpty ? <NoResult num={3} /> : <><h1 className="page-title">Your Saved Meal Plan</h1><MealTabs tabsData={mealData} tabsNum={mealNum} /> </>}
         </div>
     );
 };
 
-export default NewMealPlan;
+export default SavedMealPlan;

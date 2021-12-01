@@ -484,9 +484,10 @@ def fetch_mealplan():
     """Function to retrieve a users meal plan from database"""
     user_meal_plan = current_user.mealplan
     if user_meal_plan:
+        plan = current_user.mealplan[0]
         data = {}
-        data["meal_plan"] = user_meal_plan.meal_plan
-        data["meal_count"] = user_meal_plan.meal_count
+        data["meal_plan"] = plan.meal_plan
+        data["meal_count"] = plan.meal_count
         return {"error": False, "data": data}
     return {"error": True}
 
