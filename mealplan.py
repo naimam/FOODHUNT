@@ -1,8 +1,9 @@
+# pylint: disable=E1101, C0413, W1508, R0903, W0603, R0913, R0914
 """get a personalized meal plan given certain parameters: """
 import os
+import random
 from dotenv import find_dotenv, load_dotenv
 import requests
-import random
 from edamam import get_recipe_info
 
 
@@ -12,7 +13,7 @@ EDAMAM_API_ID = os.getenv("EDAMAM_API_ID")
 EDAMAM_API_KEY = os.getenv("EDAMAM_API_KEY")
 
 
-def meal_plan(meals, plan_type, callower=1800, calupper=2500, diet=None, health=[]):
+def meal_plan(meals, plan_type, callower=1800, calupper=2500, diet=None, health=None):
     """function meal_plan: get recipe info based on parameters"""
     avglow = round(callower / len(meals))
     avghigh = round(calupper / len(meals))
@@ -38,8 +39,8 @@ def meal_plan(meals, plan_type, callower=1800, calupper=2500, diet=None, health=
 
     all_meals = {}
 
-    for q in meals:
-        params = {"mealType": q, "q": q, "random": True}
+    for query in meals:
+        params = {"mealType": query, "q": query, "random": True}
         response = requests.get(url, params=params)
         data = response.json()
         try:
@@ -55,10 +56,10 @@ def meal_plan(meals, plan_type, callower=1800, calupper=2500, diet=None, health=
             if recipe is not None
         ]
 
-        mealList = []
+        meal_list = []
         random.shuffle(recipes)
         for i in range(length):
             # append meal to random index of recipes
-            mealList.append(recipes[i])
-        all_meals[q] = mealList
+            meal_list.append(recipes[i])
+        all_meals[query] = meal_list
     return all_meals
