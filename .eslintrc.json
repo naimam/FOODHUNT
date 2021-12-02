@@ -23,6 +23,8 @@
         "react/no-unstable-nested-components": "off",
         "no-shadow": "off",
         "react/no-access-state-in-setstate": "off",
-        "max-len": "off"
+        "max-len": "off",
+        "max-classes-per-file": "off",
+        "import/no-extraneous-dependencies": "off"
     }
 }
