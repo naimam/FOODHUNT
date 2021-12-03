@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import {
-    Button, Form, InputGroup, Image,
+    Button, Form, InputGroup, Image, Alert,
 } from 'react-bootstrap';
 import { DefaultEditor } from 'react-simple-wysiwyg';
 import './MyRecipes.css';
@@ -12,7 +13,9 @@ const AddRecipe = function () {
     const [directions, setDirections] = useState('');
     const [picture, setPicture] = useState(null);
     const [pictureURL, setPictureURL] = useState(null);
+    const [saveError, setSaveError] = useState(false);
     const [errors, setErrors] = useState({});
+    const [redirect, setRedirect] = useState(false);
     const findFormErrors = () => {
         const newErrors = {};
         if (!name || name === '') newErrors.name = 'Give your recipe a name!';
@@ -37,8 +40,12 @@ const AddRecipe = function () {
             fetch(`${process.env.PUBLIC_URL}/api/add-my-recipe`, {
                 method: 'POST',
                 body: formData,
-            }).then((response) => response.json()).then(() => {
-                // TODO: error handling and redirect user to my recipes page
+            }).then((response) => response.json()).then((data) => {
+                if (data.error === false) {
+                    setRedirect(true);
+                } else {
+                    setSaveError(true);
+                }
             });
         }
     };
@@ -91,6 +98,12 @@ const AddRecipe = function () {
             </InputGroup>
             <Image className="recipe-picture" src={picture ? pictureURL : logo} rounded />
             <Button className="add-recipe-btn" size="lg" variant="dark" onClick={handleSubmit}>Submit</Button>
+            {
+                redirect ? <Navigate to="/my-recipes" /> : null
+            }
+            {
+                saveError ? <Alert onClose={() => setSaveError(false)} variant="danger" dismissible>Something went wrong! Failed to save recipe.</Alert> : null
+            }
         </div>
 
     );
