@@ -97,10 +97,6 @@ You will need to install the following on your host before deployment
   ```sh
   npm install python3@latest -g
   ```
-* Flask
-  ```sh
-  npm install flask@latest -g
-  ```
 
 ### Installation
 
@@ -115,8 +111,15 @@ You will need to install the following on your host before deployment
    ```sh
    npm install
    ```
-4. Enter your API in `.env`
-
+4. NPM run build    
+    ```sh
+    npm run build
+    ```
+5. Enter your API in `.env`
+6. Install Python libraries 
+    ```sh
+    pip install -r requirements.tx
+    ```
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -185,6 +188,10 @@ See the [open issues](https://github.com/naimam/4350-Group-11-Project/issues) fo
   - E0237: Required to make login session limited
   - W0613: Ignored because React route is being used
 
+- mealplan.py:
+  -  R0913: Error on line 15, too many arguments, but all are needed and it is only 1 over.
+  -  R0914: Error on line 15 again, too many local variables, but all are neeeded.
+
 
 Eslint:
 - Eslint:
@@ -196,6 +203,8 @@ Eslint:
   - react/destructuring-assignment- to simplify the component structure
   - linebreak-style - because we aren't concerned about having different line endings within our code
   - no-unused-expressions: would mark expressions that we needed for our code as unused
+  - react/jsx-no-bind - do not want to enforce that bind or arrow functions are not used in props
+  - no-restricted-syntax, react/no-unstable-nested-components, react/no-access-state-in-setstate, max-classes-per-file - not using jsx, so did not want to break the code
 
 
 
@@ -217,15 +226,6 @@ Don't forget to give the project a star! Thanks again!
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-
-<p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
