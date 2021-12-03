@@ -81,6 +81,12 @@ const NewMealPlan = function () {
         );
     }
 
+    if (!state) {
+        return (
+            <NoResult num={4} />
+        );
+    }
+
     useEffect(() => {
         setMealData(state.data.data);
         setMealNum(state.data.num);

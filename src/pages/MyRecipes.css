@@ -1,0 +1,79 @@
+.rich-text div div {
+    padding: 0.5rem;
+}
+
+.rich-text div div select {
+    height: 25px !important;
+}
+
+.rich-text div div span::after {
+    content: "" !important;
+}
+
+.input-group-text::after {
+    content: "" !important;
+}
+
+.recipe-picture {
+    border: solid 1px;
+    padding: 1rem;
+    width: 300px;
+    height: 300px;
+    object-fit: contain;
+    display: block;
+    margin: 1rem auto;
+}
+
+.AddRecipe {
+    margin: 2rem auto;
+    width: 75%;
+}
+
+.align-me {
+    display: flex;
+    align-items: center;
+}
+
+.add-recipe-title {
+    color: rgba(255, 76, 90, 1);
+    background-color: rgb(192, 217, 240);
+    text-align: center;
+    margin: 20px auto;
+    width: fit-content;
+    padding: 5px 16px;
+    border-radius: 6px;
+}
+
+.add-recipe-btn {
+    float: right;
+    margin: 2rem;
+}
+
+.invalid-directions {
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+.empty-img {
+    margin: auto;
+    display: block;
+    width: 20%;
+}
+
+.empty {
+    opacity: 0.3;
+    filter: alpha(opacity=100);
+    background-color: rgba(0, 0, 0, 0);
+    margin-bottom: 40px;
+    margin-top: 40px;
+}
+
+.call-action {
+    text-align: center;
+    color: rgb(136, 133, 133);
+}
+
+.hide {
+    display: none;
+}

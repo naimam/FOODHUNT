@@ -10,6 +10,8 @@ import NewMealPlan from './pages/NewMealPlan';
 import MealSurvey from './pages/MealSurvey';
 import SavedMealPlan from './pages/SavedMealPlan';
 import NoResult from './components/NoResult';
+import MyRecipes from './pages/MyRecipes';
+import AddRecipe from './pages/AddRecipe';
 
 const App = function () {
   const [username, setUsername] = useState('');
@@ -32,6 +34,8 @@ const App = function () {
         <Route path="/new-meal-plan" element={<NewMealPlan />} />
         <Route path="/saved-meal-plan" element={<SavedMealPlan />} />
         <Route path="/meal-survey" element={<MealSurvey />} />
+        <Route path="/my-recipes" element={<MyRecipes />} />
+        <Route path="/add-recipe" element={<AddRecipe />} />
         <Route path="/search/:option/:zip/:keyword" element={<Search />} />
         <Route path="/*" element={<NoResult num={4} />} />
         `
