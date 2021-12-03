@@ -46,7 +46,6 @@ const SavedMealPlan = function () {
             <Tabs defaultIndex={0} className="Plan__tabs">{tabs.map((tab) => tab)}</Tabs>
         );
     };
-
     useEffect(() => {
         fetch(`${process.env.PUBLIC_URL}/api/fetch-mealplan`, {
             method: 'POST',
