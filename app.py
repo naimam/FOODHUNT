@@ -541,7 +541,7 @@ def add_my_recipe():
 
 @app.route("/api/get-my-recipes", methods=["POST"])
 def get_my_recipes():
-    """Function to receive recipes that the user adds"""
+    """Function to retrieve recipes that the user adds"""
     recipes = current_user.my_recipes
     data = []
     if recipes:
