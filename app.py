@@ -6,6 +6,7 @@ Logic for the whole app
 
 import os
 import json
+import base64
 from datetime import timedelta
 import flask
 from flask import send_from_directory, redirect, url_for, flash, session
@@ -73,10 +74,11 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(15), unique=True, nullable=False)
     email = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(100), nullable=False)
+    zipcode = db.Column(db.Integer)
     recipes = db.relationship("Recipe", backref="user", lazy=True)
     restaurants = db.relationship("Restaurant", backref="user", lazy=True)
-    zipcode = db.Column(db.Integer)
     mealplan = db.relationship("MealPlan", backref="user", lazy=True)
+    my_recipes = db.relationship("MyRecipe", backref="user", lazy=True)
 
     def get_id(self):
         return self.user_id
@@ -116,6 +118,20 @@ class MealPlan(db.Model):
         return f"<MealPlan {self.meal_plan_id }>"
 
 
+class MyRecipe(db.Model):
+    """Creating database for Recipes"""
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(80), nullable=False)
+    ingredients = db.Column(db.ARRAY(db.String))
+    directions = db.Column(db.String())
+    picture = db.Column(db.LargeBinary())
+    user_id = db.Column(db.Integer, db.ForeignKey("user.user_id"))
+
+    def __repr__(self):
+        return f"<MyRecipe {self.name}>"
+
+
 class LoginForm(FlaskForm):
     """Form to allow user to type in their credentials to login"""
 
@@ -153,7 +169,9 @@ class SignupForm(FlaskForm):
 
 @app.route("/")
 def root():
-    """Function to reroute user to landing page"""
+    """Function to reroute user to landing page if not logged in else to home page"""
+    if current_user.is_authenticated:
+        return flask.redirect(flask.url_for("bp.home"))
     return flask.render_template("landing.html")
 
 
@@ -488,6 +506,57 @@ def fetch_mealplan():
         data = {}
         data["meal_plan"] = plan.meal_plan
         data["meal_count"] = plan.meal_count
+        return {"error": False, "data": data}
+    return {"error": True}
+
+
+@app.route("/api/add-my-recipe", methods=["POST"])
+@login_required
+def add_my_recipe():
+    """Function to let a user add their own recipe"""
+    picture = flask.request.files.get("picture")
+    name = flask.request.form.get("name")
+    ingredients = flask.request.form.get("ingredients")
+    i_list = ingredients.split(",")
+    ingredient_list = [x.strip() for x in i_list]
+    directions = flask.request.form.get("directions")
+    encode_pic = None
+    if picture:
+        encode_pic = base64.b64encode(picture.read())
+    my_recipe = MyRecipe(
+        name=name,
+        ingredients=ingredient_list,
+        directions=directions,
+        picture=encode_pic,
+        user_id=current_user.user_id,
+    )
+    try:
+        db.session.add(my_recipe)
+        db.session.commit()
+    except Exception as error:
+        app.logger.error(error)
+        return {"error": True}
+    return {"error": False}
+
+
+@app.route("/api/get-my-recipes", methods=["POST"])
+def get_my_recipes():
+    """Function to receive recipes that the user adds"""
+    recipes = current_user.my_recipes
+    data = []
+    if recipes:
+        for recs in recipes:
+            pic = None
+            if recs.picture:
+                pic = recs.picture.decode("utf-8")
+            rec = {
+                "id": recs.id,
+                "name": recs.name,
+                "ingredients": recs.ingredients,
+                "directions": recs.directions,
+                "picture": pic,
+            }
+            data.append(rec)
         return {"error": False, "data": data}
     return {"error": True}
 
