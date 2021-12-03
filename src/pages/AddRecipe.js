@@ -33,14 +33,12 @@ const AddRecipe = function () {
             formData.append('directions', directions);
             if (picture !== null) {
                 formData.append('picture', picture);
-                console.log('GET IMAGE');
             }
             fetch(`${process.env.PUBLIC_URL}/api/add-my-recipe`, {
                 method: 'POST',
                 body: formData,
-            }).then((response) => response.json()).then((data) => {
+            }).then((response) => response.json()).then(() => {
                 // TODO: error handling and redirect user to my recipes page
-                console.log(`callback: ${data}`);
             });
         }
     };

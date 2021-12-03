@@ -28,8 +28,9 @@ const MyRecipes = function () {
         });
     }, [data, isEmpty]);
 
+    // eslint-disable-next-line no-unused-vars
     const onClick = function (id) {
-        console.log(`on click ${id}`);
+
         // alert('HIII ' + id)
     };
 
