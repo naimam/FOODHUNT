@@ -15,7 +15,7 @@
     <a href="https://github.com/naimam/4350-Group-11-Project"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://sanst.herokuapp.com/">View Demo</a>
+    <a href="http://f00dhunt.herokuapp.com/">View Demo</a>
     ·
     <a href="https://github.com/naimam/4350-Group-11-Project/issues">Report Bug</a>
     ·
